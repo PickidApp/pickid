@@ -96,6 +96,7 @@ jobs:
     name: Release
     needs: [bo, fo]
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
