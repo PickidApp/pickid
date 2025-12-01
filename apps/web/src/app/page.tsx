@@ -5,7 +5,6 @@ import { homeService } from '@/api/services/home.service';
 import { SITE_CONFIG } from '@/constants/site-config';
 import { transformTestsToCards } from '@/lib';
 
-// 홈 페이지 메타데이터 (동적 - 테스트 개수 표시)
 export async function generateMetadata(): Promise<Metadata> {
 	try {
 		const { tests } = await homeService.getHomePageData();
@@ -24,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 			},
 		};
 	} catch (error) {
+		// 빌드 시 환경 변수가 없을 수 있으므로 기본 메타데이터 반환
 		console.error('메타데이터 생성 실패:', error);
 		return {
 			title: SITE_CONFIG.title,
@@ -92,6 +92,9 @@ export default async function Page() {
 		);
 	} catch (error) {
 		console.error('홈 페이지 데이터 로드 실패:', error);
+		if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
+			return <HomeContainer tests={[]} categories={[]} popularTests={[]} recommendedTests={[]} topByType={[]} />;
+		}
 		throw error;
 	}
 }
