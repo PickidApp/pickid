@@ -12,10 +12,6 @@ updates:
       prefix: 'chore'
       prefix-development: 'chore'
       include: 'scope'
-    versioning-strategy: increase
-    allow:
-      - dependency-type: 'production'
-      - dependency-type: 'development'
 
   - package-ecosystem: npm
     directory: '/'
