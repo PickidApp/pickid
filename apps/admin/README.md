@@ -1,0 +1,140 @@
+# Pickid Admin App 관리자
+
+**테스트를 생성하고 관리하는 사용자들을 위한 관리자 대시보드입니다.**
+
+<br/>
+
+## 💻 기술 스택
+
+![React](https://img.shields.io/badge/React_18-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=reactrouter&logoColor=white) ![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=reactquery&logoColor=white) ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?logo=reacthookform&logoColor=white) ![Zod](https://img.shields.io/badge/Zod-3E67B1?logo=zod&logoColor=white)
+
+<br/>
+
+# 🏗️ 아키텍처
+
+## 레이어드 아키텍처 (Layered Architecture)
+
+**구조**: Presentation → Business Logic → Data Access → Infrastructure
+
+### 계층별 책임
+
+- **Presentation Layer** (`pages/`, `components/`): UI 컴포넌트 및 페이지
+- **Business Logic Layer** (`hooks/`): 비즈니스 로직, React Query hooks, 상태 관리
+- **Data Access Layer** (`services/`): Supabase API 호출 및 데이터 접근
+- **Infrastructure Layer** (`lib/`, `types/`, `utils/`): 유틸리티 및 타입 정의
+
+### 주요 특징
+
+- 계층별 명확한 책임 분리
+- 단순한 관리자 도구에 최적화
+- 의존성 방향: 상위 계층 → 하위 계층
+
+<br/>
+
+### URL 구조
+
+| 기능                 | URL                                 |
+| :------------------- | :---------------------------------- |
+| **대시보드**         | `/`                                 |
+| **테스트 관리**      | `/tests`                            |
+| **테스트 생성/수정** | `/tests/create` / `/tests/:id/edit` |
+| **카테고리 관리**    | `/categories`                       |
+| **사용자 관리**      | `/users`                            |
+| **성과 분석**        | `/analytics`                        |
+| **성장 분석**        | `/growth`                           |
+| **인증**             | `/auth`                             |
+
+### 주요 디렉토리
+
+```
+src/
+├── pages/           # (Presentation) URL 경로 매핑된 페이지
+├── components/      # (Presentation) 재사용 가능한 UI 컴포넌트
+├── hooks/           # (Business Logic) React Query hooks, 비즈니스 로직
+│   ├── query-keys.ts      # QueryKey 중앙 관리
+│   ├── useTests.ts        # 테스트 목록 + mutations
+│   ├── useTestList.ts     # 테스트 목록 조회
+│   └── ...
+├── services/        # (Data Access) Supabase API 호출
+│   ├── test.service.ts
+│   └── ...
+├── types/           # (Infrastructure) 타입 정의
+├── utils/           # (Infrastructure) 유틸리티 함수
+└── lib/             # (Infrastructure) 공통 로직
+```
+
+### QueryKey 관리
+
+모든 React Query의 queryKey는 `hooks/query-keys.ts`에서 중앙 관리합니다.
+
+```ts
+// hooks/query-keys.ts
+export const queryKeys = {
+  test: {
+    all: ['test'] as const,
+    list: () => [...queryKeys.test.all, 'list'] as const,
+    detail: (id: string) => [...queryKeys.test.all, 'detail', id] as const,
+  },
+  // ...
+};
+```
+
+---
+
+<br/>
+
+## 📦 사용하는 공통 패키지
+
+- `@pickid/ui`: 공통 UI 컴포넌트
+- `@pickid/shared`: 공통 유틸리티
+- `@pickid/supabase`: 데이터 접근 레이어
+- `@pickid/types`: 공통 타입 정의
+- `@pickid/config`: 공통 설정
+
+---
+
+## 🔐 환경 변수 설정
+
+프로젝트 루트 또는 `apps/admin/` 디렉토리에 `.env.local` 파일을 생성하고 다음 환경 변수를 설정하세요:
+
+```env
+# Supabase 설정
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Supabase JWT Secret (Legacy)
+# Supabase Dashboard → Settings → API → JWT Secret
+SUPABASE_JWT_SECRET=fbbnK1KtURu5Y+7uKim9Yc1IiZxOd6oReyqnIfgml7VPrl+MMMS9tQNWKKjbyiq6/ZxnHUc+uiBK2iAm1+eQRw==
+```
+
+### 환경 변수 설명
+
+- **VITE_SUPABASE_URL**: Supabase 프로젝트 URL
+- **VITE_SUPABASE_ANON_KEY**: Supabase Publishable Key (공개 가능)
+- **VITE_SUPABASE_SERVICE_ROLE_KEY**: Supabase Secret Key (서버 전용, 절대 노출 금지)
+- **SUPABASE_JWT_SECRET**: JWT 토큰 서명용 Secret (Legacy JWT Secret)
+
+### Supabase Dashboard에서 확인 방법
+
+1. Supabase Dashboard → Settings → API
+2. **Publishable key**: `VITE_SUPABASE_ANON_KEY`에 사용
+3. **Secret keys** → **default**: `VITE_SUPABASE_SERVICE_ROLE_KEY`에 사용
+4. **Legacy JWT secret**: `SUPABASE_JWT_SECRET`에 사용
+
+### 데이터베이스 JWT Secret 설정
+
+JWT Secret은 `admin_login` RPC 함수 내에서 직접 하드코딩되어 있습니다.
+`ALTER DATABASE` 명령은 권한이 필요하므로 사용하지 않습니다.
+
+Migration을 실행하면 자동으로 JWT Secret이 함수에 포함됩니다:
+
+```bash
+supabase db push
+```
+
+JWT Secret을 변경하려면:
+1. `supabase/migrations/20250101000001_simplify_admin_login.sql` 파일에서
+   `v_jwt_secret` 변수 값을 수정
+2. Migration을 다시 실행

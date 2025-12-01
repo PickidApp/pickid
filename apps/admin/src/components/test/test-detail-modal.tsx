@@ -1,0 +1,809 @@
+import React, { useState, useMemo } from 'react';
+import { Button, IconButton } from '@pickid/ui';
+import { LoadingState } from '@/components/ui';
+import { EmptyState } from '@/components/ui';
+import { formatDateLong } from '@pickid/shared';
+import { AdminCard, AdminCardHeader, AdminCardContent } from '@/components/ui/admin-card';
+import {
+	X,
+	Edit,
+	Globe,
+	Lock,
+	Trash2,
+	Copy,
+	Calendar,
+	Clock,
+	BarChart3,
+	Eye,
+	Users,
+	Play,
+	CheckCircle,
+	Circle,
+	Hash,
+	Target,
+	MessageSquare,
+	Image as ImageIcon,
+} from 'lucide-react';
+import { getTestTypeInfo, getTestStatusInfo } from '@/utils/config.utils';
+import { calculateTestStats, getCategoryNames } from '@/utils/test.utils';
+import { useTestDetail } from '@/hooks/useTestDetail';
+import { useCategories } from '@/hooks';
+import type { TestDetailModalProps, TabType } from '@/types/test.types';
+
+export function TestDetailModal({ test, onClose, onTogglePublish, onDelete }: TestDetailModalProps) {
+	const [activeTab, setActiveTab] = useState<TabType>('basic');
+	const [previewQuestionIndex, setPreviewQuestionIndex] = useState(-1);
+
+	const { data: testDetails, isLoading: loading } = useTestDetail({ testId: test.id });
+	const { categories } = useCategories();
+
+	const typeInfo = getTestTypeInfo(test.type || 'psychology');
+	const statusInfo = getTestStatusInfo(test.status || 'draft');
+
+	const stats = useMemo(
+		() => calculateTestStats(testDetails?.questions || [], testDetails?.results || []),
+		[testDetails?.questions, testDetails?.results]
+	);
+
+	const categoryNames = useMemo(
+		() =>
+			getCategoryNames(
+				test.category_ids,
+				categories.map((cat) => ({ id: cat.id, name: cat.name }))
+			),
+		[test.category_ids, categories]
+	);
+
+	const tabs = [
+		{ id: 'basic', label: '기본 정보', icon: Hash },
+		{
+			id: 'questions',
+			label: `질문 (${stats.totalQuestions})`,
+			icon: MessageSquare,
+		},
+		{ id: 'results', label: `결과 (${stats.totalResults})`, icon: Target },
+		{ id: 'stats', label: '통계', icon: BarChart3 },
+		{ id: 'preview', label: '미리보기', icon: Play },
+	] as const;
+
+	const handleTogglePublish = async () => {
+		await onTogglePublish(test.id, test.status === 'published');
+	};
+
+	const handleDelete = () => {
+		if (
+			confirm('정말로 이 테스트를 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없으며, 모든 응답 데이터도 함께 삭제됩니다.')
+		) {
+			onDelete(test.id);
+			onClose();
+		}
+	};
+
+	const handleDuplicate = () => {};
+
+	return (
+		<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 !mt-0">
+			<div className="bg-white rounded-xl max-w-7xl w-full max-h-[95vh] overflow-hidden flex flex-col shadow-2xl">
+				<div className="p-6 border-b border-neutral-200 bg-white">
+					<div className="flex items-start justify-between mb-4">
+						<div className="flex items-start gap-4 flex-1">
+							<div className="w-20 h-20 rounded-xl overflow-hidden bg-neutral-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+								{test.thumbnail_url ? (
+									<img src={test.thumbnail_url} alt={test.title} className="w-full h-full object-cover" />
+								) : (
+									<span className="text-2xl font-bold text-white">{test.title[0] || 'T'}</span>
+								)}
+							</div>
+
+							<div className="flex-1 min-w-0">
+								<div className="flex items-center gap-2 mb-2">
+									<h2 className="text-2xl font-bold text-neutral-900 truncate">{test.title}</h2>
+									{test.short_code && (
+										<div className="inline-flex items-center px-2 py-1 rounded-full bg-neutral-100 text-neutral-800 text-xs font-mono">
+											{test.short_code}
+										</div>
+									)}
+								</div>
+
+								<div className="flex items-center gap-3 mb-3 flex-wrap">
+									<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 bg-white text-sm">
+										<span className="w-2 h-2 rounded-full bg-neutral-600"></span>
+										{typeInfo.name}
+									</div>
+									<div
+										className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm ${
+											test.status === 'published'
+												? 'text-neutral-700 border-neutral-300 bg-white'
+												: test.status === 'scheduled'
+												? 'text-neutral-700 border-neutral-300 bg-white'
+												: 'text-neutral-700 border-neutral-300 bg-white'
+										}`}
+									>
+										{test.status === 'published' && <CheckCircle className="w-3 h-3" />}
+										{test.status === 'scheduled' && <Clock className="w-3 h-3" />}
+										{test.status === 'draft' && <Circle className="w-3 h-3" />}
+										{statusInfo.name}
+									</div>
+									{test.estimated_time && (
+										<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 bg-white text-sm">
+											<Clock className="w-3 h-3" />약 {test.estimated_time}분
+										</div>
+									)}
+								</div>
+
+								{test.description && <p className="text-neutral-600 text-sm leading-relaxed">{test.description}</p>}
+							</div>
+						</div>
+
+						<IconButton
+							icon={<X className="h-4 w-4" />}
+							variant="ghost"
+							size="sm"
+							onClick={onClose}
+							className="h-8 w-8 p-0 hover:bg-neutral-100"
+							aria-label="닫기"
+						/>
+					</div>
+
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						<div className="bg-white rounded-lg p-3 border border-neutral-200">
+							<div className="flex items-center gap-2">
+								<Eye className="w-4 h-4 text-neutral-600" />
+								<span className="text-sm text-neutral-600">조회수</span>
+							</div>
+							<div className="text-lg font-semibold text-neutral-900">-</div>
+						</div>
+						<div className="bg-white rounded-lg p-3 border border-neutral-200">
+							<div className="flex items-center gap-2">
+								<Users className="w-4 h-4 text-neutral-600" />
+								<span className="text-sm text-neutral-600">응답수</span>
+							</div>
+							<div className="text-lg font-semibold text-neutral-900">
+								{(test.response_count || 0).toLocaleString()}
+							</div>
+						</div>
+						<div className="bg-white rounded-lg p-3 border border-neutral-200">
+							<div className="flex items-center gap-2">
+								<MessageSquare className="w-4 h-4 text-neutral-600" />
+								<span className="text-sm text-neutral-600">질문수</span>
+							</div>
+							<div className="text-lg font-semibold text-neutral-900">{stats.totalQuestions}</div>
+						</div>
+						<div className="bg-white rounded-lg p-3 border border-neutral-200">
+							<div className="flex items-center gap-2">
+								<Target className="w-4 h-4 text-neutral-600" />
+								<span className="text-sm text-neutral-600">결과수</span>
+							</div>
+							<div className="text-lg font-semibold text-neutral-900">{stats.totalResults}</div>
+						</div>
+					</div>
+
+					<div className="flex gap-1 mt-6 bg-neutral-50 rounded-lg p-1">
+						{tabs.map((tab) => {
+							const Icon = tab.icon;
+							return (
+								<IconButton
+									key={tab.id}
+									onClick={() => setActiveTab(tab.id)}
+									icon={<Icon className="w-4 h-4" />}
+									text={tab.label}
+									variant={activeTab === tab.id ? 'default' : 'ghost'}
+									className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+										activeTab === tab.id
+											? 'bg-white text-neutral-900 shadow-sm font-medium'
+											: 'text-neutral-600 hover:text-neutral-900 hover:bg-white'
+									}`}
+								/>
+							);
+						})}
+					</div>
+				</div>
+
+				<div className="flex-1 overflow-y-auto bg-white">
+					{activeTab === 'basic' && (
+						<div className="p-6">
+							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+								<AdminCard variant="modal" padding="sm">
+									<AdminCardHeader
+										variant="modal"
+										title={
+											<div className="text-lg flex items-center gap-2">
+												<Hash className="w-5 h-5 text-neutral-600" />
+												기본 정보
+											</div>
+										}
+									/>
+									<AdminCardContent className="space-y-4">
+										<div className="grid grid-cols-1 gap-4">
+											<div>
+												<label className="text-sm font-medium text-neutral-700">테스트 제목</label>
+												<div className="mt-1 text-neutral-900">{test.title}</div>
+											</div>
+											{test.description && (
+												<div>
+													<label className="text-sm font-medium text-neutral-700">설명</label>
+													<div className="mt-1 text-neutral-900 text-sm leading-relaxed">{test.description}</div>
+												</div>
+											)}
+											<div>
+												<label className="text-sm font-medium text-neutral-700">URL 슬러그</label>
+												<div className="mt-1 font-mono text-sm text-neutral-600">/{test.slug}</div>
+											</div>
+											{test.intro_text && (
+												<div>
+													<label className="text-sm font-medium text-neutral-700">시작 문구</label>
+													<div className="mt-1 text-neutral-900 text-sm">{test.intro_text}</div>
+												</div>
+											)}
+											<div>
+												<label className="text-sm font-medium text-neutral-700">카테고리</label>
+												<div className="mt-1 flex flex-wrap gap-2">
+													{categoryNames.map((categoryName, index) => (
+														<span
+															key={index}
+															className="inline-flex items-center px-2 py-1 rounded-full bg-neutral-100 text-neutral-700 text-xs font-medium"
+														>
+															{categoryName}
+														</span>
+													))}
+												</div>
+											</div>
+										</div>
+									</AdminCardContent>
+								</AdminCard>
+
+								<AdminCard variant="modal" padding="sm">
+									<AdminCardHeader
+										variant="modal"
+										title={
+											<div className="text-lg flex items-center gap-2">
+												<Calendar className="w-5 h-5 text-neutral-600" />
+												설정 정보
+											</div>
+										}
+									/>
+									<AdminCardContent className="space-y-4">
+										<div className="grid grid-cols-2 gap-4 text-sm">
+											<div>
+												<span className="text-neutral-600">생성일</span>
+												<div className="font-medium text-neutral-900">{formatDateLong(test.created_at)}</div>
+											</div>
+											<div>
+												<span className="text-neutral-600">수정일</span>
+												<div className="font-medium text-neutral-900">{formatDateLong(test.updated_at)}</div>
+											</div>
+											{test.published_at && (
+												<div>
+													<span className="text-neutral-600">발행일</span>
+													<div className="font-medium text-neutral-900">{formatDateLong(test.published_at)}</div>
+												</div>
+											)}
+											{test.scheduled_at && (
+												<div>
+													<span className="text-neutral-600">예약 발행</span>
+													<div className="font-medium text-neutral-900">{formatDateLong(test.scheduled_at)}</div>
+												</div>
+											)}
+											{test.max_score && (
+												<div>
+													<span className="text-neutral-600">최대 점수</span>
+													<div className="font-medium text-neutral-900">{test.max_score}점</div>
+												</div>
+											)}
+											<div>
+												<span className="text-neutral-600">완료율</span>
+												<div className="flex items-center gap-2">
+													<div className="flex-1 bg-neutral-200 rounded-full h-2">
+														<div
+															className="bg-neutral-600 h-2 rounded-full transition-all duration-300"
+															style={{ width: `${stats.completionRate}%` }}
+														/>
+													</div>
+													<span className="text-sm font-medium">{stats.completionRate}%</span>
+												</div>
+											</div>
+										</div>
+									</AdminCardContent>
+								</AdminCard>
+							</div>
+						</div>
+					)}
+
+					{activeTab === 'questions' && (
+						<div className="p-6">
+							<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+								<AdminCard variant="info" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.totalQuestions}</div>
+										<div className="text-sm text-neutral-600">총 질문 수</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="success" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.avgChoicesPerQuestion}</div>
+										<div className="text-sm text-neutral-600">평균 선택지</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="modal" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.questionsWithImages}</div>
+										<div className="text-sm text-neutral-600">이미지 포함</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="warning" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">
+											{testDetails?.questions?.reduce((sum, q) => sum + (q.choices?.length || 0), 0) || 0}
+										</div>
+										<div className="text-sm text-neutral-600">총 선택지</div>
+									</AdminCardContent>
+								</AdminCard>
+							</div>
+
+							<AdminCard variant="modal" padding="sm" className="mt-6">
+								<AdminCardHeader
+									variant="modal"
+									title={
+										<div className="text-lg flex items-center gap-2">
+											<Target className="w-5 h-5 text-neutral-600" />
+											질문 목록
+										</div>
+									}
+								/>
+								<AdminCardContent>
+									{loading ? (
+										<LoadingState message="질문 데이터를 불러오는 중..." size="sm" className="py-8" />
+									) : testDetails?.questions && testDetails.questions.length > 0 ? (
+										<div className="max-h-96 overflow-y-auto">
+											{testDetails.questions.map((question, index) => (
+												<div
+													key={question.id}
+													className={`border border-neutral-200 rounded-lg p-4 bg-white ${index > 0 ? 'mt-4' : ''}`}
+												>
+													<div className="flex items-start gap-3">
+														<div className="flex-shrink-0 w-8 h-8 bg-neutral-100 rounded-full flex items-center justify-center text-sm font-medium text-neutral-600">
+															{index + 1}
+														</div>
+														<div className="flex-1 min-w-0">
+															<div className="flex items-center gap-2 mb-2">
+																<h4 className="font-medium text-neutral-900">{question.question_text}</h4>
+																{question.image_url && <ImageIcon className="w-4 h-4 text-neutral-400" />}
+															</div>
+															{question.image_url && (
+																<div className="mb-3">
+																	<img
+																		src={question.image_url}
+																		alt="질문 이미지"
+																		className="max-w-xs rounded-lg border border-neutral-200"
+																	/>
+																</div>
+															)}
+															<div>
+																{question.choices?.map((choice, choiceIndex: number) => (
+																	<div
+																		key={choice.id}
+																		className={`flex items-center gap-2 text-sm ${choiceIndex > 0 ? 'mt-2' : ''}`}
+																	>
+																		<div className="w-4 h-4 bg-neutral-100 rounded-full flex items-center justify-center text-xs">
+																			{String.fromCharCode(65 + choiceIndex)}
+																		</div>
+																		<span className="text-neutral-700">{choice.choice_text}</span>
+																		{choice.score !== undefined && (
+																			<span className="text-xs text-neutral-500">({choice.score}점)</span>
+																		)}
+																	</div>
+																))}
+															</div>
+														</div>
+													</div>
+												</div>
+											))}
+										</div>
+									) : (
+										<EmptyState title="질문 데이터가 없습니다" icon="❓" className="py-8" />
+									)}
+								</AdminCardContent>
+							</AdminCard>
+						</div>
+					)}
+
+					{activeTab === 'results' && (
+						<div className="p-6">
+							<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+								<AdminCard variant="info" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.totalResults}</div>
+										<div className="text-sm text-neutral-600">총 결과 수</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="success" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.resultsWithTheme}</div>
+										<div className="text-sm text-neutral-600">테마 색상</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="modal" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">{stats.resultsWithImages}</div>
+										<div className="text-sm text-neutral-600">배경 이미지</div>
+									</AdminCardContent>
+								</AdminCard>
+								<AdminCard variant="warning" padding="sm" className="bg-neutral-50">
+									<AdminCardContent className="p-4 text-center">
+										<div className="text-2xl font-bold text-neutral-900">
+											{testDetails?.results?.reduce(
+												(sum, r) => sum + (r.features ? Object.keys(r.features).length : 0),
+												0
+											) || 0}
+										</div>
+										<div className="text-sm text-neutral-600">총 키워드</div>
+									</AdminCardContent>
+								</AdminCard>
+							</div>
+
+							<AdminCard variant="modal" padding="sm" className="mt-6">
+								<AdminCardHeader
+									variant="modal"
+									title={
+										<div className="text-lg flex items-center gap-2">
+											<MessageSquare className="w-5 h-5 text-neutral-600" />
+											결과 목록
+										</div>
+									}
+								/>
+								<AdminCardContent>
+									{loading ? (
+										<LoadingState message="결과 데이터를 불러오는 중..." size="sm" className="py-8" />
+									) : testDetails?.results && testDetails.results.length > 0 ? (
+										<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+											{testDetails.results.map((result, index) => (
+												<div key={result.id} className="border border-neutral-200 rounded-lg p-4 bg-white">
+													<div className="flex items-start gap-3">
+														<div className="flex-shrink-0 w-8 h-8 bg-neutral-100 rounded-full flex items-center justify-center text-sm font-medium text-neutral-600">
+															{index + 1}
+														</div>
+														<div className="flex-1 min-w-0">
+															<div className="flex items-center gap-2 mb-2">
+																<h4 className="font-medium text-neutral-900">{result.result_name}</h4>
+																{result.theme_color && (
+																	<div
+																		className="w-4 h-4 rounded-full border border-neutral-300"
+																		style={{
+																			backgroundColor: result.theme_color,
+																		}}
+																	/>
+																)}
+																{result.background_image_url && <ImageIcon className="w-4 h-4 text-neutral-400" />}
+															</div>
+															{result.description && (
+																<p className="text-sm text-neutral-600 mb-3">{result.description}</p>
+															)}
+															{result.background_image_url && (
+																<div className="mb-3">
+																	<img
+																		src={result.background_image_url}
+																		alt="결과 배경 이미지"
+																		className="max-w-xs rounded-lg border border-neutral-200"
+																	/>
+																</div>
+															)}
+															<div>
+																{result.match_conditions && Object.keys(result.match_conditions).length > 0 && (
+																	<div className="text-xs">
+																		<span className="text-neutral-500">매칭 조건:</span>
+																		<div className="mt-1 p-2 bg-neutral-50 rounded text-neutral-700 font-mono">
+																			{JSON.stringify(result.match_conditions, null, 2)}
+																		</div>
+																	</div>
+																)}
+																{result.features && Object.keys(result.features).length > 0 && (
+																	<div className="text-xs mt-2">
+																		<span className="text-neutral-500">특징:</span>
+																		<div className="mt-1 flex flex-wrap gap-1">
+																			{Object.entries(result.features).map(([key, value]) => (
+																				<span
+																					key={key}
+																					className="px-2 py-1 bg-neutral-100 text-neutral-700 rounded text-xs"
+																				>
+																					{key}: {String(value)}
+																				</span>
+																			))}
+																		</div>
+																	</div>
+																)}
+															</div>
+														</div>
+													</div>
+												</div>
+											))}
+										</div>
+									) : (
+										<div className="text-center py-8 text-neutral-500">결과 데이터가 없습니다.</div>
+									)}
+								</AdminCardContent>
+							</AdminCard>
+						</div>
+					)}
+
+					{activeTab === 'stats' && (
+						<div className="p-6">
+							<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+								<AdminCard variant="modal" padding="sm">
+									<AdminCardHeader
+										variant="modal"
+										title={
+											<div className="text-lg flex items-center gap-2">
+												<BarChart3 className="w-5 h-5 text-neutral-600" />
+												참여 통계
+											</div>
+										}
+									/>
+									<AdminCardContent>
+										<div className="grid grid-cols-2 gap-4">
+											<div className="text-center p-4 bg-neutral-50 rounded-lg">
+												<div className="text-2xl font-bold text-neutral-900">-</div>
+												<div className="text-sm text-neutral-600">총 조회수</div>
+											</div>
+											<div className="text-center p-4 bg-neutral-50 rounded-lg">
+												<div className="text-2xl font-bold text-neutral-900">
+													{(test.response_count || 0).toLocaleString()}
+												</div>
+												<div className="text-sm text-neutral-600">총 응답수</div>
+											</div>
+										</div>
+										<div className="mt-4">
+											<div className="flex justify-between text-sm">
+												<span className="text-neutral-600">완료율</span>
+												<span className="font-medium">{stats.completionRate}%</span>
+											</div>
+											<div className="w-full bg-neutral-200 rounded-full h-2 mt-2">
+												<div
+													className="bg-neutral-600 h-2 rounded-full transition-all duration-300"
+													style={{ width: `${stats.completionRate}%` }}
+												/>
+											</div>
+										</div>
+									</AdminCardContent>
+								</AdminCard>
+
+								<AdminCard variant="modal" padding="sm">
+									<AdminCardHeader
+										variant="modal"
+										title={
+											<div className="text-lg flex items-center gap-2">
+												<BarChart3 className="w-5 h-5 text-neutral-600" />
+												콘텐츠 통계
+											</div>
+										}
+									/>
+									<AdminCardContent>
+										<div>
+											<div className="flex justify-between items-center">
+												<span className="text-neutral-600">총 질문 수</span>
+												<span className="inline-flex items-center px-2 py-1 rounded-full border border-neutral-300 text-sm">
+													{stats.totalQuestions}개
+												</span>
+											</div>
+											<div className="flex justify-between items-center mt-3">
+												<span className="text-neutral-600">총 선택지 수</span>
+												<span className="inline-flex items-center px-2 py-1 rounded-full border border-neutral-300 text-sm">
+													{testDetails?.questions?.reduce((sum, q) => sum + (q.choices?.length || 0), 0) || 0}개
+												</span>
+											</div>
+											<div className="flex justify-between items-center mt-3">
+												<span className="text-neutral-600">평균 선택지</span>
+												<span className="inline-flex items-center px-2 py-1 rounded-full border border-neutral-300 text-sm">
+													{stats.avgChoicesPerQuestion}개
+												</span>
+											</div>
+											<div className="flex justify-between items-center mt-3">
+												<span className="text-neutral-600">총 결과 수</span>
+												<span className="inline-flex items-center px-2 py-1 rounded-full border border-neutral-300 text-sm">
+													{stats.totalResults}개
+												</span>
+											</div>
+											<div className="flex justify-between items-center mt-3">
+												<span className="text-neutral-600">이미지 포함 질문</span>
+												<span className="inline-flex items-center px-2 py-1 rounded-full border border-neutral-300 text-sm">
+													{stats.questionsWithImages}개
+												</span>
+											</div>
+										</div>
+									</AdminCardContent>
+								</AdminCard>
+							</div>
+						</div>
+					)}
+
+					{activeTab === 'preview' && (
+						<div className="p-6">
+							<AdminCard variant="modal" padding="sm">
+								<AdminCardHeader
+									variant="modal"
+									title={
+										<div className="text-lg flex items-center gap-2">
+											<Play className="w-5 h-5 text-neutral-600" />
+											테스트 미리보기
+										</div>
+									}
+								/>
+								<AdminCardContent>
+									<div className="bg-neutral-50 rounded-lg p-8">
+										<div className="max-w-md mx-auto">
+											{previewQuestionIndex === -1 && (
+												<div className="text-center">
+													<div className="w-20 h-20 mx-auto bg-neutral-600 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-sm">
+														{test.title[0] || 'T'}
+													</div>
+													<div className="mt-6">
+														<h3 className="text-2xl font-bold text-neutral-900 mb-2">{test.title}</h3>
+														<p className="text-neutral-600 leading-relaxed">
+															{test.intro_text || test.description || '테스트를 시작해보세요!'}
+														</p>
+													</div>
+													<div className="text-sm text-neutral-500 mt-4">
+														<div>총 {stats.totalQuestions}개 질문</div>
+														{test.estimated_time && (
+															<div className="mt-1">예상 소요시간: 약 {test.estimated_time}분</div>
+														)}
+													</div>
+													<Button
+														onClick={() => setPreviewQuestionIndex(0)}
+														className="w-full py-3 text-lg"
+														disabled={!testDetails?.questions || testDetails.questions.length === 0}
+														text={
+															testDetails?.questions && testDetails.questions.length > 0
+																? '테스트 시작하기'
+																: '질문이 없습니다'
+														}
+													/>
+												</div>
+											)}
+
+											{previewQuestionIndex >= 0 && (!testDetails?.questions || testDetails.questions.length === 0) && (
+												<div className="text-center py-8 text-neutral-500">질문 데이터가 없습니다.</div>
+											)}
+
+											{previewQuestionIndex >= 0 && previewQuestionIndex < (testDetails?.questions?.length || 0) && (
+												<div>
+													<div className="text-center">
+														<div className="text-sm text-neutral-500 mb-4">
+															질문 {previewQuestionIndex + 1} / {testDetails?.questions?.length || 0}
+														</div>
+														<h3 className="text-xl font-semibold text-neutral-900 mb-6">
+															{testDetails?.questions?.[previewQuestionIndex]?.question_text}
+														</h3>
+														{testDetails?.questions?.[previewQuestionIndex]?.image_url && (
+															<div className="mb-6">
+																<img
+																	src={testDetails.questions[previewQuestionIndex].image_url!}
+																	alt="질문 이미지"
+																	className="max-w-sm mx-auto rounded-lg border border-neutral-200"
+																/>
+															</div>
+														)}
+														<div className="max-w-md mx-auto">
+															{testDetails?.questions?.[previewQuestionIndex]?.choices?.map((choice, choiceIndex) => (
+																<button
+																	key={choice.id}
+																	onClick={() => {
+																		if (previewQuestionIndex < (testDetails?.questions?.length || 0) - 1) {
+																			setPreviewQuestionIndex(previewQuestionIndex + 1);
+																		} else {
+																			setPreviewQuestionIndex(999);
+																		}
+																	}}
+																	className={`w-full p-4 text-left border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors ${
+																		choiceIndex > 0 ? 'mt-3' : ''
+																	}`}
+																>
+																	<div className="flex items-center gap-3">
+																		<div className="w-6 h-6 bg-neutral-100 rounded-full flex items-center justify-center text-sm font-medium text-neutral-600">
+																			{String.fromCharCode(65 + choiceIndex)}
+																		</div>
+																		<span className="text-neutral-900">{choice.choice_text}</span>
+																	</div>
+																</button>
+															))}
+														</div>
+													</div>
+												</div>
+											)}
+
+											{previewQuestionIndex >= 999 && (
+												<div className="text-center">
+													<div className="text-6xl mb-4">🎉</div>
+													<div>
+														<h3 className="text-2xl font-bold text-neutral-900 mb-2">테스트 완료!</h3>
+														<p className="text-neutral-600 leading-relaxed mb-4">테스트가 완료되었습니다!</p>
+														{testDetails?.results && testDetails.results.length > 0 && (
+															<div className="bg-white rounded-lg p-4 border border-neutral-200 max-w-md mx-auto">
+																<div className="flex items-center gap-3 mb-3">
+																	{testDetails.results[0].theme_color && (
+																		<div
+																			className="w-8 h-8 rounded-full border border-neutral-300"
+																			style={{
+																				backgroundColor: testDetails.results[0].theme_color,
+																			}}
+																		/>
+																	)}
+																	<h4 className="font-semibold text-neutral-900">
+																		{testDetails.results[0].result_name}
+																	</h4>
+																</div>
+																{testDetails.results[0].description && (
+																	<p className="text-sm text-neutral-600">{testDetails.results[0].description}</p>
+																)}
+															</div>
+														)}
+													</div>
+													<Button
+														onClick={() => setPreviewQuestionIndex(-1)}
+														variant="outline"
+														className="w-full mt-6"
+														text="다시 시작하기"
+													/>
+												</div>
+											)}
+										</div>
+									</div>
+								</AdminCardContent>
+							</AdminCard>
+						</div>
+					)}
+				</div>
+
+				<div className="p-6 border-t border-neutral-200 bg-white">
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-3">
+							<div className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-neutral-300 text-xs">
+								<Clock className="w-3 h-3" />
+								{test.estimated_time ? `약 ${test.estimated_time}분` : '시간 미설정'}
+							</div>
+							<div className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-neutral-300 text-xs">
+								<Users className="w-3 h-3" />
+								{(test.response_count || 0).toLocaleString()}명 참여
+							</div>
+							<div className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-neutral-300 text-xs">
+								<Eye className="w-3 h-3" />
+								조회수 숨김
+							</div>
+						</div>
+
+						<div className="flex items-center gap-2">
+							<Button variant="outline" size="sm" onClick={handleDuplicate}>
+								<Copy className="w-4 h-4 mr-2" />
+								복제하기
+							</Button>
+							<IconButton
+								variant="outline"
+								size="sm"
+								onClick={handleTogglePublish}
+								icon={test.status === 'published' ? <Lock className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+								text={test.status === 'published' ? '비공개 전환' : '공개 전환'}
+								className="text-neutral-700 border-neutral-300 hover:bg-neutral-50"
+							/>
+							<IconButton
+								size="sm"
+								onClick={() => {
+									window.location.href = `/tests/${test.id}/edit`;
+								}}
+								icon={<Edit className="w-4 h-4" />}
+								text="수정하기"
+							/>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={handleDelete}
+								className="text-neutral-700 border-neutral-300 hover:bg-neutral-50"
+							>
+								<Trash2 className="w-4 h-4 mr-2" />
+								삭제하기
+							</Button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}

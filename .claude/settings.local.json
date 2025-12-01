@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm type-check:*)",
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(git checkout:*)",
+      "Bash(sort:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm --filter web type-check:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
