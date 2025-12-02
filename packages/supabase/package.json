@@ -18,8 +18,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
-    "generate-types": "node -r dotenv/config -e \"require('child_process').execSync('supabase gen types typescript --project-id ' + process.env.SUPABASE_PROJECT_ID + ' > src/types/database.types.ts', {stdio: 'inherit'})\"",
-    "generate-types-local": "supabase gen types typescript --local > src/types/database.types.ts"
+    "generate-types": "node -r dotenv/config -e \"require('child_process').execSync('supabase gen types typescript --project-id ' + process.env.SUPABASE_PROJECT_ID + ' > src/types/database.ts', {stdio: 'inherit'})\"",
+    "generate-types-local": "supabase gen types typescript --local > src/types/database.ts"
   },
   "dependencies": {
     "@pickid/shared": "workspace:*",
