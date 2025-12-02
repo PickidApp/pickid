@@ -1,23 +1,14 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AppRoutes } from './config/routes';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <div className="app">
-      <div className="container">
-        <h1>PickID Admin</h1>
-        <p className="subtitle">React + Vite 기반 어드민 애플리케이션</p>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+    <>
+      <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+        <AppRoutes />
+      </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </>
+  );
 }
-
-export default App
-

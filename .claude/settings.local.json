@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(done)",
+      "Bash(tree:*)",
+      "Bash(brew install:*)",
+      "Bash(cat:*)",
+      "Bash(supabase db execute:*)",
+      "Bash(supabase link:*)",
+      "Bash(supabase db push:*)",
+      "Bash(node supabase/seed/create-admin.ts)",
+      "Bash(node supabase/seed/create-admin.mjs:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
