@@ -289,19 +289,6 @@ importers:
 
   packages/config: {}
 
-  packages/icons:
-    dependencies:
-      react:
-        specifier: ^18 || ^19
-        version: 18.3.1
-    devDependencies:
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.3.26
-      typescript:
-        specifier: ^5.3.0
-        version: 5.9.3
-
   packages/shared:
     dependencies:
       '@supabase/supabase-js':
