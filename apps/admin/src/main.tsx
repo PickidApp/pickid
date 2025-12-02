@@ -6,9 +6,9 @@ import '@pickid/ui';
 import App from './App';
 
 createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<QueryClientProvider>
-			<App />
-		</QueryClientProvider>
-	</StrictMode>
+  <StrictMode>
+    <QueryClientProvider>
+      <App />
+    </QueryClientProvider>
+  </StrictMode>
 );

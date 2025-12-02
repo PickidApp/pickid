@@ -1,74 +1,76 @@
 {
-	"name": "pickid-monorepo",
-	"private": true,
-	"packageManager": "pnpm@9.12.0",
-	"scripts": {
-		"dev": "turbo dev",
-		"build": "turbo build",
-		"build:strict": "rm -rf node_modules/.cache apps/*/.next apps/*/dist packages/*/dist && pnpm install --frozen-lockfile && turbo build",
-		"lint": "turbo lint",
-		"test": "turbo test",
-		"test:watch": "turbo test -- --watch",
-		"test:coverage": "turbo test -- --coverage",
-		"types": "cd packages/supabase && pnpm generate-types",
-		"types-local": "cd packages/supabase && pnpm generate-types-local",
-		"type-check": "turbo type-check",
-		"changeset": "changeset",
-		"version-packages": "changeset version",
-		"release": "turbo build && changeset publish"
-	},
-	"devDependencies": {
-		"@changesets/cli": "^2.27.1",
-		"@supabase/supabase-js": "^2.45.0",
-		"@types/react": "^18.2.0",
-		"@types/react-dom": "^18.2.0",
-		"dotenv": "^17.2.2",
-		"supabase": "^2.40.7",
-		"turbo": "^2.0.0"
-	},
-	"dependencies": {
-		"async-mutex": "^0.5.0",
-		"embla-carousel-autoplay": "^8.6.0",
-		"embla-carousel-react": "^8.6.0",
-		"lucide-react": "^0.522.0"
-	},
-	"pnpm": {
-		"overrides": {
-			"tar-fs": ">=2.1.2",
-			"ws": ">=8.17.1"
-		},
-		"catalog": {
-			"common": {
-				"@types/node": "^20",
-				"typescript": "^5",
-				"clsx": "^2.1.1",
-				"date-fns": "^3.0.0",
-				"es-toolkit": "^1.0.0",
-				"axios": "^1.6.0",
-				"zod": "^3.23.8"
-			},
-			"react": {
-				"react": "^18.3.1",
-				"react-dom": "^18.3.1",
-				"@types/react": "^18.2.0",
-				"@types/react-dom": "^18.2.0"
-			},
-			"ui": {
-				"tailwindcss": "3.4.17",
-				"autoprefixer": "10.4.21",
-				"postcss": "8.5.6",
-				"@radix-ui/react-alert-dialog": "^1.1.0",
-				"@radix-ui/react-dialog": "^1.1.0",
-				"@radix-ui/react-dropdown-menu": "^2.1.0",
-				"@radix-ui/react-label": "^2.1.0",
-				"@radix-ui/react-select": "^2.1.0",
-				"@radix-ui/react-slot": "^1.1.0",
-				"@radix-ui/react-toast": "^1.2.0",
-				"class-variance-authority": "^0.7.0",
-				"tailwind-merge": "^3.3.1",
-				"tailwindcss-animate": "^1.0.7",
-				"lucide-react": "^0.522.0"
-			}
-		}
-	}
+  "name": "pickid-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "build:strict": "rm -rf node_modules/.cache apps/*/.next apps/*/dist packages/*/dist && pnpm install --frozen-lockfile && turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "test:watch": "turbo test -- --watch",
+    "test:coverage": "turbo test -- --coverage",
+    "types": "cd packages/supabase && pnpm generate-types",
+    "types-local": "cd packages/supabase && pnpm generate-types-local",
+    "type-check": "turbo type-check",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo build && changeset publish",
+    "vercel:dev": "vercel dev",
+    "vercel:build": "vercel build"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@supabase/supabase-js": "^2.45.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "dotenv": "^17.2.2",
+    "supabase": "^2.40.7",
+    "turbo": "^2.0.0"
+  },
+  "dependencies": {
+    "async-mutex": "^0.5.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
+    "lucide-react": "^0.522.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "tar-fs": ">=2.1.2",
+      "ws": ">=8.17.1"
+    },
+    "catalog": {
+      "common": {
+        "@types/node": "^20",
+        "typescript": "^5",
+        "clsx": "^2.1.1",
+        "date-fns": "^3.0.0",
+        "es-toolkit": "^1.0.0",
+        "axios": "^1.6.0",
+        "zod": "^3.23.8"
+      },
+      "react": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0"
+      },
+      "ui": {
+        "tailwindcss": "3.4.17",
+        "autoprefixer": "10.4.21",
+        "postcss": "8.5.6",
+        "@radix-ui/react-alert-dialog": "^1.1.0",
+        "@radix-ui/react-dialog": "^1.1.0",
+        "@radix-ui/react-dropdown-menu": "^2.1.0",
+        "@radix-ui/react-label": "^2.1.0",
+        "@radix-ui/react-select": "^2.1.0",
+        "@radix-ui/react-slot": "^1.1.0",
+        "@radix-ui/react-toast": "^1.2.0",
+        "class-variance-authority": "^0.7.0",
+        "tailwind-merge": "^3.3.1",
+        "tailwindcss-animate": "^1.0.7",
+        "lucide-react": "^0.522.0"
+      }
+    }
+  }
 }

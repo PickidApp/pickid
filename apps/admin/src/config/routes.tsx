@@ -13,7 +13,6 @@ import { EditTestPage } from '@/pages/tests/edit-test-page';
 import { TestListPage } from '@/pages/tests/test-list-page';
 import { UserListPage } from '@/pages/users/user-list-page';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { TestCreationFormProvider } from '@/providers/TestCreationFormProvider';
 
 export function AppRoutes() {
   return (
@@ -24,30 +23,18 @@ export function AppRoutes() {
         <Route path={PATH.USERS} element={<UserListPage />} />
         <Route path={PATH.FEEDBACKS} element={<FeedbackListPage />} />
         <Route path={PATH.TESTS} element={<TestListPage />} />
-        <Route
-          path={PATH.TEST_CREATE}
-          element={
-            <TestCreationFormProvider>
-              <CreateTestPage />
-            </TestCreationFormProvider>
-          }
-        />
-        <Route
-          path={PATH.TEST_EDIT}
-          element={
-            <TestCreationFormProvider>
-              <EditTestPage />
-            </TestCreationFormProvider>
-          }
-        />
+        <Route path={PATH.TEST_CREATE} element={<CreateTestPage />} />
+        <Route path={PATH.TEST_EDIT} element={<EditTestPage />} />
         <Route path={PATH.CATEGORIES} element={<CategoryListPage />} />
         <Route path={PATH.RESPONSES} element={<UserResponsesPage />} />
         <Route path={PATH.ANALYTICS} element={<AnalyticsPage />} />
-        <Route path={PATH.ANALYTICS_TEST_DETAIL} element={<AnalyticsTestDetailPage />} />
+        <Route
+          path={PATH.ANALYTICS_TEST_DETAIL}
+          element={<AnalyticsTestDetailPage />}
+        />
         <Route path={PATH.GROWTH} element={<GrowthPage />} />
       </Route>
       <Route path="*" element={<Navigate to={PATH.AUTH} replace />} />
     </Routes>
   );
 }
-

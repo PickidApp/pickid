@@ -20,6 +20,6 @@ export const PATH = {
 export const HREF = {
   TEST_EDIT: (testId: string | number) => `/tests/${testId}/edit`,
   TEST_DETAIL: (testId: string | number) => `/tests/${testId}`,
-  ANALYTICS_TEST_DETAIL: (testId: string | number) => `/analytics/tests/${testId}`,
+  ANALYTICS_TEST_DETAIL: (testId: string | number) =>
+    `/analytics/tests/${testId}`,
 } as const;
-
