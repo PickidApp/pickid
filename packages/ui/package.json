@@ -3,18 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "src/index.tsx",
-  "types": "src/index.tsx",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./src/index.tsx",
-      "types": "./src/index.tsx"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     },
-    "./styles": "./src/styles.css",
-    "./constants/colors": {
-      "import": "./src/constants/colors.ts",
-      "types": "./src/constants/colors.ts"
-    }
+    "./styles": "./dist/styles.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"

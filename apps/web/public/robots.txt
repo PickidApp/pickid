@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Host
+Host: https://pickid.co.kr
+
+# Sitemaps
+Sitemap: https://pickid.co.kr/sitemap.xml

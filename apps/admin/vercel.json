@@ -1,8 +1,7 @@
 {
-  "buildCommand": "cd ../.. && pnpm build --filter admin",
-  "devCommand": "cd ../.. && pnpm dev --filter admin",
+  "buildCommand": "cd ../.. && pnpm build --filter pickid-admin",
+  "devCommand": "cd ../.. && pnpm dev --filter pickid-admin",
   "installCommand": "pnpm install",
   "framework": "vite",
   "outputDirectory": "dist"
 }
-
