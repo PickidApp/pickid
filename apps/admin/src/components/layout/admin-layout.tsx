@@ -6,54 +6,52 @@ import { AdminHeader } from './admin-header';
 import { PATH } from '@/constants/routes';
 
 export function AdminLayout() {
-  const navigate = useNavigate();
-  const { adminUser, loading, logout } = useAdminAuth();
+	const navigate = useNavigate();
+	const { adminUser, logout, loading } = useAdminAuth();
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => {
-    const saved = localStorage.getItem('admin.sidebarCollapsed');
-    if (saved !== null) return saved === '1';
-    return window.matchMedia('(max-width: 1024px)').matches;
-  });
+	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => {
+		const saved = localStorage.getItem('admin.sidebarCollapsed');
+		if (saved !== null) return saved === '1';
+		return window.matchMedia('(max-width: 1024px)').matches;
+	});
 
-  useEffect(() => {
-    localStorage.setItem(
-      'admin.sidebarCollapsed',
-      sidebarCollapsed ? '1' : '0'
-    );
-  }, [sidebarCollapsed]);
+	useEffect(() => {
+		localStorage.setItem('admin.sidebarCollapsed', sidebarCollapsed ? '1' : '0');
+	}, [sidebarCollapsed]);
 
-  useEffect(() => {
-    if (!loading && !adminUser) {
-      navigate(PATH.AUTH, { replace: true });
-    }
-  }, [loading, adminUser, navigate]);
+	useEffect(() => {
+		if (!loading && !adminUser) {
+			navigate(PATH.AUTH, { replace: true });
+		}
+	}, [adminUser, loading, navigate]);
 
-  if (loading || !adminUser) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+	if (loading) {
+		return (
+			<div className="flex h-screen items-center justify-center">
+				<div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent" />
+			</div>
+		);
+	}
 
-  const handleToggleSidebar = () => {
-    setSidebarCollapsed((prev) => !prev);
-  };
+	if (!adminUser) {
+		return null;
+	}
 
-  return (
-    <div className="flex h-screen bg-white">
-      <AdminSidebar
-        sidebarCollapsed={sidebarCollapsed}
-        onToggleSidebar={handleToggleSidebar}
-      />
+	const handleToggleSidebar = () => {
+		setSidebarCollapsed((prev) => !prev);
+	};
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <AdminHeader user={adminUser} onLogout={logout} />
+	return (
+		<div className="flex h-screen bg-white">
+			<AdminSidebar sidebarCollapsed={sidebarCollapsed} onToggleSidebar={handleToggleSidebar} />
 
-        <main className="flex-1 overflow-auto bg-white">
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  );
+			<div className="flex-1 flex flex-col overflow-hidden">
+				<AdminHeader user={adminUser} onLogout={logout} />
+
+				<main className="flex-1 overflow-auto bg-white">
+					<Outlet />
+				</main>
+			</div>
+		</div>
+	);
 }
