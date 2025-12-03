@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { isActivePath, navigation } from '@/config/navigation';
+import { IconButton } from '@pickid/ui';
 
 interface AdminSidebarProps {
 	sidebarCollapsed: boolean;
@@ -94,12 +95,12 @@ export function AdminSidebar({ sidebarCollapsed, onToggleSidebar }: AdminSidebar
 	return (
 		<aside
 			className={`${
-				sidebarCollapsed ? 'w-16' : 'w-64'
+				sidebarCollapsed ? 'w-16' : 'w-56'
 			} border-r border-neutral-200 bg-white flex flex-col transition-all duration-300`}
 			aria-label="사이드바 내비게이션"
 		>
 			<div className="flex flex-col h-full">
-				<div className="p-6 border-b border-neutral-200">
+				<div className="p-4 border-b border-neutral-200">
 					<div className="flex items-center">
 						<div className="w-8 h-8 bg-neutral-900 rounded-lg flex items-center justify-center mr-3">
 							<span className="text-white text-sm font-bold">P</span>
@@ -112,17 +113,17 @@ export function AdminSidebar({ sidebarCollapsed, onToggleSidebar }: AdminSidebar
 						)}
 					</div>
 				</div>
-				<nav className="flex-1 p-4 overflow-y-auto">
+				<nav className="flex-1 p-3 overflow-y-auto">
 					<ul className="space-y-2">{renderNavItems()}</ul>
 				</nav>
 				<div className="p-4 border-t border-neutral-200">
-					<button
+					<IconButton
+						icon={<span className="text-lg">{sidebarCollapsed ? '→' : '←'}</span>}
 						onClick={onToggleSidebar}
-						className="w-full flex items-center justify-center px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors"
+						variant="ghost"
+						className="w-full text-neutral-700 hover:bg-neutral-100"
 						aria-label="사이드바 토글"
-					>
-						<span className="text-lg">{sidebarCollapsed ? '→' : '←'}</span>
-					</button>
+					/>
 				</div>
 			</div>
 		</aside>

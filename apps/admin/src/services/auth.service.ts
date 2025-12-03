@@ -55,32 +55,11 @@ export const authService = {
 
 	async checkIsAdmin(userId: string): Promise<boolean> {
 		try {
-			const { data, error } = await supabase.rpc('is_admin', { uid: userId } as any);
+			const { data, error } = await supabase.rpc('is_admin' as any, { uid: userId } as any) as any;
 
 			if (error) {
-				const session = await supabase.auth.getSession();
-				const token = session.data.session?.access_token;
-
-				if (!token) {
-					return false;
-				}
-
-				const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rpc/is_admin`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify({ uid: userId }),
-				});
-
-				if (!response.ok) {
-					return false;
-				}
-
-				const result = await response.json();
-				return result === true;
+				console.error('[AuthService] is_admin RPC 에러:', error);
+				return false;
 			}
 
 			return data === true;
