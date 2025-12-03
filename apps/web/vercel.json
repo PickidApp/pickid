@@ -1,7 +1,6 @@
 {
-	"rootDirectory": "apps/pickid-fo",
 	"installCommand": "pnpm install",
-	"buildCommand": "pnpm build --filter=pickid-fo",
+	"buildCommand": "turbo run build --filter=pickid-fo",
 	"framework": "nextjs",
 	"outputDirectory": ".next"
 }

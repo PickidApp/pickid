@@ -1,7 +1,6 @@
 {
-	"rootDirectory": "apps/admin",
 	"installCommand": "pnpm install",
-	"buildCommand": "pnpm build --filter=pickid-bo",
+	"buildCommand": "turbo run build --filter=pickid-bo",
 	"framework": "vite",
 	"outputDirectory": "dist"
 }
