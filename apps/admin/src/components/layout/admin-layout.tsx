@@ -43,10 +43,15 @@ export function AdminLayout() {
 
 	return (
 		<div className="flex h-screen bg-white">
-			<AdminSidebar sidebarCollapsed={sidebarCollapsed} onToggleSidebar={handleToggleSidebar} />
+			<AdminSidebar
+				sidebarCollapsed={sidebarCollapsed}
+				onToggleSidebar={handleToggleSidebar}
+				user={adminUser}
+				onLogout={logout}
+			/>
 
 			<div className="flex-1 flex flex-col overflow-hidden">
-				<AdminHeader user={adminUser} onLogout={logout} />
+				<AdminHeader />
 
 				<main className="flex-1 overflow-auto bg-white">
 					<Outlet />
