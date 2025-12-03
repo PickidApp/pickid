@@ -5,7 +5,7 @@ import { FeedbackDetailModal } from './feedback-detail-modal';
 import { ArrowRight } from 'lucide-react';
 import { FEEDBACK_CATEGORY_LABELS, FEEDBACK_STATUS_LABELS, FEEDBACK_STATUS_COLORS } from '@/constants';
 import { formatDateTimeKorean } from '@/utils';
-import { useModal } from '@/hooks/useModal';
+import { useModal } from '@pickid/ui';
 import { Button } from '@pickid/ui';
 
 interface FeedbackSectionProps {

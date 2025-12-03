@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { cn } from '@pickid/shared';
 import { Button } from './button';
-import { useCarousel as useCarouselHook, type CarouselApi, type UseCarouselOptions } from '../hooks/use-carousel';
+import { useCarousel as useCarouselHook, type CarouselApi, type UseCarouselOptions } from '../hooks/useCarousel';
 
 type CarouselProps = {
 	opts?: UseCarouselOptions['opts'];

@@ -1,6 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { FunnelStepPoint } from '@/services/dashboard.service';
-import { useAllTests } from '@/hooks/useAllTests';
+import { useAllTests } from '@/api/queries';
 import { ArrowRight } from 'lucide-react';
 import { FUNNEL_STEP_LABELS, DASHBOARD_COLORS } from '@/constants';
 import { formatNumber } from '@/utils';

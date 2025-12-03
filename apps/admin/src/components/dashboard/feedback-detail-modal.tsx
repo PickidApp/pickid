@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FeedbackListItem } from '@/services/dashboard.service';
-import { useUpdateFeedbackStatus } from '@/hooks/useDashboardFeedback';
+import { useUpdateFeedbackStatus } from '@/api/mutations';
 import { X } from 'lucide-react';
 import { FEEDBACK_CATEGORY_LABELS, FEEDBACK_STATUS_LABELS } from '@/constants';
 import { formatDateTimeKorean } from '@/utils';

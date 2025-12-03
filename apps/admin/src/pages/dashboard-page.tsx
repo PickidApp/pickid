@@ -1,8 +1,12 @@
 import { useDashboardFilters } from '@/hooks/useDashboardFilters';
-import { useDashboardSummary } from '@/hooks/useDashboardSummary';
-import { useDailyGrowth, useChannelShare } from '@/hooks/useDashboardGrowth';
-import { useGlobalFunnel, useTestFunnel } from '@/hooks/useDashboardFunnel';
-import { useRecentFeedback } from '@/hooks/useDashboardFeedback';
+import {
+	useDashboardSummary,
+	useDailyGrowth,
+	useChannelShare,
+	useGlobalFunnel,
+	useTestFunnel,
+	useRecentFeedback,
+} from '@/api/queries';
 import { DashboardSummarySection } from '@/components/dashboard/dashboard-summary-section';
 import { GrowthChartSection } from '@/components/dashboard/growth-chart-section';
 import { FunnelSection } from '@/components/dashboard/funnel-section';

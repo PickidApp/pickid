@@ -1,5 +1,5 @@
 import { createQueryKeys, mergeQueryKeys } from '@lukemorales/query-key-factory';
-import { dashboardService } from './dashboard.service';
+import { dashboardService } from '@/services/dashboard.service';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	summary: (from: Date, to: Date) => ({
@@ -60,3 +60,4 @@ export const dashboardQueryKeys = createQueryKeys('dashboard', {
 });
 
 export const queryKeys = mergeQueryKeys(dashboardQueryKeys);
+
