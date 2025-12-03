@@ -1,6 +1,7 @@
 {
-	"buildCommand": "cd ../.. && pnpm build --filter=web-next",
-	"installCommand": "cd ../.. && pnpm install",
+	"rootDirectory": "apps/pickid-fo",
+	"installCommand": "pnpm install",
+	"buildCommand": "pnpm build --filter=pickid-fo",
 	"framework": "nextjs",
-	"rootDirectory": "apps/web"
+	"outputDirectory": ".next"
 }

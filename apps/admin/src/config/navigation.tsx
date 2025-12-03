@@ -97,3 +97,4 @@ export function isActivePath(currentPath: string, entry: NavEntry): boolean {
   if (entry.href === PATH.INDEX) return currentPath === PATH.INDEX;
   return currentPath.startsWith(entry.href);
 }
+

@@ -75,3 +75,4 @@ export function useCarousel(options: UseCarouselOptions = {}): {
 }
 
 export type { CarouselApi, UseCarouselOptions };
+

@@ -1,7 +1,7 @@
 {
-	"buildCommand": "cd ../.. && pnpm build --filter pickid-admin",
-	"devCommand": "cd ../.. && pnpm dev --filter pickid-admin",
+	"rootDirectory": "apps/admin",
 	"installCommand": "pnpm install",
+	"buildCommand": "pnpm build --filter=pickid-bo",
 	"framework": "vite",
 	"outputDirectory": "dist"
 }

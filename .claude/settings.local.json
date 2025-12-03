@@ -13,7 +13,10 @@
       "Bash(pnpm install:*)",
       "Bash(pnpm add:*)",
       "Bash(supabase migration repair:*)",
-      "Bash(supabase db pull:*)"
+      "Bash(supabase db pull:*)",
+      "Bash(supabase migration:*)",
+      "Bash(find:*)",
+      "Bash(pnpm dev)"
     ],
     "deny": [],
     "ask": []
