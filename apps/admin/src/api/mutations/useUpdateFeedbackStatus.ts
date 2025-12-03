@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { dashboardService } from '@/services/dashboard.service';
-import { queryKeys } from '../query-keys';
+import { dashboardQueryKeys } from '@/api/query-keys';
 
 const updateFeedbackStatus = (params: {
 	id: string;
@@ -14,11 +14,9 @@ export function useUpdateFeedbackStatus() {
 	return useMutation({
 		mutationFn: updateFeedbackStatus,
 		onSuccess: () => {
-			// 모든 recentFeedback 쿼리 invalidate
 			queryClient.invalidateQueries({
-				queryKey: ['dashboard', 'recentFeedback'],
+				queryKey: dashboardQueryKeys.recentFeedback().queryKey,
 			});
 		},
 	});
 }
-

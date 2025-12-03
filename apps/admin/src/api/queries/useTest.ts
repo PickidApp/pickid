@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../query-keys';
 
-export function useTestFunnel(testId: string | null, from: Date, to: Date) {
+export function useTestQuery(testId: string) {
 	return useQuery({
-		...queryKeys.dashboard.testFunnel(testId || '', from, to),
+		...queryKeys.test.detail(testId),
 		enabled: !!testId,
 	});
 }
-
-

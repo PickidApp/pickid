@@ -1,29 +1,20 @@
-'use client';
-
-import {
-  QueryClient,
-  QueryClientProvider as BaseQueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider as BaseQueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
-import React from 'react';
 
 export function QueryClientProvider({ children }: React.PropsWithChildren) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-            retry: false,
-            staleTime: 5 * 60 * 1000,
-          },
-        },
-      })
-  );
+	const [queryClient] = useState(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						refetchOnWindowFocus: false,
+						retry: false,
+						staleTime: 5000,
+						throwOnError: true, // 쿼리 에러 발생시 ErrorBoundary로 던짐
+					},
+				},
+			})
+	);
 
-  return (
-    <BaseQueryClientProvider client={queryClient}>
-      {children}
-    </BaseQueryClientProvider>
-  );
+	return <BaseQueryClientProvider client={queryClient}>{children}</BaseQueryClientProvider>;
 }

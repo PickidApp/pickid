@@ -1,5 +1,6 @@
 import { createQueryKeys, mergeQueryKeys } from '@lukemorales/query-key-factory';
 import { dashboardService } from '@/services/dashboard.service';
+import { testService, type IFetchTestsOptions } from '@/services/test.service';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	summary: (from: Date, to: Date) => ({
@@ -59,5 +60,26 @@ export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	},
 });
 
-export const queryKeys = mergeQueryKeys(dashboardQueryKeys);
+export const testQueryKeys = createQueryKeys('test', {
+	list: (options?: IFetchTestsOptions) => ({
+		queryKey: [options],
+		queryFn: () => testService.fetchTests(options),
+	}),
 
+	detail: (testId: string) => ({
+		queryKey: [testId],
+		queryFn: () => testService.fetchTest(testId),
+	}),
+
+	questions: (testId: string) => ({
+		queryKey: [testId, 'questions'],
+		queryFn: () => testService.fetchTestQuestions(testId),
+	}),
+
+	results: (testId: string) => ({
+		queryKey: [testId, 'results'],
+		queryFn: () => testService.fetchTestResults(testId),
+	}),
+});
+
+export const queryKeys = mergeQueryKeys(dashboardQueryKeys, testQueryKeys);
