@@ -15,8 +15,10 @@ export * from './label';
 export * from './pagination';
 export * from './switch';
 export * from './table';
+export * from './base-table';
 export * from './tabs';
 export * from './toaster';
+export * from './form-field';
 
 export * from './input/input';
 export * from './input/default-input';
@@ -24,7 +26,6 @@ export * from './input/input-password';
 export * from './input/search-input';
 
 export * from './select/select';
-export * from './select/default-select';
+export * from './select/base-select';
 
 export * from './textarea/textarea';
-export * from './textarea/default-textarea';

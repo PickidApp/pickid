@@ -44,12 +44,6 @@ function SelectTrigger({
 					'h-12 px-4 text-base': size === 'lg',
 				},
 
-				// 다크 모드
-				'dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:bg-gray-800',
-				'dark:border-gray-600 dark:hover:border-gray-500 dark:focus:border-blue-400',
-				'dark:text-gray-100 dark:placeholder:text-gray-400',
-				'dark:disabled:bg-gray-900',
-
 				className
 			)}
 			{...props}
@@ -91,9 +85,6 @@ function SelectContent({
 						'w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)] max-w-[var(--radix-select-trigger-width)]',
 					],
 
-					// 다크 모드
-					'dark:bg-gray-800 dark:border-gray-700',
-
 					className
 				)}
 				position={position}
@@ -112,7 +103,7 @@ function SelectContent({
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
 	return (
 		<SelectPrimitive.Label
-			className={cn('px-2 py-1.5 text-xs font-medium text-gray-500 dark:text-gray-400', className)}
+			className={cn('px-2 py-1.5 text-xs font-medium text-gray-500', className)}
 			{...props}
 		/>
 	);
@@ -131,10 +122,6 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
 				'data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900',
 				'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 
-				// 다크 모드
-				'dark:hover:bg-gray-700 dark:focus:bg-gray-700',
-				'dark:data-[highlighted]:bg-gray-700 dark:data-[highlighted]:text-gray-100',
-
 				className
 			)}
 			{...props}
@@ -142,7 +129,7 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
 			<span className="absolute right-2 flex h-4 w-4 items-center justify-center">
 				<SelectPrimitive.ItemIndicator>
-					<Check className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+					<Check className="h-4 w-4 text-blue-600" />
 				</SelectPrimitive.ItemIndicator>
 			</span>
 		</SelectPrimitive.Item>
@@ -150,14 +137,14 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
 }
 
 function SelectSeparator({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
-	return <SelectPrimitive.Separator className={cn('my-1 h-px bg-gray-200 dark:bg-gray-700', className)} {...props} />;
+	return <SelectPrimitive.Separator className={cn('my-1 h-px bg-gray-200', className)} {...props} />;
 }
 
 function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
 	return (
 		<SelectPrimitive.ScrollUpButton
 			className={cn(
-				'flex cursor-default items-center justify-center py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
+				'flex cursor-default items-center justify-center py-1 text-gray-500 hover:text-gray-700',
 				className
 			)}
 			{...props}
@@ -174,7 +161,7 @@ function SelectScrollDownButton({
 	return (
 		<SelectPrimitive.ScrollDownButton
 			className={cn(
-				'flex cursor-default items-center justify-center py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
+				'flex cursor-default items-center justify-center py-1 text-gray-500 hover:text-gray-700',
 				className
 			)}
 			{...props}

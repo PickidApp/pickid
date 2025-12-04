@@ -1,14 +1,12 @@
-import * as React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@pickid/shared';
 import {
 	Pagination,
 	PaginationContent,
+	PaginationEllipsis,
 	PaginationItem,
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
-	PaginationEllipsis,
 } from './pagination';
 
 interface DefaultPaginationProps {
@@ -28,35 +26,28 @@ export function DefaultPagination({
 	showPageNumbers = true,
 	maxVisiblePages = 5,
 }: DefaultPaginationProps) {
-	// 페이지 번호 배열 생성
 	const getPageNumbers = () => {
 		const pages: (number | string)[] = [];
 		const half = Math.floor(maxVisiblePages / 2);
 
 		if (totalPages <= maxVisiblePages) {
-			// 전체 페이지가 표시할 페이지 수보다 적으면 모든 페이지 표시
 			for (let i = 1; i <= totalPages; i++) {
 				pages.push(i);
 			}
 		} else {
-			// 시작 페이지
 			if (currentPage <= half + 1) {
 				for (let i = 1; i <= maxVisiblePages - 1; i++) {
 					pages.push(i);
 				}
 				pages.push('...');
 				pages.push(totalPages);
-			}
-			// 끝 페이지
-			else if (currentPage >= totalPages - half) {
+			} else if (currentPage >= totalPages - half) {
 				pages.push(1);
 				pages.push('...');
 				for (let i = totalPages - maxVisiblePages + 2; i <= totalPages; i++) {
 					pages.push(i);
 				}
-			}
-			// 중간 페이지
-			else {
+			} else {
 				pages.push(1);
 				pages.push('...');
 				for (let i = currentPage - half + 1; i <= currentPage + half - 1; i++) {
@@ -75,7 +66,6 @@ export function DefaultPagination({
 	return (
 		<Pagination className={cn('', className)}>
 			<PaginationContent>
-				{/* 이전 버튼 */}
 				<PaginationItem>
 					<PaginationPrevious
 						onClick={() => onPageChange(currentPage - 1)}
@@ -83,7 +73,6 @@ export function DefaultPagination({
 					/>
 				</PaginationItem>
 
-				{/* 페이지 번호들 */}
 				{showPageNumbers &&
 					pageNumbers.map((page, index) => (
 						<PaginationItem key={index}>
@@ -102,7 +91,6 @@ export function DefaultPagination({
 						</PaginationItem>
 					))}
 
-				{/* 다음 버튼 */}
 				<PaginationItem>
 					<PaginationNext
 						onClick={() => onPageChange(currentPage + 1)}

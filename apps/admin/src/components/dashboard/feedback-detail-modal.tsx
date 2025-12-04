@@ -4,7 +4,7 @@ import { useUpdateFeedbackStatus } from '@/api/mutations';
 import { X } from 'lucide-react';
 import { FEEDBACK_CATEGORY_LABELS, FEEDBACK_STATUS_LABELS } from '@/constants';
 import { formatDateTimeKorean } from '@/utils';
-import { IconButton, Button } from '@pickid/ui';
+import { IconButton, Button, FormField, BaseSelect, Textarea } from '@pickid/ui';
 
 interface FeedbackDetailModalProps {
 	feedback: FeedbackListItem;
@@ -46,66 +46,52 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 
 				{/* 내용 */}
 				<div className="p-6 space-y-4">
-					<div>
-						<label className="text-sm font-medium text-gray-600">카테고리</label>
+					<FormField label="카테고리">
 						<p className="mt-1">{FEEDBACK_CATEGORY_LABELS[feedback.category]}</p>
-					</div>
+					</FormField>
 
-					<div>
-						<label className="text-sm font-medium text-gray-600">작성자</label>
+					<FormField label="작성자">
 						<p className="mt-1">{feedback.users?.email || '익명'}</p>
-					</div>
+					</FormField>
 
-					<div>
-						<label className="text-sm font-medium text-gray-600">관련 테스트</label>
+					<FormField label="관련 테스트">
 						<p className="mt-1">{feedback.tests?.title || '-'}</p>
-					</div>
+					</FormField>
 
-					<div>
-						<label className="text-sm font-medium text-gray-600">내용</label>
+					<FormField label="내용">
 						<p className="mt-1 whitespace-pre-wrap bg-gray-50 p-3 rounded">{feedback.content}</p>
-					</div>
+					</FormField>
 
-					<div>
-						<label className="text-sm font-medium text-gray-600">작성일시</label>
+					<FormField label="작성일시">
 						<p className="mt-1">{formatDateTimeKorean(feedback.created_at)}</p>
-					</div>
+					</FormField>
 
 					<hr />
 
 					{/* 상태 업데이트 폼 */}
 					<form onSubmit={handleSubmit} className="space-y-4">
-						<div>
-							<label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
-								상태 변경
-							</label>
-							<select
+						<FormField label="상태 변경" htmlFor="status">
+							<BaseSelect
 								id="status"
 								value={status}
-								onChange={(e) => setStatus(e.target.value as typeof status)}
-								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-							>
-								{Object.entries(FEEDBACK_STATUS_LABELS).map(([value, label]) => (
-									<option key={value} value={value}>
-										{label}
-									</option>
-								))}
-							</select>
-						</div>
+								onValueChange={(value) => setStatus(value as typeof status)}
+								options={Object.entries(FEEDBACK_STATUS_LABELS).map(([value, label]) => ({
+									value,
+									label,
+								}))}
+								placeholder="상태를 선택해주세요"
+							/>
+						</FormField>
 
-						<div>
-							<label htmlFor="adminNote" className="block text-sm font-medium text-gray-700 mb-1">
-								관리자 메모
-							</label>
-							<textarea
+						<FormField label="관리자 메모" htmlFor="adminNote">
+							<Textarea
 								id="adminNote"
 								value={adminNote}
 								onChange={(e) => setAdminNote(e.target.value)}
 								rows={4}
-								className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 								placeholder="처리 내용이나 메모를 입력하세요..."
 							/>
-						</div>
+						</FormField>
 
 						<div className="flex gap-2 justify-end">
 							<Button type="button" onClick={onClose} variant="outline">

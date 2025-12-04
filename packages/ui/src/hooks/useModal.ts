@@ -23,4 +23,3 @@ export function useModal(initialState = false) {
 		setIsOpen,
 	};
 }
-

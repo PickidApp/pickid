@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '@/constants/routes';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { AUTH, getAuthErrorMessage } from '@pickid/shared';
-import { Button, DefaultInput, InputPassword } from '@pickid/ui';
+import { Button, Input, InputPassword, FormField } from '@pickid/ui';
 import { Lock, User } from 'lucide-react';
 
 type LoginFormData = {
@@ -55,28 +55,33 @@ export function AdminLoginPage() {
 
 				<div className="bg-white rounded-lg border border-neutral-200 p-6">
 					<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-						<div>
-							<DefaultInput
-								type="email"
-								label="이메일"
-								{...register('email', {
-									required: '이메일을 입력해주세요',
-									pattern: {
-										value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-										message: '올바른 이메일 형식이 아닙니다',
-									},
-								})}
-								icon={<User className="w-4 h-4" />}
-								placeholder={AUTH.PLACEHOLDER_EMAIL}
-								autoComplete="email"
-								disabled={isSubmitting}
-								error={errors.email?.message}
-							/>
-						</div>
+						<FormField label="이메일" htmlFor="email" required>
+							<div className="relative">
+								<div className="absolute top-1/2 left-3 -translate-y-1/2 text-neutral-400 pointer-events-none">
+									<User className="w-4 h-4" />
+								</div>
+								<Input
+									id="email"
+									type="email"
+									{...register('email', {
+										required: '이메일을 입력해주세요',
+										pattern: {
+											value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+											message: '올바른 이메일 형식이 아닙니다',
+										},
+									})}
+									placeholder={AUTH.PLACEHOLDER_EMAIL}
+									autoComplete="email"
+									disabled={isSubmitting}
+									className={`pl-9 ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+								/>
+							</div>
+							{errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+						</FormField>
 
-						<div>
+						<FormField label="비밀번호" htmlFor="password" required>
 							<InputPassword
-								label="비밀번호"
+								id="password"
 								{...register('password', {
 									required: '비밀번호를 입력해주세요',
 									minLength: {
@@ -90,7 +95,7 @@ export function AdminLoginPage() {
 								disabled={isSubmitting}
 								error={errors.password?.message}
 							/>
-						</div>
+						</FormField>
 
 						<Button
 							type="submit"

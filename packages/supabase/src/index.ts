@@ -1,1 +1,2 @@
-export type * from './types/database.types';
+export type * from './types/database';
+export type * from './types';

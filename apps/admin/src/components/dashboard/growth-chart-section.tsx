@@ -13,7 +13,7 @@ import {
 	Cell,
 } from 'recharts';
 import { DASHBOARD_COLORS } from '@/constants';
-import { formatDateShort, formatDateKorean, formatNumber } from '@/utils';
+import { formatDateShort, formatDate, formatNumber } from '@/utils';
 import { getActiveFilterDays } from '@/utils';
 import { Button } from '@pickid/ui';
 
@@ -82,7 +82,7 @@ export function GrowthChartSection(props: GrowthChartSectionProps) {
 									<XAxis dataKey="date" tickFormatter={(value) => formatDateShort(value)} stroke="#737373" />
 									<YAxis stroke="#737373" />
 									<Tooltip
-										labelFormatter={(value) => formatDateKorean(value as string)}
+										labelFormatter={(value) => formatDate(value as string)}
 										formatter={(value: number) => formatNumber(value)}
 									/>
 									<Line
