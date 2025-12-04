@@ -8,6 +8,7 @@ export * from './default-carousel';
 export * from './data-table';
 export * from './default-pagination';
 export * from './dialog';
+export * from './confirm-dialog';
 export * from './drawer';
 export * from './error-state';
 export * from './icon-badge';

@@ -8,7 +8,7 @@ export interface BaseTableColumn<T> {
 	key: keyof T | 'actions' | string;
 	header: string;
 	width?: number;
-	renderCell: (row: T) => ReactNode;
+	renderCell: (row: T, index: number) => ReactNode;
 	filterOptions?: { value: string; label: string }[];
 	filterValue?: string[];
 	onFilterChange?: (values: string[]) => void;
@@ -213,8 +213,8 @@ export function BaseTable<T extends Record<string, any>>({
 									onClick={() => onRowClick?.(row)}
 								>
 									{columns.map((col) => (
-										<td key={String(col.key)} className="p-3 align-middle text-sm">
-											{col.renderCell(row)}
+										<td key={String(col.key)} className="px-3 py-2 align-middle text-sm">
+											{col.renderCell(row, i)}
 										</td>
 									))}
 								</tr>

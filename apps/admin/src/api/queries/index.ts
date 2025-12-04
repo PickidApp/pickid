@@ -12,6 +12,9 @@ export { useTestResultsQuery } from './useTestResults';
 export { useTestWithDetailsQuery } from './useTestWithDetails';
 export { useTestCategoryIdsQuery } from './useTestCategoryIds';
 export { useCategoriesQuery } from './useCategories';
+export { useTestRecentSessionsQuery } from './useTestRecentSessions';
 export { useUsersQuery } from './useUsers';
 export { useUserSummaryQuery } from './useUserSummary';
+export { useFeedbacksQuery } from './useFeedbacks';
+export { useFeedbackSummaryQuery } from './useFeedbackSummary';
 

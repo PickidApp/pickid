@@ -3,6 +3,7 @@ import { dashboardService } from '@/services/dashboard.service';
 import { testService, type IFetchTestsOptions } from '@/services/test.service';
 import { categoryService, type IFetchCategoriesOptions } from '@/services/category.service';
 import { userService, type IFetchUsersOptions } from '@/services/user.service';
+import { feedbackService, type IFetchFeedbacksOptions } from '@/services/feedback.service';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	summary: (from: Date, to: Date) => ({
@@ -92,6 +93,11 @@ export const testQueryKeys = createQueryKeys('test', {
 		queryKey: [testId, 'category-ids'],
 		queryFn: () => testService.fetchTestCategoryIds(testId),
 	}),
+
+	recentSessions: (testId: string, limit?: number) => ({
+		queryKey: [testId, 'recent-sessions', limit],
+		queryFn: () => testService.fetchTestRecentSessions(testId, limit),
+	}),
 });
 
 export const categoryQueryKeys = createQueryKeys('category', {
@@ -123,4 +129,21 @@ export const userQueryKeys = createQueryKeys('user', {
 	}),
 });
 
-export const queryKeys = mergeQueryKeys(dashboardQueryKeys, testQueryKeys, categoryQueryKeys, userQueryKeys);
+export const feedbackQueryKeys = createQueryKeys('feedback', {
+	list: (options?: IFetchFeedbacksOptions) => ({
+		queryKey: [options],
+		queryFn: () => feedbackService.fetchFeedbacks(options),
+	}),
+
+	summary: {
+		queryKey: null,
+		queryFn: () => feedbackService.fetchFeedbackSummary(),
+	},
+
+	detail: (feedbackId: string) => ({
+		queryKey: [feedbackId],
+		queryFn: () => feedbackService.fetchFeedback(feedbackId),
+	}),
+});
+
+export const queryKeys = mergeQueryKeys(dashboardQueryKeys, testQueryKeys, categoryQueryKeys, userQueryKeys, feedbackQueryKeys);

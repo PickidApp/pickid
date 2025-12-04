@@ -1,3 +1,17 @@
+export const FEEDBACK_STATUSES = [
+	{ value: 'new', label: '신규' },
+	{ value: 'in_progress', label: '처리중' },
+	{ value: 'resolved', label: '완료' },
+	{ value: 'rejected', label: '보류' },
+];
+
+export const FEEDBACK_CATEGORIES = [
+	{ value: 'bug', label: '버그' },
+	{ value: 'feature', label: '기능 제안' },
+	{ value: 'ui', label: 'UI/UX' },
+	{ value: 'etc', label: '기타' },
+];
+
 export const FEEDBACK_CATEGORY_LABELS = {
 	bug: '버그',
 	feature: '기능 제안',
