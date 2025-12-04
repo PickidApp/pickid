@@ -14,7 +14,7 @@ interface FeedbackDetailModalProps {
 
 export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 	const { feedback, isOpen, onClose } = props;
-	const updateMutation = useUpdateFeedbackStatus();
+	const feedbackUpdate = useUpdateFeedbackStatus();
 
 	const [status, setStatus] = useState(feedback.status);
 	const [adminNote, setAdminNote] = useState('');
@@ -25,7 +25,7 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 		e.preventDefault();
 
 		try {
-			await updateMutation.mutateAsync({
+			await feedbackUpdate.mutateAsync({
 				id: feedback.id,
 				status,
 				adminNote: adminNote || undefined,
@@ -94,12 +94,13 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 						</FormField>
 
 						<div className="flex gap-2 justify-end">
-							<Button type="button" onClick={onClose} variant="outline">
-								취소
-							</Button>
-							<Button type="submit" disabled={updateMutation.isPending} loading={updateMutation.isPending}>
-								저장
-							</Button>
+							<Button type="button" onClick={onClose} variant="outline" text="취소" />
+							<Button
+								type="submit"
+								disabled={feedbackUpdate.isPending}
+								loading={feedbackUpdate.isPending}
+								text="저장"
+							/>
 						</div>
 					</form>
 				</div>

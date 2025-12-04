@@ -8,7 +8,7 @@ interface DuplicateTestParams {
 	newSlug?: string;
 }
 
-export function useDuplicateTestMutation() {
+export function useDuplicateTest() {
 	const queryClient = useQueryClient();
 
 	return useMutation({

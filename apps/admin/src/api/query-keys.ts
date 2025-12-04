@@ -1,6 +1,8 @@
 import { createQueryKeys, mergeQueryKeys } from '@lukemorales/query-key-factory';
 import { dashboardService } from '@/services/dashboard.service';
 import { testService, type IFetchTestsOptions } from '@/services/test.service';
+import { categoryService, type IFetchCategoriesOptions } from '@/services/category.service';
+import { userService, type IFetchUsersOptions } from '@/services/user.service';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	summary: (from: Date, to: Date) => ({
@@ -71,6 +73,11 @@ export const testQueryKeys = createQueryKeys('test', {
 		queryFn: () => testService.fetchTest(testId),
 	}),
 
+	withDetails: (testId: string) => ({
+		queryKey: [testId, 'with-details'],
+		queryFn: () => testService.fetchTestWithDetails(testId),
+	}),
+
 	questions: (testId: string) => ({
 		queryKey: [testId, 'questions'],
 		queryFn: () => testService.fetchTestQuestions(testId),
@@ -80,6 +87,40 @@ export const testQueryKeys = createQueryKeys('test', {
 		queryKey: [testId, 'results'],
 		queryFn: () => testService.fetchTestResults(testId),
 	}),
+
+	categoryIds: (testId: string) => ({
+		queryKey: [testId, 'category-ids'],
+		queryFn: () => testService.fetchTestCategoryIds(testId),
+	}),
 });
 
-export const queryKeys = mergeQueryKeys(dashboardQueryKeys, testQueryKeys);
+export const categoryQueryKeys = createQueryKeys('category', {
+	list: (options?: IFetchCategoriesOptions) => ({
+		queryKey: [options],
+		queryFn: () => categoryService.fetchCategories(options),
+	}),
+
+	detail: (categoryId: string) => ({
+		queryKey: [categoryId],
+		queryFn: () => categoryService.fetchCategory(categoryId),
+	}),
+});
+
+export const userQueryKeys = createQueryKeys('user', {
+	list: (options?: IFetchUsersOptions) => ({
+		queryKey: [options],
+		queryFn: () => userService.fetchUsers(options),
+	}),
+
+	summary: {
+		queryKey: null,
+		queryFn: () => userService.fetchUserSummary(),
+	},
+
+	detail: (userId: string) => ({
+		queryKey: [userId],
+		queryFn: () => userService.fetchUser(userId),
+	}),
+});
+
+export const queryKeys = mergeQueryKeys(dashboardQueryKeys, testQueryKeys, categoryQueryKeys, userQueryKeys);

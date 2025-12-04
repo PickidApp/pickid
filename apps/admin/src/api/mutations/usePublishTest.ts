@@ -7,7 +7,7 @@ interface PublishTestParams {
 	scheduledAt?: string;
 }
 
-export function usePublishTestMutation() {
+export function usePublishTest() {
 	const queryClient = useQueryClient();
 
 	return useMutation({

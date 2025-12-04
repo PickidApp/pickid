@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { testService, type TestPayload } from '@/services/test.service';
 import { testQueryKeys } from '@/api/query-keys';
 
-export function useUpsertTestMutation() {
+export function useSaveTest() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
