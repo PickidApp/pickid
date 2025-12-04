@@ -1,5 +1,6 @@
 export * from './alert';
 export * from './badge';
+export * from './base-modal';
 export * from './button';
 export * from './card';
 export * from './carousel';

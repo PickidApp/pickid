@@ -5,3 +5,4 @@
 export * from './format';
 export * from './dashboard';
 export * from './test';
+export * from './user';

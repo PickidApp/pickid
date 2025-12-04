@@ -1,15 +1,14 @@
-import { useState, useRef } from 'react';
-import { Button, FormField } from '@pickid/ui';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
-import { uploadFile, deleteFile, extractPathFromUrl, type UploadOptions } from '@/lib/storage/upload';
+import { uploadFile, type StorageFolder } from '@/lib/storage/upload';
 import { cn } from '@pickid/shared';
+import { FormField } from '@pickid/ui';
+import { Image as ImageIcon, X } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 interface ImageUploadProps {
 	label: string;
 	value: string | null;
 	onChange: (url: string | null) => void;
-	bucket: UploadOptions['bucket'];
-	folder?: string;
+	folder: StorageFolder;
 	maxSizeMB?: number;
 	disabled?: boolean;
 	className?: string;
@@ -19,35 +18,26 @@ export function ImageUpload({
 	label,
 	value,
 	onChange,
-	bucket,
 	folder,
 	maxSizeMB = 5,
 	disabled = false,
 	className,
 }: ImageUploadProps) {
 	const [uploading, setUploading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
 
-		setError(null);
 		setUploading(true);
 
 		try {
-			const result = await uploadFile(file, {
-				bucket,
-				folder,
-				maxSizeMB,
-			});
-
+			const result = await uploadFile(file, { folder, maxSizeMB });
 			onChange(result.url);
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : '이미지 업로드에 실패했습니다.';
-			setError(errorMessage);
 			console.error('Upload error:', err);
+			alert(err instanceof Error ? err.message : '이미지 업로드에 실패했습니다.');
 		} finally {
 			setUploading(false);
 			if (fileInputRef.current) {
@@ -56,21 +46,8 @@ export function ImageUpload({
 		}
 	};
 
-	const handleRemove = async () => {
-		if (!value) return;
-
-		try {
-			const path = extractPathFromUrl(value, bucket);
-			if (path) {
-				await deleteFile(bucket, path);
-			}
-			onChange(null);
-			setError(null);
-		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : '이미지 삭제에 실패했습니다.';
-			setError(errorMessage);
-			console.error('Delete error:', err);
-		}
+	const handleRemove = () => {
+		onChange(null);
 	};
 
 	const handleClick = () => {
@@ -84,11 +61,7 @@ export function ImageUpload({
 			<div className="space-y-2">
 				{value ? (
 					<div className="relative inline-block">
-						<img
-							src={value}
-							alt={label}
-							className="w-32 h-32 object-cover rounded-md border border-neutral-200"
-						/>
+						<img src={value} alt={label} className="w-32 h-32 object-cover rounded-md border border-neutral-200" />
 						<button
 							type="button"
 							onClick={handleRemove}
@@ -126,10 +99,7 @@ export function ImageUpload({
 					disabled={disabled || uploading}
 					className="hidden"
 				/>
-
-				{error && <p className="text-sm text-red-500">{error}</p>}
 			</div>
 		</FormField>
 	);
 }
-

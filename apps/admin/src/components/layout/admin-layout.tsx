@@ -1,13 +1,18 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAdminAuth } from '@/hooks';
 import { AdminSidebar } from './admin-sidebar';
 import { AdminHeader } from './admin-header';
 import { PATH } from '@/constants/routes';
 
+const HIDE_HEADER_PATHS = [PATH.TEST_CREATE, '/tests/'];
+
 export function AdminLayout() {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { adminUser, logout, loading } = useAdminAuth();
+
+	const shouldHideHeader = HIDE_HEADER_PATHS.some((path) => location.pathname.startsWith(path));
 
 	const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => {
 		const saved = localStorage.getItem('admin.sidebarCollapsed');
@@ -51,7 +56,7 @@ export function AdminLayout() {
 			/>
 
 			<div className="flex-1 flex flex-col overflow-hidden">
-				<AdminHeader />
+				{!shouldHideHeader && <AdminHeader />}
 
 				<main className="flex-1 overflow-auto bg-white">
 					<Outlet />

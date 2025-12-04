@@ -1,13 +1,10 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Plus, ChevronRight } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { navigation, isActivePath, type NavEntry } from '@/config/navigation';
-import { PATH } from '@/constants/routes';
-import { IconButton } from '@pickid/ui';
 import { cn } from '@pickid/shared';
 
 export function AdminHeader() {
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	const currentItemIndex = navigation.findIndex((n) => n.type === 'item' && isActivePath(location.pathname, n));
 	const currentItem =
@@ -22,12 +19,6 @@ export function AdminHeader() {
 			}
 		}
 	}
-
-	const showCreateTestCTA = location.pathname === PATH.TESTS || location.pathname.startsWith('/tests/');
-
-	const handleCreateTest = () => {
-		navigate(PATH.TEST_CREATE);
-	};
 
 	const breadcrumbItems = sectionName ? [sectionName, currentItem?.name] : [currentItem?.name || '대시보드'];
 
@@ -48,18 +39,6 @@ export function AdminHeader() {
 						</div>
 					))}
 				</nav>
-
-				<div className="flex items-center gap-4">
-					{showCreateTestCTA && (
-						<IconButton
-							onClick={handleCreateTest}
-							className="hidden sm:inline-flex"
-							icon={<Plus className="w-4 h-4" />}
-							text="테스트 만들기"
-							aria-label="테스트 만들기"
-						/>
-					)}
-				</div>
 			</div>
 		</header>
 	);

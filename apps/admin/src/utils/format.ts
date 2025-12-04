@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
-export function formatDateKorean(date: string | Date): string {
-	return dayjs(date).locale('ko').format('YYYY년 M월 D일');
+export function formatDate(date: string | Date): string {
+	return dayjs(date).locale('ko').format('YYYY-MM-DD');
 }
 
 export function formatDateTimeKorean(date: string | Date): string {

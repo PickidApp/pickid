@@ -12,14 +12,15 @@ interface BaseSelectProps {
 	onValueChange?: (value: string) => void;
 	options: BaseSelectOption[];
 	placeholder?: string;
+	label?: string;
 	id?: string;
 	disabled?: boolean;
 	className?: string;
 }
 
 export const BaseSelect = React.forwardRef<HTMLButtonElement, BaseSelectProps>(
-	({ value, onValueChange, options, placeholder, id, disabled, className, ...props }, ref) => {
-		return (
+	({ value, onValueChange, options, placeholder, label, id, disabled, className, ...props }, ref) => {
+		const selectElement = (
 			<Select value={value} onValueChange={onValueChange} disabled={disabled} {...props}>
 				<SelectTrigger id={id} ref={ref} className={className}>
 					<SelectValue placeholder={placeholder} />
@@ -33,6 +34,17 @@ export const BaseSelect = React.forwardRef<HTMLButtonElement, BaseSelectProps>(
 				</SelectContent>
 			</Select>
 		);
+
+		if (label) {
+			return (
+				<div className="flex items-center space-x-2">
+					<label className="text-sm text-neutral-700">{label}</label>
+					{selectElement}
+				</div>
+			);
+		}
+
+		return selectElement;
 	}
 );
 

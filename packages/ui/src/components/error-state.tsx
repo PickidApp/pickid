@@ -92,7 +92,9 @@ export function ErrorMessage({
 		});
 	if (onGoHome)
 		defaultActions.push({ label: '홈으로', onClick: onGoHome, variant: 'outline', icon: <Home className="w-4 h-4" /> });
-	if (onAction && !actions) defaultActions.push({ label: actionLabel, onClick: onAction, variant: 'outline' });
+	// onRetry와 onAction 중 하나를 사용
+	const retryHandler = onRetry || onAction;
+	if (retryHandler && !actions) defaultActions.push({ label: actionLabel, onClick: retryHandler, variant: 'outline' });
 
 	const finalActions = actions || defaultActions;
 
