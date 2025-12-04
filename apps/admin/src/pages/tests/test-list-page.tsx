@@ -1,27 +1,30 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, Eye, Edit, ToggleLeft, ToggleRight } from 'lucide-react';
-import { useTestListFilters } from '@/hooks/useTestListFilters';
+import { Plus, Eye, Edit } from 'lucide-react';
 import { usePagination } from '@/hooks';
 import { useTestsQuery } from '@/api/queries';
-import { TestListFilters } from '@/components/tests/test-list-filters';
 import { TestDetailModal } from '@/components/tests/test-detail-modal';
-import { BaseTable, Badge, DefaultPagination, IconButton, type Column } from '@pickid/ui';
+import { BaseTable, Badge, DefaultPagination, IconButton, SearchInput, type BaseTableColumn } from '@pickid/ui';
 import { PATH, HREF } from '@/constants/routes';
+import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
 import { formatDate } from '@/utils';
 import { getTestTypeLabel, getTestStatusLabel, getTestStatusVariant } from '@/utils/test';
-import type { Test } from '@pickid/supabase';
+import type { Test, TestType, TestStatus } from '@pickid/supabase';
 
 export function TestListPage() {
 	const navigate = useNavigate();
-	const { filters, setFilters, setSearch } = useTestListFilters();
+	const [typeFilter, setTypeFilter] = useState<TestType[]>([]);
+	const [statusFilter, setStatusFilter] = useState<TestStatus[]>([]);
+	const [search, setSearch] = useState('');
 	const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 
 	const [searchParams] = useSearchParams();
 	const currentPage = Number(searchParams.get('page')) || 1;
 
 	const { data, isLoading } = useTestsQuery({
-		...filters,
+		type: typeFilter[0],
+		status: statusFilter[0],
+		search: search || undefined,
 		page: currentPage,
 		pageSize: 20,
 	});
@@ -35,56 +38,88 @@ export function TestListPage() {
 		navigate(PATH.TEST_CREATE);
 	};
 
-	const columns: Column<Test>[] = [
+	const handleCloseModal = () => setSelectedTestId(null);
+
+	const columns: BaseTableColumn<Test>[] = [
+		{
+			key: 'no',
+			header: 'No',
+			width: 60,
+			renderCell: (_, index) => (
+				<span className="text-neutral-500">{(currentPage - 1) * 20 + index + 1}</span>
+			),
+		},
+		{
+			key: 'thumbnail',
+			header: '',
+			width: 60,
+			renderCell: (row) =>
+				row.thumbnail_url ? (
+					<img src={row.thumbnail_url} alt={row.title} className="w-10 h-10 rounded-md object-cover" />
+				) : (
+					<div className="w-10 h-10 bg-neutral-200 rounded-md flex items-center justify-center">
+						<span className="text-neutral-400 text-xs">IMG</span>
+					</div>
+				),
+		},
 		{
 			key: 'title',
-			header: '테스트 정보',
+			header: '테스트명',
 			renderCell: (row) => (
-				<div className="flex items-center">
-					{row.thumbnail_url ? (
-						<img src={row.thumbnail_url} alt={row.title} className="w-12 h-12 rounded-md mr-4 object-cover" />
-					) : (
-						<div className="w-12 h-12 bg-neutral-300 rounded-md mr-4 flex items-center justify-center">
-							<span className="text-white text-xs">IMG</span>
-						</div>
-					)}
-					<div>
-						<div className="text-neutral-900">{row.title}</div>
-						<div className="text-sm text-neutral-500">{row.slug}</div>
-					</div>
+				<div className="min-w-0">
+					<div className="text-neutral-900 font-medium truncate">{row.title}</div>
+					<div className="text-xs text-neutral-400 truncate">{row.slug}</div>
 				</div>
 			),
 		},
 		{
 			key: 'type',
-			header: '타입',
-			renderCell: (row) => <Badge variant="outline">{getTestTypeLabel(row.type)}</Badge>,
+			header: '유형',
+			width: 110,
+			filterOptions: TEST_TYPES,
+			filterValue: typeFilter,
+			onFilterChange: (values) => setTypeFilter(values as TestType[]),
+			renderCell: (row) => (
+				<Badge variant="outline" className="whitespace-nowrap">
+					{getTestTypeLabel(row.type)}
+				</Badge>
+			),
 		},
 		{
 			key: 'status',
 			header: '상태',
-			renderCell: (row) => <Badge variant={getTestStatusVariant(row.status)}>{getTestStatusLabel(row.status)}</Badge>,
+			width: 100,
+			filterOptions: TEST_STATUSES,
+			filterValue: statusFilter,
+			onFilterChange: (values) => setStatusFilter(values as TestStatus[]),
+			renderCell: (row) => (
+				<Badge variant={getTestStatusVariant(row.status)} className="whitespace-nowrap">
+					{getTestStatusLabel(row.status)}
+				</Badge>
+			),
+		},
+		{
+			key: 'participants',
+			header: '참여수',
+			width: 80,
+			renderCell: () => <span className="text-sm text-neutral-500">-</span>,
 		},
 		{
 			key: 'created_at',
 			header: '생성일',
+			width: 120,
 			renderCell: (row) => <span className="text-sm text-neutral-500">{formatDate(row.created_at)}</span>,
 		},
 		{
-			key: 'published_at',
-			header: '발행일',
-			renderCell: (row) => (
-				<span className="text-sm text-neutral-500">{row.published_at ? formatDate(row.published_at) : '-'}</span>
-			),
-		},
-		{
 			key: 'actions',
-			header: '액션',
+			header: '',
+			width: 100,
 			renderCell: (row) => (
-				<div className="flex items-center space-x-2">
+				<div className="flex items-center space-x-1">
 					<IconButton
+						variant="ghost"
 						icon={<Eye className="w-4 h-4" />}
-						className="text-neutral-400 hover:text-neutral-600 transition-colors"
+						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="상세보기"
 						onClick={(e) => {
 							e.stopPropagation();
@@ -92,21 +127,13 @@ export function TestListPage() {
 						}}
 					/>
 					<IconButton
+						variant="ghost"
 						icon={<Edit className="w-4 h-4" />}
-						className="text-neutral-400 hover:text-neutral-600 transition-colors"
+						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="수정"
 						onClick={(e) => {
 							e.stopPropagation();
 							navigate(HREF.TEST_EDIT(row.id));
-						}}
-					/>
-					<IconButton
-						icon={row.status === 'published' ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
-						className="text-neutral-400 hover:text-neutral-600 transition-colors"
-						aria-label="상태 변경"
-						onClick={(e) => {
-							e.stopPropagation();
-							// TODO: 상태 변경 로직 구현
 						}}
 					/>
 				</div>
@@ -120,22 +147,28 @@ export function TestListPage() {
 				<div className="flex justify-between items-center">
 					<div className="flex items-center space-x-4">
 						<h1 className="text-2xl text-neutral-900">테스트 관리</h1>
-						<div className="text-sm text-neutral-500">총 {totalCount}개 테스트</div>
+						<span className="text-sm text-neutral-500">총 {totalCount}개</span>
 					</div>
-					<IconButton
-						icon={<Plus className="w-4 h-4" />}
-						text="테스트 만들기"
-						onClick={handleCreateTest}
-						className="bg-black text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition-colors"
-						aria-label="테스트 만들기"
-					/>
+					<div className="flex items-center gap-2">
+						<SearchInput
+							placeholder="테스트명, 슬러그 검색..."
+							value={search}
+							onSearch={setSearch}
+							className="w-64"
+						/>
+						<IconButton
+							icon={<Plus className="w-4 h-4" />}
+							text="테스트 만들기"
+							onClick={handleCreateTest}
+							className="bg-black text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition-colors"
+							aria-label="테스트 만들기"
+						/>
+					</div>
 				</div>
 			</header>
 
 			<main className="p-6">
-				<TestListFilters filters={filters} onFilterChange={setFilters} onSearch={setSearch} />
-
-				<BaseTable data={tests} columns={columns} isLoading={isLoading} />
+				<BaseTable data={tests} columns={columns} isLoading={isLoading} onRowClick={(row) => setSelectedTestId(row.id)} />
 
 				{!isLoading && totalPages > 1 && (
 					<div className="mt-6 flex justify-center">
@@ -145,7 +178,7 @@ export function TestListPage() {
 			</main>
 
 			{selectedTestId && (
-				<TestDetailModal testId={selectedTestId} isOpen={!!selectedTestId} onClose={() => setSelectedTestId(null)} />
+				<TestDetailModal testId={selectedTestId} isOpen={!!selectedTestId} onClose={handleCloseModal} />
 			)}
 		</>
 	);

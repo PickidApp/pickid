@@ -1,67 +1,78 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUpsertTestMutation, useSyncQuestionsMutation, useSyncResultsMutation } from '@/api/mutations';
+import { useSaveTest, useSaveQuestions, useSaveResults, useSaveTestCategories } from '@/api/mutations';
 import { TestForm } from '@/components/tests/test-form';
 import { TestQuestionsForm } from '@/components/tests/test-questions-form';
 import { TestResultsForm } from '@/components/tests/test-results-form';
 import { PATH } from '@/constants/routes';
-import { Button } from '@pickid/ui';
+import { TEST_TABS, type TestTabType } from '@/constants/test';
+import { IconButton, Tabs, TabsList, TabsTrigger } from '@pickid/ui';
+import { ArrowLeft } from 'lucide-react';
 import type { TestType } from '@pickid/supabase';
-import type { TestPayload, TestQuestionInput, TestResultInput } from '@/services/test.service';
-import { ChevronLeft, Check } from 'lucide-react';
-
-type Step = 1 | 2 | 3;
 
 export function CreateTestPage() {
 	const navigate = useNavigate();
-	const [currentStep, setCurrentStep] = useState<Step>(1);
+	const [activeTab, setActiveTab] = useState<TestTabType>('basic');
+	const [completedTabs, setCompletedTabs] = useState<TestTabType[]>([]);
 	const [testType, setTestType] = useState<TestType>('psychology');
 
-	// 각 스텝의 데이터
-	const [basicData, setBasicData] = useState<TestPayload | null>(null);
-	const [questionsData, setQuestionsData] = useState<TestQuestionInput[]>([
+	const [basicData, setBasicData] = useState<any>(null);
+	const [questionsData, setQuestionsData] = useState<any[]>([
 		{
 			order: 1,
 			text: '',
 			question_type: 'single_choice',
-			is_required: true,
 			choices: [
 				{ order: 1, text: '' },
 				{ order: 2, text: '' },
 			],
 		},
 	]);
-	const [resultsData, setResultsData] = useState<TestResultInput[]>([
+	const [resultsData, setResultsData] = useState<any[]>([
 		{
 			order: 1,
 			name: '',
 			condition_type: 'choice_ratio',
 			match_condition: {},
+			metadata: { features: [] },
 		},
 	]);
 
-	const upsertTestMutation = useUpsertTestMutation();
-	const syncQuestionsMutation = useSyncQuestionsMutation();
-	const syncResultsMutation = useSyncResultsMutation();
+	const saveTest = useSaveTest();
+	const saveQuestions = useSaveQuestions();
+	const saveResults = useSaveResults();
+	const saveCategories = useSaveTestCategories();
 
 	const isSubmitting =
-		upsertTestMutation.isPending || syncQuestionsMutation.isPending || syncResultsMutation.isPending;
+		saveTest.isPending || saveQuestions.isPending || saveResults.isPending || saveCategories.isPending;
 
-	// Step 1: 기본 정보 저장 후 다음 스텝
-	const handleBasicSubmit = (data: TestPayload) => {
+	const isTabClickable = (tabId: TestTabType) => {
+		if (tabId === 'basic') return true;
+		if (tabId === 'questions') return completedTabs.includes('basic');
+		if (tabId === 'results') return completedTabs.includes('questions');
+		return false;
+	};
+
+	const handleTabClick = (tabId: TestTabType) => {
+		if (isTabClickable(tabId)) {
+			setActiveTab(tabId);
+		}
+	};
+
+	const handleBasicSubmit = (data: any) => {
 		setBasicData(data);
 		setTestType(data.type);
-		setCurrentStep(2);
+		setCompletedTabs((prev) => (prev.includes('basic') ? prev : [...prev, 'basic']));
+		setActiveTab('questions');
 	};
 
-	// Step 2: 질문 저장 후 다음 스텝
-	const handleQuestionsSubmit = (questions: TestQuestionInput[]) => {
+	const handleQuestionsSubmit = (questions: any[]) => {
 		setQuestionsData(questions);
-		setCurrentStep(3);
+		setCompletedTabs((prev) => (prev.includes('questions') ? prev : [...prev, 'questions']));
+		setActiveTab('results');
 	};
 
-	// Step 3: 결과 저장 후 API 병렬 호출
-	const handleResultsSubmit = async (results: TestResultInput[]) => {
+	const handleResultsSubmit = async (results: any[]) => {
 		setResultsData(results);
 
 		if (!basicData) {
@@ -70,23 +81,29 @@ export function CreateTestPage() {
 		}
 
 		try {
-			// 1단계: 기본 정보 저장 (testId 획득)
-			const test = await upsertTestMutation.mutateAsync(basicData);
+			const test = (await saveTest.mutateAsync(basicData)) as any;
 
 			if (!test?.id) {
 				throw new Error('테스트 생성 실패: ID를 받지 못했습니다.');
 			}
 
-			// 2단계: 질문과 결과를 병렬로 저장
+			const testId = test.id as string;
+
 			await Promise.all([
-				syncQuestionsMutation.mutateAsync({
-					test_id: test.id,
-					questions: questionsData as any,
+				saveQuestions.mutateAsync({
+					testId,
+					questions: questionsData,
 				}),
-				syncResultsMutation.mutateAsync({
-					test_id: test.id,
-					results: results as any,
+				saveResults.mutateAsync({
+					testId,
+					results: results,
 				}),
+				basicData.category_ids && basicData.category_ids.length > 0
+					? saveCategories.mutateAsync({
+							testId,
+							categoryIds: basicData.category_ids,
+					  })
+					: Promise.resolve(),
 			]);
 
 			alert('테스트가 성공적으로 생성되었습니다!');
@@ -98,131 +115,104 @@ export function CreateTestPage() {
 	};
 
 	const handlePrevious = () => {
-		if (currentStep > 1) {
-			setCurrentStep((currentStep - 1) as Step);
-		}
+		if (activeTab === 'questions') setActiveTab('basic');
+		if (activeTab === 'results') setActiveTab('questions');
 	};
 
-	const handleCancel = () => {
-		if (confirm('작성 중인 내용이 모두 사라집니다. 취소하시겠습니까?')) {
-			navigate(PATH.TESTS);
-		}
+	const handleBack = () => {
+		navigate(PATH.TESTS);
 	};
-
-	const steps = [
-		{ number: 1, title: '기본 정보', description: '테스트의 기본 정보를 입력하세요' },
-		{ number: 2, title: '질문 관리', description: '테스트 질문과 선택지를 추가하세요' },
-		{ number: 3, title: '결과 정의', description: '테스트 결과 조건을 설정하세요' },
-	];
 
 	return (
-		<div className="p-6 max-w-5xl mx-auto">
-			{/* Header */}
-			<div className="mb-8">
-				<h1 className="text-2xl font-bold text-neutral-900 mb-2">새 테스트 만들기</h1>
-				<p className="text-sm text-neutral-500">3단계로 테스트를 생성합니다</p>
-			</div>
+		<div className="flex flex-col h-full">
+			<header className="bg-white border-b border-neutral-200 px-6 py-4 shrink-0">
+				<div className="flex justify-between items-center">
+					<div className="flex items-center space-x-4">
+						<IconButton
+							variant="ghost"
+							icon={<ArrowLeft className="w-5 h-5" />}
+							onClick={handleBack}
+							aria-label="뒤로가기"
+						/>
+						<h1 className="text-2xl text-neutral-900">새 테스트 만들기</h1>
+					</div>
+				</div>
+			</header>
 
-			{/* Step Indicator */}
-			<div className="mb-8">
-				<div className="flex items-center justify-between">
-					{steps.map((step, index) => (
-						<div key={step.number} className="flex items-center flex-1">
-							<div className="flex items-center">
-								<div
-									className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors ${
-										currentStep === step.number
-											? 'border-neutral-900 bg-neutral-900 text-white'
-											: currentStep > step.number
-												? 'border-green-500 bg-green-500 text-white'
-												: 'border-neutral-300 bg-white text-neutral-400'
+			<div className="bg-white border-b border-neutral-200 px-6 shrink-0">
+				<Tabs value={activeTab} onValueChange={(value) => handleTabClick(value as TestTabType)}>
+					<TabsList className="bg-transparent p-0 h-auto gap-8">
+						{TEST_TABS.map((tab) => {
+							const clickable = isTabClickable(tab.id);
+							return (
+								<TabsTrigger
+									key={tab.id}
+									value={tab.id}
+									disabled={!clickable}
+									className={`py-4 px-0 rounded-none border-b-2 text-sm data-[state=active]:shadow-none ${
+										activeTab === tab.id
+											? 'border-black text-black'
+											: clickable
+											? 'border-transparent text-neutral-500 hover:text-neutral-700'
+											: 'border-transparent text-neutral-300 cursor-not-allowed'
 									}`}
 								>
-									{currentStep > step.number ? (
-										<Check className="w-5 h-5" />
-									) : (
-										<span className="text-sm font-semibold">{step.number}</span>
-									)}
-								</div>
-								<div className="ml-3">
-									<div className="text-sm font-medium text-neutral-900">{step.title}</div>
-									<div className="text-xs text-neutral-500">{step.description}</div>
+									{tab.label}
+								</TabsTrigger>
+							);
+						})}
+					</TabsList>
+				</Tabs>
+			</div>
+
+			<main className="flex-1 overflow-auto p-6 bg-neutral-50">
+				<div className="max-w-4xl mx-auto">
+					<div className="bg-white border border-neutral-200 rounded-lg p-8">
+						{activeTab === 'basic' && (
+							<TestForm
+								onSubmit={handleBasicSubmit}
+								isSubmitting={false}
+								initialData={basicData || undefined}
+								submitButtonText="다음 단계"
+							/>
+						)}
+
+						{activeTab === 'questions' && (
+							<TestQuestionsForm
+								testType={testType}
+								initialQuestions={questionsData}
+								onSubmit={handleQuestionsSubmit}
+								onPrevious={handlePrevious}
+								isSubmitting={false}
+								submitButtonText="다음 단계"
+							/>
+						)}
+
+						{activeTab === 'results' && (
+							<TestResultsForm
+								testType={testType}
+								initialResults={resultsData}
+								onSubmit={handleResultsSubmit}
+								onPrevious={handlePrevious}
+								isSubmitting={isSubmitting}
+								submitButtonText="생성 완료"
+							/>
+						)}
+					</div>
+
+					{isSubmitting && (
+						<div className="mt-6 p-4 bg-neutral-50 border border-neutral-200 rounded-lg">
+							<div className="flex items-center gap-3">
+								<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-neutral-900" />
+								<div>
+									<p className="text-sm text-neutral-900">테스트를 생성하고 있습니다...</p>
+									<p className="text-xs text-neutral-500 mt-1">잠시만 기다려주세요.</p>
 								</div>
 							</div>
-							{index < steps.length - 1 && (
-								<div className="flex-1 h-0.5 bg-neutral-200 mx-4 min-w-[40px]" />
-							)}
 						</div>
-					))}
+					)}
 				</div>
-			</div>
-
-			{/* Step Content */}
-			<div className="bg-white rounded-lg border border-neutral-200 p-6">
-				{currentStep === 1 && (
-					<TestForm
-						onSubmit={handleBasicSubmit}
-						onCancel={handleCancel}
-						isSubmitting={false}
-						initialData={basicData || undefined}
-						submitButtonText="다음"
-					/>
-				)}
-
-				{currentStep === 2 && (
-					<div>
-						<div className="mb-4">
-							<Button type="button" variant="ghost" onClick={handlePrevious}>
-								<ChevronLeft className="w-4 h-4 mr-1" />
-								이전
-							</Button>
-						</div>
-						<TestQuestionsForm
-							testType={testType}
-							initialQuestions={questionsData}
-							onSubmit={handleQuestionsSubmit}
-							onCancel={handleCancel}
-							isSubmitting={false}
-							submitButtonText="다음"
-						/>
-					</div>
-				)}
-
-				{currentStep === 3 && (
-					<div>
-						<div className="mb-4">
-							<Button type="button" variant="ghost" onClick={handlePrevious}>
-								<ChevronLeft className="w-4 h-4 mr-1" />
-								이전
-							</Button>
-						</div>
-						<TestResultsForm
-							testType={testType}
-							initialResults={resultsData}
-							onSubmit={handleResultsSubmit}
-							onCancel={handleCancel}
-							isSubmitting={isSubmitting}
-							submitButtonText="생성 완료"
-						/>
-					</div>
-				)}
-			</div>
-
-			{/* Progress Info */}
-			{isSubmitting && (
-				<div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-					<div className="flex items-center gap-3">
-						<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600" />
-						<div>
-							<p className="text-sm font-medium text-blue-900">테스트를 생성하고 있습니다...</p>
-							<p className="text-xs text-blue-700 mt-1">
-								기본 정보, 질문, 결과를 저장 중입니다. 잠시만 기다려주세요.
-							</p>
-						</div>
-					</div>
-				</div>
-			)}
+			</main>
 		</div>
 	);
 }
-

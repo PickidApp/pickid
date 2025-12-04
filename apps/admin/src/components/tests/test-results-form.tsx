@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import type { TestType, ResultConditionType } from '@pickid/supabase';
-import type { TestResultInput } from '@/services/test.service';
 import {
 	Button,
 	Input,
@@ -11,32 +10,56 @@ import {
 	SelectTrigger,
 	SelectValue,
 	FormField,
+	IconButton,
 } from '@pickid/ui';
-import { Plus, Trash2, MoveUp, MoveDown } from 'lucide-react';
+import { Plus, Trash2, MoveUp, MoveDown, X } from 'lucide-react';
 import { RESULT_CONDITION_TYPES } from '@/constants/test';
 import { ImageUpload } from '@/components/common/image-upload';
+import { generateSlug } from '@/utils';
+
+interface Feature {
+	title: string;
+	content: string;
+}
+
+interface Result {
+	id?: string;
+	order: number;
+	name: string;
+	slug?: string;
+	description?: string;
+	thumbnail_url?: string;
+	condition_type: ResultConditionType;
+	match_condition: Record<string, any>;
+	metadata?: { features?: Feature[] };
+}
 
 interface TestResultsFormProps {
 	testType: TestType;
-	initialResults?: TestResultInput[];
-	onSubmit: (results: TestResultInput[]) => void;
-	onCancel: () => void;
+	initialResults?: Result[];
+	onSubmit: (results: Result[]) => void;
+	onPrevious?: () => void;
 	isSubmitting?: boolean;
 	submitButtonText?: string;
 }
 
+/** 결과에서 features 배열 추출 */
+const getFeatures = (result: Result): Feature[] => {
+	return result.metadata?.features ?? [];
+};
+
+/** 빈 결과 생성 */
+const createEmptyResult = (order: number, testType: TestType): Result => ({
+	order,
+	name: '',
+	condition_type: testType === 'quiz' ? 'quiz_score' : 'choice_ratio',
+	match_condition: {},
+	metadata: { features: [] },
+});
+
 export function TestResultsForm(props: TestResultsFormProps) {
-	const { testType, initialResults, onSubmit, onCancel, isSubmitting, submitButtonText } = props;
-	const [results, setResults] = useState<TestResultInput[]>(
-		initialResults || [
-			{
-				order: 1,
-				name: '',
-				condition_type: testType === 'quiz' ? 'quiz_score' : 'choice_ratio',
-				match_condition: {},
-			},
-		]
-	);
+	const { testType, initialResults, onSubmit, onPrevious, isSubmitting, submitButtonText } = props;
+	const [results, setResults] = useState<Result[]>(initialResults ?? [createEmptyResult(1, testType)]);
 
 	useEffect(() => {
 		if (initialResults && initialResults.length > 0) {
@@ -44,54 +67,72 @@ export function TestResultsForm(props: TestResultsFormProps) {
 		}
 	}, [initialResults]);
 
+	// ===== 결과 CRUD =====
 	const addResult = () => {
-		setResults([
-			...results,
-			{
-				order: results.length + 1,
-				name: '',
-				condition_type: testType === 'quiz' ? 'quiz_score' : 'choice_ratio',
-				match_condition: {},
-			},
-		]);
+		setResults([...results, createEmptyResult(results.length + 1, testType)]);
 	};
 
 	const removeResult = (index: number) => {
-		const newResults = results.filter((_, i) => i !== index);
-		setResults(newResults.map((r, i) => ({ ...r, order: i + 1 })));
+		const updated = results.filter((_, i) => i !== index);
+		setResults(updated.map((r, i) => ({ ...r, order: i + 1 })));
 	};
 
 	const moveResult = (index: number, direction: 'up' | 'down') => {
-		const newIndex = direction === 'up' ? index - 1 : index + 1;
-		if (newIndex < 0 || newIndex >= results.length) return;
+		const targetIndex = direction === 'up' ? index - 1 : index + 1;
+		if (targetIndex < 0 || targetIndex >= results.length) return;
 
-		const newResults = [...results];
-		[newResults[index], newResults[newIndex]] = [newResults[newIndex], newResults[index]];
-		setResults(newResults.map((r, i) => ({ ...r, order: i + 1 })));
+		const updated = [...results];
+		[updated[index], updated[targetIndex]] = [updated[targetIndex], updated[index]];
+		setResults(updated.map((r, i) => ({ ...r, order: i + 1 })));
 	};
 
-	const updateResult = (index: number, field: keyof TestResultInput, value: any) => {
-		const newResults = [...results];
-		newResults[index] = { ...newResults[index], [field]: value };
-		setResults(newResults);
+	const updateResult = (index: number, field: keyof Result, value: any) => {
+		const updated = [...results];
+		updated[index] = { ...updated[index], [field]: value };
+		setResults(updated);
 	};
 
 	const updateMatchCondition = (index: number, field: string, value: any) => {
-		const newResults = [...results];
-		const currentCondition = newResults[index].match_condition || {};
-		newResults[index].match_condition = {
-			...(typeof currentCondition === 'object' && currentCondition !== null ? currentCondition : {}),
-			[field]: value,
-		};
-		setResults(newResults);
+		const updated = [...results];
+		const currentCondition = (updated[index].match_condition as Record<string, any>) ?? {};
+		updated[index].match_condition = { ...currentCondition, [field]: value };
+		setResults(updated);
+	};
+
+	// ===== 특징(features) CRUD =====
+	const addFeature = (resultIndex: number) => {
+		const updated = [...results];
+		const features = [...getFeatures(updated[resultIndex]), { title: '', content: '' }];
+		updated[resultIndex].metadata = { features } as any;
+		setResults(updated);
+	};
+
+	const updateFeature = (resultIndex: number, featureIndex: number, field: keyof Feature, value: string) => {
+		const updated = [...results];
+		const features = [...getFeatures(updated[resultIndex])];
+		features[featureIndex] = { ...features[featureIndex], [field]: value };
+		updated[resultIndex].metadata = { features } as any;
+		setResults(updated);
+	};
+
+	const removeFeature = (resultIndex: number, featureIndex: number) => {
+		const updated = [...results];
+		const features = getFeatures(updated[resultIndex]).filter((_, i) => i !== featureIndex);
+		updated[resultIndex].metadata = { features } as any;
+		setResults(updated);
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		onSubmit(results);
+		const timestamp = Date.now().toString(36);
+		const resultsWithSlug = results.map((result, index) => ({
+			...result,
+			slug: result.slug || generateSlug(result.name, `${index + 1}-${timestamp}`),
+		}));
+		onSubmit(resultsWithSlug);
 	};
 
-	const renderMatchConditionFields = (result: TestResultInput, index: number) => {
+	const renderMatchConditionFields = (result: Result, index: number) => {
 		switch (result.condition_type) {
 			case 'quiz_score':
 				return (
@@ -234,16 +275,8 @@ export function TestResultsForm(props: TestResultsFormProps) {
 							<Textarea
 								value={result.description || ''}
 								onChange={(e) => updateResult(index, 'description', e.target.value)}
-								placeholder="결과 설명"
-								rows={2}
-							/>
-						</FormField>
-
-						<FormField label="슬러그">
-							<Input
-								value={result.slug || ''}
-								onChange={(e) => updateResult(index, 'slug', e.target.value)}
-								placeholder="result-slug"
+								placeholder="결과에 대한 상세한 설명을 입력하세요"
+								rows={3}
 							/>
 						</FormField>
 
@@ -251,21 +284,55 @@ export function TestResultsForm(props: TestResultsFormProps) {
 							label="썸네일"
 							value={result.thumbnail_url || null}
 							onChange={(url) => updateResult(index, 'thumbnail_url', url)}
-							bucket="test-results"
-							folder="thumbnails"
+							folder="results/thumbnails"
 							maxSizeMB={3}
 							disabled={isSubmitting}
 						/>
 
-						<ImageUpload
-							label="배경 이미지 (선택)"
-							value={result.background_image_url || null}
-							onChange={(url) => updateResult(index, 'background_image_url', url)}
-							bucket="test-results"
-							folder="backgrounds"
-							maxSizeMB={5}
-							disabled={isSubmitting}
-						/>
+						{/* 결과 특징 섹션 */}
+						<div>
+							<div className="flex items-center justify-between mb-3">
+								<label className="block text-sm text-neutral-700">결과 특징</label>
+								<Button type="button" variant="ghost" size="sm" onClick={() => addFeature(index)}>
+									<Plus className="w-4 h-4 mr-1" />
+									특징 추가
+								</Button>
+							</div>
+							<div className="space-y-3">
+								{getFeatures(result).length === 0 ? (
+									<div className="text-center py-6 text-neutral-400 text-sm border border-dashed border-neutral-300 rounded-lg">
+										특징을 추가해주세요
+									</div>
+								) : (
+									getFeatures(result).map((feature, fIndex) => (
+										<div key={fIndex} className="border border-neutral-200 rounded-lg p-4 space-y-3">
+											<div className="flex items-center gap-2">
+												<Input
+													value={feature.title}
+													onChange={(e) => updateFeature(index, fIndex, 'title', e.target.value)}
+													placeholder="특징 제목 (예: 잘 어울리는 유형)"
+													className="flex-1"
+												/>
+												<IconButton
+													type="button"
+													variant="ghost"
+													icon={<X className="w-4 h-4" />}
+													onClick={() => removeFeature(index, fIndex)}
+													className="text-neutral-400 hover:text-red-500 flex-shrink-0"
+													aria-label="특징 삭제"
+												/>
+											</div>
+											<Textarea
+												value={feature.content}
+												onChange={(e) => updateFeature(index, fIndex, 'content', e.target.value)}
+												placeholder="특징 내용을 입력하세요"
+												rows={2}
+											/>
+										</div>
+									))
+								)}
+							</div>
+						</div>
 
 						<FormField label="조건 타입">
 							<Select
@@ -295,11 +362,13 @@ export function TestResultsForm(props: TestResultsFormProps) {
 				결과 추가
 			</Button>
 
-			<div className="flex items-center gap-3 pt-4 border-t border-neutral-200">
-				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? '저장 중...' : submitButtonText || '저장하기'}
-				</Button>
-				<Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} text="취소" />
+			<div className="flex items-center justify-between pt-6 border-t border-neutral-200">
+				{onPrevious ? (
+					<Button type="button" variant="outline" text="이전 단계" onClick={onPrevious} disabled={isSubmitting} />
+				) : (
+					<div />
+				)}
+				<Button type="submit" loading={isSubmitting} text={submitButtonText || '저장하기'} />
 			</div>
 		</form>
 	);

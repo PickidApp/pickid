@@ -1,7 +1,7 @@
-interface StatCardProps {
+export interface StatCardProps {
 	label: string;
 	value: number | string;
-	color?: 'default' | 'green' | 'red' | 'gray';
+	color?: 'default' | 'green' | 'red' | 'gray' | 'yellow' | 'blue';
 }
 
 const colorMap = {
@@ -9,6 +9,8 @@ const colorMap = {
 	green: 'text-green-600',
 	red: 'text-red-500',
 	gray: 'text-neutral-500',
+	yellow: 'text-yellow-600',
+	blue: 'text-blue-600',
 };
 
 export function StatCard({ label, value, color = 'default' }: StatCardProps) {

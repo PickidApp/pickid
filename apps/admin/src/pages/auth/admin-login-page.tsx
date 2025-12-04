@@ -101,9 +101,8 @@ export function AdminLoginPage() {
 							type="submit"
 							disabled={isSubmitting}
 							loading={isSubmitting}
-							loadingText={AUTH.BUTTON_LOGGING_IN}
 							className="w-full py-2 px-4 rounded-lg font-medium bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
-							text={AUTH.BUTTON_LOGIN}
+							text={isSubmitting ? AUTH.BUTTON_LOGGING_IN : AUTH.BUTTON_LOGIN}
 						/>
 					</form>
 				</div>

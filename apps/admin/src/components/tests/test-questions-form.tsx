@@ -1,22 +1,40 @@
 import { useState, useEffect } from 'react';
 import type { TestType } from '@pickid/supabase';
-import type { TestQuestionInput, TestChoiceInput } from '@/services/test.service';
 import { Button, Input, Label, Textarea, Switch, FormField, IconButton } from '@pickid/ui';
 import { Plus, Trash2, MoveUp, MoveDown } from 'lucide-react';
 import { ImageUpload } from '@/components/common/image-upload';
 
+interface Choice {
+	id?: string;
+	order: number;
+	text: string;
+	image_url?: string;
+	score?: number;
+	is_correct?: boolean;
+	code?: string;
+}
+
+interface Question {
+	id?: string;
+	order: number;
+	text: string;
+	question_type: string;
+	image_url?: string;
+	choices: Choice[];
+}
+
 interface TestQuestionsFormProps {
 	testType: TestType;
-	initialQuestions?: TestQuestionInput[];
-	onSubmit: (questions: TestQuestionInput[]) => void;
-	onCancel: () => void;
+	initialQuestions?: Question[];
+	onSubmit: (questions: Question[]) => void;
+	onPrevious?: () => void;
 	isSubmitting?: boolean;
 	submitButtonText?: string;
 }
 
 export function TestQuestionsForm(props: TestQuestionsFormProps) {
-	const { testType, initialQuestions, onSubmit, onCancel, isSubmitting, submitButtonText } = props;
-	const [questions, setQuestions] = useState<TestQuestionInput[]>(
+	const { testType, initialQuestions, onSubmit, onPrevious, isSubmitting, submitButtonText } = props;
+	const [questions, setQuestions] = useState<Question[]>(
 		initialQuestions || [
 			{
 				order: 1,
@@ -65,7 +83,7 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 		setQuestions(newQuestions.map((q, i) => ({ ...q, order: i + 1 })));
 	};
 
-	const updateQuestion = (index: number, field: keyof TestQuestionInput, value: any) => {
+	const updateQuestion = (index: number, field: keyof Question, value: any) => {
 		const newQuestions = [...questions];
 		newQuestions[index] = { ...newQuestions[index], [field]: value };
 		setQuestions(newQuestions);
@@ -91,7 +109,7 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 		setQuestions(newQuestions);
 	};
 
-	const updateChoice = (questionIndex: number, choiceIndex: number, field: keyof TestChoiceInput, value: any) => {
+	const updateChoice = (questionIndex: number, choiceIndex: number, field: keyof Choice, value: any) => {
 		const newQuestions = [...questions];
 		const choice = newQuestions[questionIndex].choices[choiceIndex];
 		newQuestions[questionIndex].choices[choiceIndex] = { ...choice, [field]: value };
@@ -151,7 +169,6 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 							label="질문 이미지 (선택)"
 							value={question.image_url || null}
 							onChange={(url) => updateQuestion(qIndex, 'image_url', url)}
-							bucket="test-images"
 							folder="questions"
 							maxSizeMB={3}
 							disabled={isSubmitting}
@@ -222,11 +239,13 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 				질문 추가
 			</Button>
 
-			<div className="flex items-center gap-3 pt-4 border-t border-neutral-200">
-				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? '저장 중...' : submitButtonText || '저장하기'}
-				</Button>
-				<Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} text="취소" />
+			<div className="flex items-center justify-between pt-6 border-t border-neutral-200">
+				{onPrevious ? (
+					<Button type="button" variant="outline" text="이전 단계" onClick={onPrevious} disabled={isSubmitting} />
+				) : (
+					<div />
+				)}
+				<Button type="submit" loading={isSubmitting} text={submitButtonText || '저장하기'} />
 			</div>
 		</form>
 	);

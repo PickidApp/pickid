@@ -1,44 +1,48 @@
-import { useState, useEffect } from 'react';
-import type { Test, TestType, TestStatus } from '@pickid/supabase';
-import type { TestPayload } from '@/services/test.service';
+import { useState } from 'react';
+import type { Test, TestType, TestStatus, TestInsert } from '@pickid/supabase';
 import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
 import { Button, Input, Textarea, Switch, FormField, BaseSelect } from '@pickid/ui';
 import { ImageUpload } from '@/components/common/image-upload';
+import { useCategoriesQuery } from '@/api/queries';
+import { generateSlug } from '@/utils';
+
+type TestPayload = Omit<TestInsert, 'id' | 'created_at' | 'updated_at'> & {
+	id?: string;
+	category_ids?: string[];
+};
 
 interface TestFormProps {
 	initialData?: Test | TestPayload;
+	initialCategoryIds?: string[];
 	onSubmit: (data: TestPayload) => void;
-	onCancel: () => void;
 	isSubmitting?: boolean;
 	submitButtonText?: string;
 }
 
 export function TestForm(props: TestFormProps) {
-	const { initialData, onSubmit, onCancel, isSubmitting, submitButtonText } = props;
+	const { initialData, initialCategoryIds, onSubmit, isSubmitting, submitButtonText } = props;
 
 	const [title, setTitle] = useState(initialData?.title || '');
 	const [description, setDescription] = useState(initialData?.description || '');
-	const [slug, setSlug] = useState(initialData?.slug || '');
 	const [type, setType] = useState<TestType>(initialData?.type || 'psychology');
 	const [status, setStatus] = useState<TestStatus>(initialData?.status || 'draft');
 	const [thumbnailUrl, setThumbnailUrl] = useState(initialData?.thumbnail_url || '');
 	const [introText, setIntroText] = useState(initialData?.intro_text || '');
 	const [estimatedTime, setEstimatedTime] = useState<number>(initialData?.estimated_time_minutes || 5);
 	const [requiresGender, setRequiresGender] = useState(initialData?.requires_gender || false);
+	const [categoryId, setCategoryId] = useState<string>(initialCategoryIds?.[0] || '');
 
-	useEffect(() => {
-		if (!initialData && title && !slug) {
-			const generatedSlug = title
-				.toLowerCase()
-				.replace(/[^a-z0-9가-힣\s-]/g, '')
-				.replace(/\s+/g, '-')
-				.substring(0, 50);
-			setSlug(generatedSlug);
-		}
-	}, [title, initialData, slug]);
+	const { data: categoriesData } = useCategoriesQuery({ status: 'active' });
+	const categoryOptions = (categoriesData?.categories || []).map((cat) => ({
+		value: cat.id,
+		label: cat.name,
+	}));
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		const timestamp = Date.now().toString(36);
+		const slug = initialData?.slug || generateSlug(title, timestamp);
 
 		const payload: TestPayload = {
 			id: initialData?.id,
@@ -51,13 +55,14 @@ export function TestForm(props: TestFormProps) {
 			intro_text: introText || undefined,
 			estimated_time_minutes: estimatedTime,
 			requires_gender: requiresGender,
+			category_ids: categoryId ? [categoryId] : [],
 		};
 
 		onSubmit(payload);
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg border border-neutral-200">
+		<form onSubmit={handleSubmit} className="space-y-6">
 			<div className="space-y-4">
 				<FormField label="제목" htmlFor="title" required>
 					<Input
@@ -90,28 +95,32 @@ export function TestForm(props: TestFormProps) {
 						/>
 					</FormField>
 
-					<FormField label="상태" htmlFor="status">
+					<FormField label="카테고리" htmlFor="category">
 						<BaseSelect
-							id="status"
-							value={status}
-							onValueChange={(value: string) => setStatus(value as TestStatus)}
-							options={TEST_STATUSES}
-							placeholder="상태를 선택해주세요"
+							id="category"
+							value={categoryId}
+							onValueChange={(value: string) => setCategoryId(value)}
+							options={categoryOptions}
+							placeholder="카테고리를 선택해주세요"
 						/>
 					</FormField>
 				</div>
 
-				<FormField label="슬러그 (URL)" htmlFor="slug">
-					<Input id="slug" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="test-slug" />
-					<p className="text-xs text-neutral-500 mt-1">비워두면 제목에서 자동 생성됩니다</p>
+				<FormField label="상태" htmlFor="status">
+					<BaseSelect
+						id="status"
+						value={status}
+						onValueChange={(value: string) => setStatus(value as TestStatus)}
+						options={TEST_STATUSES}
+						placeholder="상태를 선택해주세요"
+					/>
 				</FormField>
 
 				<ImageUpload
 					label="썸네일"
 					value={thumbnailUrl}
 					onChange={(url) => setThumbnailUrl(url || '')}
-					bucket="test-thumbnails"
-					folder="tests"
+					folder="thumbnails"
 					maxSizeMB={3}
 					disabled={isSubmitting}
 				/>
@@ -144,11 +153,13 @@ export function TestForm(props: TestFormProps) {
 				</FormField>
 			</div>
 
-			<div className="flex items-center gap-3 pt-4 border-t border-neutral-200">
-				<Button type="submit" disabled={isSubmitting || !title}>
-					{isSubmitting ? '저장 중...' : submitButtonText || (initialData ? '수정하기' : '생성하기')}
-				</Button>
-				<Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} text="취소" />
+			<div className="flex items-center justify-end pt-6 border-t border-neutral-200">
+				<Button
+					type="submit"
+					disabled={isSubmitting || !title}
+					loading={isSubmitting}
+					text={submitButtonText || (initialData ? '수정하기' : '생성하기')}
+				/>
 			</div>
 		</form>
 	);
