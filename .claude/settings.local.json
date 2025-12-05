@@ -1,30 +1,38 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(done)",
-      "Bash(tree:*)",
-      "Bash(brew install:*)",
-      "Bash(cat:*)",
-      "Bash(supabase db execute:*)",
-      "Bash(supabase link:*)",
-      "Bash(supabase db push:*)",
-      "Bash(node supabase/seed/create-admin.ts)",
-      "Bash(node supabase/seed/create-admin.mjs:*)",
-      "Bash(pnpm install:*)",
-      "Bash(pnpm add:*)",
-      "Bash(supabase migration repair:*)",
-      "Bash(supabase db pull:*)",
-      "Bash(supabase migration:*)",
-      "Bash(find:*)",
-      "Bash(pnpm dev)",
-      "Bash(supabase status:*)",
-      "Bash(pnpm type-check:*)",
-      "Bash(pnpm --filter pickid-bo type-check:*)",
-      "Bash(psql:*)",
-      "Bash(pnpm types-local:*)",
-      "Bash(pnpm types:*)"
-    ],
-    "deny": [],
-    "ask": []
-  }
+	"permissions": {
+		"allow": [
+			"Bash(done)",
+			"Bash(tree:*)",
+			"Bash(brew install:*)",
+			"Bash(cat:*)",
+			"Bash(supabase db execute:*)",
+			"Bash(supabase link:*)",
+			"Bash(supabase db push:*)",
+			"Bash(node supabase/seed/create-admin.ts)",
+			"Bash(node supabase/seed/create-admin.mjs:*)",
+			"Bash(pnpm install:*)",
+			"Bash(pnpm add:*)",
+			"Bash(supabase migration repair:*)",
+			"Bash(supabase db pull:*)",
+			"Bash(supabase migration:*)",
+			"Bash(find:*)",
+			"Bash(pnpm dev)",
+			"Bash(supabase status:*)",
+			"Bash(pnpm type-check:*)",
+			"Bash(pnpm --filter pickid-bo type-check:*)",
+			"Bash(psql:*)",
+			"Bash(pnpm types-local:*)",
+			"Bash(pnpm types:*)",
+			"Bash(npx tsc:*)",
+			"Bash(pnpm --filter @pickid/ui type-check:*)",
+			"Bash(git checkout:*)",
+			"Bash(npx supabase db execute:*)",
+			"Bash(npx supabase status:*)",
+			"Bash(npx supabase:*)",
+			"Bash(pnpm --filter @pickid/admin type-check:*)",
+			"Bash(grep:*)"
+		],
+		"deny": [],
+		"ask": []
+	}
 }

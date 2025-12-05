@@ -18,11 +18,13 @@ pnpm install
 ### 개발 서버 실행
 
 모든 앱을 동시에 실행:
+
 ```bash
 pnpm dev
 ```
 
 개별 앱 실행:
+
 ```bash
 # 웹 앱
 pnpm --filter web dev
@@ -34,11 +36,13 @@ pnpm --filter admin dev
 ### 빌드
 
 모든 앱 빌드:
+
 ```bash
 pnpm build
 ```
 
 개별 앱 빌드:
+
 ```bash
 pnpm --filter web build
 pnpm --filter admin build
@@ -51,8 +55,3 @@ pnpm --filter admin build
 - **웹**: Next.js 14
 - **어드민**: React 18 + Vite 5
 - **언어**: TypeScript
-
-
-
-
-

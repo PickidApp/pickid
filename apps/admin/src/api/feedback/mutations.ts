@@ -14,3 +14,14 @@ export function useUpdateFeedbackStatus() {
 		},
 	});
 }
+
+export function useDeleteFeedback() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (id: string) => feedbackService.deleteFeedback(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: feedbackQueryKeys._def });
+		},
+	});
+}
