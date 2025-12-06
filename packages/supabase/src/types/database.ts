@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       feedback: {
@@ -123,6 +98,7 @@ export type Database = {
           metadata: Json
           occurred_at: string
           session_id: string | null
+          share_channel: string | null
           test_id: string | null
           user_id: string | null
         }
@@ -134,6 +110,7 @@ export type Database = {
           metadata?: Json
           occurred_at?: string
           session_id?: string | null
+          share_channel?: string | null
           test_id?: string | null
           user_id?: string | null
         }
@@ -145,6 +122,7 @@ export type Database = {
           metadata?: Json
           occurred_at?: string
           session_id?: string | null
+          share_channel?: string | null
           test_id?: string | null
           user_id?: string | null
         }
@@ -385,6 +363,42 @@ export type Database = {
           },
         ]
       }
+      test_series: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          sort_order: number
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       test_session_answers: {
         Row: {
           answer_text: string | null
@@ -537,6 +551,45 @@ export type Database = {
           },
         ]
       }
+      test_themes: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          start_date: string | null
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          start_date?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          start_date?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tests: {
         Row: {
           created_at: string
@@ -547,9 +600,12 @@ export type Database = {
           published_at: string | null
           requires_gender: boolean
           scheduled_at: string | null
+          series_id: string | null
+          series_order: number | null
           settings: Json
           slug: string
           status: Database["public"]["Enums"]["test_status"]
+          theme_id: string | null
           thumbnail_url: string | null
           title: string
           type: Database["public"]["Enums"]["test_type"]
@@ -564,9 +620,12 @@ export type Database = {
           published_at?: string | null
           requires_gender?: boolean
           scheduled_at?: string | null
+          series_id?: string | null
+          series_order?: number | null
           settings?: Json
           slug: string
           status?: Database["public"]["Enums"]["test_status"]
+          theme_id?: string | null
           thumbnail_url?: string | null
           title: string
           type: Database["public"]["Enums"]["test_type"]
@@ -581,15 +640,33 @@ export type Database = {
           published_at?: string | null
           requires_gender?: boolean
           scheduled_at?: string | null
+          series_id?: string | null
+          series_order?: number | null
           settings?: Json
           slug?: string
           status?: Database["public"]["Enums"]["test_status"]
+          theme_id?: string | null
           thumbnail_url?: string | null
           title?: string
           type?: Database["public"]["Enums"]["test_type"]
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tests_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "test_series"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tests_theme_id_fkey"
+            columns: ["theme_id"]
+            isOneToOne: false
+            referencedRelation: "test_themes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
@@ -892,16 +969,46 @@ export type Database = {
           week_index: number
         }[]
       }
+      get_current_theme: {
+        Args: never
+        Returns: {
+          description: string
+          end_date: string
+          id: string
+          name: string
+          slug: string
+          start_date: string
+          test_count: number
+          thumbnail_url: string
+        }[]
+      }
       get_dashboard_summary: {
         Args: { p_from: string; p_to: string }
         Returns: {
+          avg_tests_per_session: number
           completed_sessions: number
           completion_rate: number
           new_feedback: number
           new_users: number
+          published_tests: number
+          today_shares: number
           total_sessions: number
           total_web_sessions: number
           web_conversion_rate: number
+        }[]
+      }
+      get_featured_test: {
+        Args: never
+        Returns: {
+          category_name: string
+          completion_rate: number
+          id: string
+          score: number
+          slug: string
+          thumbnail_url: string
+          title: string
+          today_responses: number
+          today_shares: number
         }[]
       }
       get_funnel_analysis: {
@@ -945,6 +1052,23 @@ export type Database = {
         }[]
       }
       get_session_categories: { Args: { p_test_id: string }; Returns: string[] }
+      get_share_based_sessions: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          new_user_rate: number
+          new_user_sessions: number
+          total_sessions: number
+        }[]
+      }
+      get_share_channel_stats: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          channel: string
+          label: string
+          percentage: number
+          shares: number
+        }[]
+      }
       get_test_funnel: {
         Args: { p_from: string; p_test_id: string; p_to: string }
         Returns: {
@@ -953,6 +1077,16 @@ export type Database = {
         }[]
       }
       get_test_with_details: { Args: { p_test_id: string }; Returns: Json }
+      get_theme_tests: {
+        Args: { p_limit?: number; p_theme_id: string }
+        Returns: {
+          id: string
+          response_count: number
+          slug: string
+          thumbnail_url: string
+          title: string
+        }[]
+      }
       get_user_summary: {
         Args: never
         Returns: {
@@ -960,6 +1094,15 @@ export type Database = {
           deleted_count: number
           inactive_count: number
           total_count: number
+        }[]
+      }
+      get_viral_metrics: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          avg_tests_per_session: number
+          share_conversion_rate: number
+          total_completions: number
+          total_shares: number
         }[]
       }
       is_admin: { Args: { uid?: string }; Returns: boolean }
@@ -1000,6 +1143,7 @@ export type Database = {
         | "test_start"
         | "test_complete"
         | "revisit"
+        | "share"
       question_type: "single_choice" | "multiple_choice" | "short_answer"
       result_condition_type:
         | "score_range"
@@ -1135,9 +1279,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       channel_type: [
@@ -1164,6 +1305,7 @@ export const Constants = {
         "test_start",
         "test_complete",
         "revisit",
+        "share",
       ],
       question_type: ["single_choice", "multiple_choice", "short_answer"],
       result_condition_type: [

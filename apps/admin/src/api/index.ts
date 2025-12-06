@@ -7,7 +7,7 @@ export {
 	userQueryKeys,
 	feedbackQueryKeys,
 	responseQueryKeys,
-	analyticsQueryKeys,
+	growthQueryKeys,
 	testAnalyticsQueryKeys,
 } from './query-keys';
 
@@ -53,11 +53,14 @@ export { useFeedbacksQuery, useFeedbackSummaryQuery, useUpdateFeedbackStatus, us
 // Growth Analytics
 export {
 	useGrowthSummaryQuery,
-	useAnalyticsDailyGrowthQuery,
+	useDailyGrowthQuery,
 	useFunnelAnalysisQuery,
 	useChannelAnalysisQuery,
 	useLandingPageAnalysisQuery,
 	useCohortAnalysisQuery,
+	useViralMetricsQuery,
+	useShareChannelStatsQuery,
+	useShareBasedSessionsQuery,
 } from './growth';
 
 // Test Analytics (테스트 성과 분석)
@@ -73,6 +76,12 @@ export {
 	useTestsComparisonMetrics,
 	useTestsComparisonInfo,
 	useTestsComparisonDailyTrend,
+	useCategoryPerformanceQuery,
+	useSeriesPerformanceQuery,
+	useSeriesTestsPerformanceQuery,
+	useSeriesFunnelQuery,
+	useThemePerformanceQuery,
+	useThemeDailyTrendQuery,
 } from './analytics';
 
 // Dashboard
@@ -84,6 +93,9 @@ export {
 	useTestFunnel,
 	useRecentFeedback,
 	useAllTests,
+	useFeaturedTest,
+	useCurrentTheme,
+	useThemeTests,
 } from './dashboard';
 
 // Response

@@ -7,6 +7,7 @@ export const GROWTH_TABS = [
 	{ value: 'channel', label: '채널 분석' },
 	{ value: 'landing', label: '랜딩 페이지' },
 	{ value: 'cohort', label: '코호트 분석' },
+	{ value: 'viral', label: '바이럴 분석' },
 ];
 
 export const CHANNEL_LABELS: Record<string, string> = {
@@ -69,5 +70,15 @@ export const GROWTH_ANALYSIS_GUIDES = {
 			'최근 코호트가 과거보다 나은가?',
 		],
 		actionTip: '신규 유치보다 기존 유저 유지가 5배 저렴합니다. 리텐션 개선이 성장의 핵심!',
+	},
+	viral: {
+		title: '바이럴 분석이란?',
+		purpose: '결과 공유를 통한 신규 유입과 바이럴 계수를 측정하여 유기적 성장을 분석합니다.',
+		keyQuestions: [
+			'공유 전환율이 얼마인가? (완료 → 공유)',
+			'어떤 공유 채널이 가장 효과적인가?',
+			'공유를 통해 얼마나 신규 유입이 발생하나?',
+		],
+		actionTip: '공유 전환율이 낮으면 결과 화면의 공유 버튼/문구를 개선하세요. 인스타그램 스토리용 이미지가 효과적입니다.',
 	},
 };

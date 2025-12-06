@@ -13,7 +13,13 @@ import {
 import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
 import { AnalysisGuideTooltip, ProgressBar } from '@/components/common';
 import { StatCard } from '@/components/common/stat-card';
-import { TestCompareEmpty, TestCompareContent } from '@/components/analytics';
+import {
+	TestCompareEmpty,
+	TestCompareContent,
+	CategoryPerformanceContent,
+	SeriesPerformanceContent,
+	ThemePerformanceContent,
+} from '@/components/analytics';
 import { getTestTypeLabel, getTestStatusLabel, getTestStatusVariant, getTestTypeVariant } from '@/utils/test';
 import { formatDate, formatTime, getDateRangeParams } from '@/utils/format';
 import { getCompletionRateColor } from '@/utils/analytics';
@@ -302,6 +308,12 @@ export function AnalyticsPage() {
 					) : (
 						<TestCompareContent testIds={selectedTests} dateParams={dateParams} />
 					))}
+
+				{activeTab === 'category' && <CategoryPerformanceContent dateParams={dateParams} />}
+
+				{activeTab === 'series' && <SeriesPerformanceContent dateParams={dateParams} />}
+
+				{activeTab === 'theme' && <ThemePerformanceContent dateParams={dateParams} />}
 			</main>
 		</>
 	);

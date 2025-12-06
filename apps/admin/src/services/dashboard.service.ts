@@ -1,13 +1,16 @@
 import { supabase } from '@/lib/supabase/client';
-import type { DashboardSummary, ChannelShare, GlobalFunnel, TestFunnel } from '@pickid/supabase';
+import type {
+	DashboardSummary,
+	ChannelShare,
+	GlobalFunnel,
+	TestFunnel,
+	FeaturedTest,
+	CurrentTheme,
+	ThemeTest,
+} from '@pickid/supabase';
 import type { DailyGrowthPoint, FeedbackListItem } from '@/types/dashboard';
 import type { DateRangeParams } from '@/types/analytics';
-import dayjs from 'dayjs';
-
-
-function toDateString(isoString: string): string {
-	return dayjs(isoString).format('YYYY-MM-DD');
-}
+import { toDateString } from '@/utils/format';
 
 export const dashboardService = {
 	async fetchDashboardSummary(params: DateRangeParams): Promise<DashboardSummary> {
@@ -137,5 +140,47 @@ export const dashboardService = {
 		}
 
 		return data as Array<{ id: string; title: string }>;
+	},
+
+	async fetchFeaturedTest(): Promise<FeaturedTest | null> {
+		const { data, error } = (await supabase.rpc('get_featured_test' as never)) as {
+			data: FeaturedTest[] | null;
+			error: unknown;
+		};
+
+		if (error) {
+			console.error('[DashboardService] fetchFeaturedTest 에러:', error);
+			throw error;
+		}
+
+		return data?.[0] || null;
+	},
+
+	async fetchCurrentTheme(): Promise<CurrentTheme | null> {
+		const { data, error } = (await supabase.rpc('get_current_theme' as never)) as {
+			data: CurrentTheme[] | null;
+			error: unknown;
+		};
+
+		if (error) {
+			console.error('[DashboardService] fetchCurrentTheme 에러:', error);
+			throw error;
+		}
+
+		return data?.[0] || null;
+	},
+
+	async fetchThemeTests(themeId: string, limit = 3): Promise<ThemeTest[]> {
+		const { data, error } = (await supabase.rpc('get_theme_tests' as never, {
+			p_theme_id: themeId,
+			p_limit: limit,
+		} as never)) as { data: ThemeTest[] | null; error: unknown };
+
+		if (error) {
+			console.error('[DashboardService] fetchThemeTests 에러:', error);
+			throw error;
+		}
+
+		return data || [];
 	},
 };

@@ -53,13 +53,13 @@ export interface CohortData {
 
 // analytics constants types
 export type DateRangeOption = '7d' | '14d' | '30d' | '90d';
-export type AnalyticsTab = 'list' | 'comparison';
+export type AnalyticsTab = 'list' | 'comparison' | 'category' | 'series' | 'theme';
 export type AnalyticsSortOption = 'responses' | 'completionRate' | 'avgTime' | 'lastResponse' | 'createdAt';
 export type TestDetailTab = 'overview' | 'trend' | 'questions' | 'results';
 export type RateColor = 'green' | 'yellow' | 'red';
 
 // growth constants types
-export type GrowthTab = 'overview' | 'funnel' | 'channel' | 'landing' | 'cohort';
+export type GrowthTab = 'overview' | 'funnel' | 'channel' | 'landing' | 'cohort' | 'viral';
 
 // analysis guide types
 export interface AnalysisGuide {

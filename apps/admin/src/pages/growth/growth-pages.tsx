@@ -1,11 +1,14 @@
 import { useState, useMemo } from 'react';
 import {
 	useGrowthSummaryQuery,
-	useAnalyticsDailyGrowthQuery,
+	useDailyGrowthQuery,
 	useFunnelAnalysisQuery,
 	useChannelAnalysisQuery,
 	useLandingPageAnalysisQuery,
 	useCohortAnalysisQuery,
+	useViralMetricsQuery,
+	useShareChannelStatsQuery,
+	useShareBasedSessionsQuery,
 } from '@/api';
 import {
 	GrowthSummaryCards,
@@ -14,6 +17,7 @@ import {
 	ChannelTable,
 	LandingPageTable,
 	CohortTable,
+	ViralContent,
 } from '@/components/growth';
 import { AnalysisGuideTooltip } from '@/components/common';
 import { DATE_RANGE_OPTIONS, GROWTH_TABS, GROWTH_ANALYSIS_GUIDES, type GrowthTab } from '@/constants/growth';
@@ -28,11 +32,14 @@ export function GrowthPage() {
 	const dateParams = useMemo(() => getDateRangeParams(dateRange), [dateRange]);
 
 	const { data: summaryData } = useGrowthSummaryQuery(dateParams);
-	const { data: dailyData } = useAnalyticsDailyGrowthQuery(dateParams);
+	const { data: dailyData } = useDailyGrowthQuery(dateParams);
 	const { data: funnelData } = useFunnelAnalysisQuery(dateParams);
 	const { data: channelData } = useChannelAnalysisQuery(dateParams);
 	const { data: landingData } = useLandingPageAnalysisQuery(dateParams);
 	const { data: cohortData } = useCohortAnalysisQuery(8);
+	const { data: viralMetrics } = useViralMetricsQuery(dateParams);
+	const { data: shareChannelStats } = useShareChannelStatsQuery(dateParams);
+	const { data: shareBasedSessions } = useShareBasedSessionsQuery(dateParams);
 
 	const handleDateRangeChange = (value: string) => {
 		setDateRange(value as DateRangeOption);
@@ -287,6 +294,15 @@ export function GrowthPage() {
 								</ul>
 							</div>
 						</div>
+					</TabsContent>
+
+					{/* 바이럴 분석 탭 */}
+					<TabsContent value="viral" className="space-y-6">
+						<ViralContent
+							viralMetrics={viralMetrics}
+							shareChannelStats={shareChannelStats}
+							shareBasedSessions={shareBasedSessions}
+						/>
 					</TabsContent>
 				</Tabs>
 			</main>

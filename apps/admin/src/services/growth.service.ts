@@ -5,6 +5,9 @@ import type {
 	ChannelAnalysis as RpcChannelAnalysis,
 	LandingPageAnalysis as RpcLandingPageAnalysis,
 	CohortAnalysis as RpcCohortAnalysis,
+	ViralMetrics as RpcViralMetrics,
+	ShareChannelStats as RpcShareChannelStats,
+	ShareBasedSessions as RpcShareBasedSessions,
 } from '@pickid/supabase';
 import type {
 	DateRangeParams,
@@ -15,13 +18,9 @@ import type {
 	LandingPageData,
 	CohortData,
 } from '@/types/analytics';
-import dayjs from 'dayjs';
+import { toDateString } from '@/utils/format';
 
-function toDateString(isoString: string): string {
-	return dayjs(isoString).format('YYYY-MM-DD');
-}
-
-export const analyticsService = {
+export const growthService = {
 	/**
 	 * 성장 요약 KPI 조회 (변화율 포함)
 	 */
@@ -32,7 +31,7 @@ export const analyticsService = {
 		} as never)) as { data: RpcGrowthSummary[] | null; error: unknown };
 
 		if (error) {
-			console.error('[AnalyticsService] fetchGrowthSummary 에러:', error);
+			console.error('[GrowthService] fetchGrowthSummary 에러:', error);
 			throw error;
 		}
 
@@ -75,7 +74,7 @@ export const analyticsService = {
 			.order('date', { ascending: true });
 
 		if (error) {
-			console.error('[AnalyticsService] fetchDailyGrowth 에러:', error);
+			console.error('[GrowthService] fetchDailyGrowth 에러:', error);
 			throw error;
 		}
 
@@ -97,7 +96,7 @@ export const analyticsService = {
 		} as never)) as { data: RpcFunnelAnalysis[] | null; error: unknown };
 
 		if (error) {
-			console.error('[AnalyticsService] fetchFunnelAnalysis 에러:', error);
+			console.error('[GrowthService] fetchFunnelAnalysis 에러:', error);
 			throw error;
 		}
 
@@ -120,7 +119,7 @@ export const analyticsService = {
 		} as never)) as { data: RpcChannelAnalysis[] | null; error: unknown };
 
 		if (error) {
-			console.error('[AnalyticsService] fetchChannelAnalysis 에러:', error);
+			console.error('[GrowthService] fetchChannelAnalysis 에러:', error);
 			throw error;
 		}
 
@@ -143,7 +142,7 @@ export const analyticsService = {
 		} as never)) as { data: RpcLandingPageAnalysis[] | null; error: unknown };
 
 		if (error) {
-			console.error('[AnalyticsService] fetchLandingPageAnalysis 에러:', error);
+			console.error('[GrowthService] fetchLandingPageAnalysis 에러:', error);
 			throw error;
 		}
 
@@ -165,7 +164,7 @@ export const analyticsService = {
 		} as never)) as { data: RpcCohortAnalysis[] | null; error: unknown };
 
 		if (error) {
-			console.error('[AnalyticsService] fetchCohortAnalysis 에러:', error);
+			console.error('[GrowthService] fetchCohortAnalysis 에러:', error);
 			throw error;
 		}
 
@@ -190,6 +189,70 @@ export const analyticsService = {
 			users: data.users,
 			weeks: data.weeks,
 		}));
+	},
+
+	/**
+	 * 바이럴 지표 조회 (공유 전환율, 세션당 테스트 수)
+	 */
+	async fetchViralMetrics(params: DateRangeParams): Promise<RpcViralMetrics> {
+		const { data, error } = (await supabase.rpc('get_viral_metrics' as never, {
+			p_from: toDateString(params.from),
+			p_to: toDateString(params.to),
+		} as never)) as { data: RpcViralMetrics[] | null; error: unknown };
+
+		if (error) {
+			console.error('[GrowthService] fetchViralMetrics 에러:', error);
+			throw error;
+		}
+
+		return (
+			data?.[0] || {
+				share_conversion_rate: 0,
+				total_shares: 0,
+				total_completions: 0,
+				avg_tests_per_session: 0,
+			}
+		);
+	},
+
+	/**
+	 * 공유 채널별 통계 조회
+	 */
+	async fetchShareChannelStats(params: DateRangeParams): Promise<RpcShareChannelStats[]> {
+		const { data, error } = (await supabase.rpc('get_share_channel_stats' as never, {
+			p_from: toDateString(params.from),
+			p_to: toDateString(params.to),
+		} as never)) as { data: RpcShareChannelStats[] | null; error: unknown };
+
+		if (error) {
+			console.error('[GrowthService] fetchShareChannelStats 에러:', error);
+			throw error;
+		}
+
+		return data || [];
+	},
+
+	/**
+	 * 공유 기반 유입 세션 통계 조회
+	 */
+	async fetchShareBasedSessions(params: DateRangeParams): Promise<RpcShareBasedSessions> {
+		const { data, error } = (await supabase.rpc('get_share_based_sessions' as never, {
+			p_from: toDateString(params.from),
+			p_to: toDateString(params.to),
+		} as never)) as { data: RpcShareBasedSessions[] | null; error: unknown };
+
+		if (error) {
+			console.error('[GrowthService] fetchShareBasedSessions 에러:', error);
+			throw error;
+		}
+
+		return (
+			data?.[0] || {
+				total_sessions: 0,
+				new_user_sessions: 0,
+				new_user_rate: 0,
+			}
+		);
 	},
 };
 

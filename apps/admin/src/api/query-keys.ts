@@ -5,7 +5,7 @@ import { categoryService } from '@/services/category.service';
 import { userService } from '@/services/user.service';
 import { feedbackService } from '@/services/feedback.service';
 import { responseService } from '@/services/response.service';
-import { analyticsService } from '@/services/analytics.service';
+import { growthService } from '@/services/growth.service';
 import { testAnalyticsService } from '@/services/test-analytics.service';
 import type { DateRangeParams } from '@/types/analytics';
 import type { IFetchTestsOptions } from '@/types/test';
@@ -54,6 +54,21 @@ export const dashboardQueryKeys = createQueryKeys('dashboard', {
 		queryKey: null,
 		queryFn: () => dashboardService.fetchAllTests(),
 	},
+
+	featuredTest: {
+		queryKey: null,
+		queryFn: () => dashboardService.fetchFeaturedTest(),
+	},
+
+	currentTheme: {
+		queryKey: null,
+		queryFn: () => dashboardService.fetchCurrentTheme(),
+	},
+
+	themeTests: (themeId: string, limit?: number) => ({
+		queryKey: [themeId, limit],
+		queryFn: () => dashboardService.fetchThemeTests(themeId, limit),
+	}),
 });
 
 // =========================== 테스트 ===========================
@@ -161,36 +176,52 @@ export const responseQueryKeys = createQueryKeys('response', {
 	}),
 });
 
-// =========================== 분석 ===========================
-export const analyticsQueryKeys = createQueryKeys('analytics', {
-	growthSummary: (params: DateRangeParams) => ({
+// =========================== 성장 분석 ===========================
+export const growthQueryKeys = createQueryKeys('growth', {
+	summary: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
-		queryFn: () => analyticsService.fetchGrowthSummary(params),
+		queryFn: () => growthService.fetchGrowthSummary(params),
 	}),
 
 	dailyGrowth: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
-		queryFn: () => analyticsService.fetchDailyGrowth(params),
+		queryFn: () => growthService.fetchDailyGrowth(params),
 	}),
 
 	funnel: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
-		queryFn: () => analyticsService.fetchFunnelAnalysis(params),
+		queryFn: () => growthService.fetchFunnelAnalysis(params),
 	}),
 
 	channel: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
-		queryFn: () => analyticsService.fetchChannelAnalysis(params),
+		queryFn: () => growthService.fetchChannelAnalysis(params),
 	}),
 
 	landingPage: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
-		queryFn: () => analyticsService.fetchLandingPageAnalysis(params),
+		queryFn: () => growthService.fetchLandingPageAnalysis(params),
 	}),
 
 	cohort: (weeks: number) => ({
 		queryKey: [weeks],
-		queryFn: () => analyticsService.fetchCohortAnalysis(weeks),
+		queryFn: () => growthService.fetchCohortAnalysis(weeks),
+	}),
+
+	// 바이럴 분석
+	viralMetrics: (params: DateRangeParams) => ({
+		queryKey: ['viral', params.from, params.to],
+		queryFn: () => growthService.fetchViralMetrics(params),
+	}),
+
+	shareChannelStats: (params: DateRangeParams) => ({
+		queryKey: ['share-channel', params.from, params.to],
+		queryFn: () => growthService.fetchShareChannelStats(params),
+	}),
+
+	shareBasedSessions: (params: DateRangeParams) => ({
+		queryKey: ['share-sessions', params.from, params.to],
+		queryFn: () => growthService.fetchShareBasedSessions(params),
 	}),
 });
 
@@ -235,6 +266,37 @@ export const testAnalyticsQueryKeys = createQueryKeys('test-analytics', {
 		queryKey: [testId, 'info'],
 		queryFn: () => testAnalyticsService.fetchTestInfo(testId),
 	}),
+
+	// 카테고리/시리즈/테마 단위 성과 분석
+	categoryPerformance: (params: DateRangeParams) => ({
+		queryKey: ['category', params],
+		queryFn: () => testAnalyticsService.fetchCategoryPerformance(params),
+	}),
+
+	seriesPerformance: (params: DateRangeParams) => ({
+		queryKey: ['series', params],
+		queryFn: () => testAnalyticsService.fetchSeriesPerformance(params),
+	}),
+
+	seriesTestsPerformance: (seriesId: string, params: DateRangeParams) => ({
+		queryKey: ['series', seriesId, 'tests', params],
+		queryFn: () => testAnalyticsService.fetchSeriesTestsPerformance(seriesId, params),
+	}),
+
+	seriesFunnel: (seriesId: string, params: DateRangeParams) => ({
+		queryKey: ['series', seriesId, 'funnel', params],
+		queryFn: () => testAnalyticsService.fetchSeriesFunnel(seriesId, params),
+	}),
+
+	themePerformance: (params: DateRangeParams) => ({
+		queryKey: ['theme', params],
+		queryFn: () => testAnalyticsService.fetchThemePerformance(params),
+	}),
+
+	themeDailyTrend: (themeId: string, params: DateRangeParams) => ({
+		queryKey: ['theme', themeId, 'daily', params],
+		queryFn: () => testAnalyticsService.fetchThemeDailyTrend(themeId, params),
+	}),
 });
 
 export const queryKeys = mergeQueryKeys(
@@ -244,6 +306,6 @@ export const queryKeys = mergeQueryKeys(
 	userQueryKeys,
 	feedbackQueryKeys,
 	responseQueryKeys,
-	analyticsQueryKeys,
+	growthQueryKeys,
 	testAnalyticsQueryKeys
 );

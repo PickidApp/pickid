@@ -11,6 +11,9 @@ export const DATE_RANGE_OPTIONS = [
 export const ANALYTICS_TABS = [
 	{ value: 'list', label: '테스트별 성과' },
 	{ value: 'comparison', label: '테스트 비교' },
+	{ value: 'category', label: '카테고리별 성과' },
+	{ value: 'series', label: '시리즈별 성과' },
+	{ value: 'theme', label: '테마별 성과' },
 ];
 
 export const ANALYTICS_SORT_OPTIONS = [
@@ -98,5 +101,45 @@ export const TEST_ANALYTICS_GUIDES = {
 			'결과별 평균 점수가 적절한가?',
 		],
 		actionTip: '결과가 너무 편중되면 질문 배점을 조정하거나 결과 기준을 수정하세요.',
+	},
+	category: {
+		title: '카테고리별 성과란?',
+		purpose: '카테고리(MBTI, 연애, 직장 등) 단위로 테스트 성과를 비교합니다. 어떤 주제가 인기 있는지 파악하세요.',
+		keyQuestions: [
+			'응답수가 가장 많은 카테고리는?',
+			'완료율이 낮은 카테고리는? (콘텐츠 개선 필요)',
+			'결과 편중도가 높은 카테고리는? (질문 설계 점검)',
+		],
+		actionTip: '인기 카테고리에 새 테스트를 추가하고, 저조한 카테고리는 리뉴얼을 검토하세요.',
+	},
+	series: {
+		title: '시리즈별 성과란?',
+		purpose: '시리즈(연작 테스트) 단위로 사용자 흐름을 분석합니다. 시리즈 완주율과 이탈 지점을 파악하세요.',
+		keyQuestions: [
+			'1편 → 2편 이동률이 얼마인가?',
+			'시리즈 완주율(2개 이상 완료)이 목표에 도달했나?',
+			'어느 편에서 이탈이 가장 많이 발생하나?',
+		],
+		actionTip: '1편 완료 후 2편으로 자연스럽게 유도하는 CTA를 강화하세요.',
+	},
+	series_funnel: {
+		title: '시리즈 퍼널이란?',
+		purpose: '시리즈 내 테스트별 도달/완료를 퍼널 형태로 시각화합니다. 병목 지점을 찾아내세요.',
+		keyQuestions: [
+			'1편에서 2편으로 넘어가는 비율은?',
+			'중간에 이탈률이 급증하는 편은?',
+			'마지막 편까지 도달하는 사용자 비율은?',
+		],
+		actionTip: '이탈률이 높은 편의 결과 페이지에 다음 편 유도 문구를 추가하세요.',
+	},
+	theme: {
+		title: '테마별 성과란?',
+		purpose: '기간 한정 캠페인(발렌타인, 연말 등) 성과를 분석합니다. 시즌 마케팅 효과를 측정하세요.',
+		keyQuestions: [
+			'캠페인 기간 동안 응답수가 증가했나?',
+			'테마 테스트들의 평균 완료율은?',
+			'기간 종료 후에도 응답이 지속되는가?',
+		],
+		actionTip: '성공적인 테마는 내년에 다시 활용하고, 기간 연장도 고려하세요.',
 	},
 };

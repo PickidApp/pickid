@@ -82,3 +82,13 @@ export type UserSummary = FunctionReturn<'get_user_summary'>[number];
 
 // Admin Session RPC
 export type AdminTestSession = FunctionReturn<'get_admin_test_sessions'>[number];
+
+// Viral Analytics RPC
+export type ViralMetrics = FunctionReturn<'get_viral_metrics'>[number];
+export type ShareChannelStats = FunctionReturn<'get_share_channel_stats'>[number];
+export type ShareBasedSessions = FunctionReturn<'get_share_based_sessions'>[number];
+
+// Dashboard RPC (Extended)
+export type FeaturedTest = FunctionReturn<'get_featured_test'>[number];
+export type CurrentTheme = FunctionReturn<'get_current_theme'>[number];
+export type ThemeTest = FunctionReturn<'get_theme_tests'>[number];

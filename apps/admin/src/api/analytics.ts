@@ -83,3 +83,43 @@ export function useTestsComparisonDailyTrend(testIds: string[], params: DateRang
 		})),
 	});
 }
+
+// 카테고리/시리즈/테마 단위 성과 분석
+export function useCategoryPerformanceQuery(params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.categoryPerformance(params),
+	});
+}
+
+export function useSeriesPerformanceQuery(params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.seriesPerformance(params),
+	});
+}
+
+export function useSeriesTestsPerformanceQuery(seriesId: string, params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.seriesTestsPerformance(seriesId, params),
+		enabled: !!seriesId,
+	});
+}
+
+export function useSeriesFunnelQuery(seriesId: string, params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.seriesFunnel(seriesId, params),
+		enabled: !!seriesId,
+	});
+}
+
+export function useThemePerformanceQuery(params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.themePerformance(params),
+	});
+}
+
+export function useThemeDailyTrendQuery(themeId: string, params: DateRangeParams) {
+	return useQuery({
+		...testAnalyticsQueryKeys.themeDailyTrend(themeId, params),
+		enabled: !!themeId,
+	});
+}

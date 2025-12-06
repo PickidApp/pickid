@@ -1,21 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { dashboardQueryKeys } from './query-keys';
 import type { DateRangeParams } from '@/types/analytics';
 
 export function useDashboardSummary(params: DateRangeParams) {
-	return useQuery(dashboardQueryKeys.summary(params));
+	return useSuspenseQuery(dashboardQueryKeys.summary(params));
 }
 
 export function useDailyGrowth(params: DateRangeParams) {
-	return useQuery(dashboardQueryKeys.dailyGrowth(params));
+	return useSuspenseQuery(dashboardQueryKeys.dailyGrowth(params));
 }
 
 export function useChannelShare(params: DateRangeParams) {
-	return useQuery(dashboardQueryKeys.channelShare(params));
+	return useSuspenseQuery(dashboardQueryKeys.channelShare(params));
 }
 
 export function useGlobalFunnel(params: DateRangeParams) {
-	return useQuery(dashboardQueryKeys.globalFunnel(params));
+	return useSuspenseQuery(dashboardQueryKeys.globalFunnel(params));
 }
 
 export function useTestFunnel(testId: string | null, params: DateRangeParams) {
@@ -26,9 +26,24 @@ export function useTestFunnel(testId: string | null, params: DateRangeParams) {
 }
 
 export function useRecentFeedback(limit = 10) {
-	return useQuery(dashboardQueryKeys.recentFeedback(limit));
+	return useSuspenseQuery(dashboardQueryKeys.recentFeedback(limit));
 }
 
 export function useAllTests() {
-	return useQuery(dashboardQueryKeys.allTests);
+	return useSuspenseQuery(dashboardQueryKeys.allTests);
+}
+
+export function useFeaturedTest() {
+	return useSuspenseQuery(dashboardQueryKeys.featuredTest);
+}
+
+export function useCurrentTheme() {
+	return useSuspenseQuery(dashboardQueryKeys.currentTheme);
+}
+
+export function useThemeTests(themeId: string | null, limit?: number) {
+	return useQuery({
+		...dashboardQueryKeys.themeTests(themeId || '', limit),
+		enabled: !!themeId,
+	});
 }

@@ -1,39 +1,57 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { analyticsQueryKeys } from './query-keys';
+import { growthQueryKeys } from './query-keys';
 import type { DateRangeParams } from '@/types/analytics';
 
 export function useGrowthSummaryQuery(params: DateRangeParams) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.growthSummary(params),
+		...growthQueryKeys.summary(params),
 	});
 }
 
-export function useAnalyticsDailyGrowthQuery(params: DateRangeParams) {
+export function useDailyGrowthQuery(params: DateRangeParams) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.dailyGrowth(params),
+		...growthQueryKeys.dailyGrowth(params),
 	});
 }
 
 export function useFunnelAnalysisQuery(params: DateRangeParams) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.funnel(params),
+		...growthQueryKeys.funnel(params),
 	});
 }
 
 export function useChannelAnalysisQuery(params: DateRangeParams) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.channel(params),
+		...growthQueryKeys.channel(params),
 	});
 }
 
 export function useLandingPageAnalysisQuery(params: DateRangeParams) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.landingPage(params),
+		...growthQueryKeys.landingPage(params),
 	});
 }
 
 export function useCohortAnalysisQuery(weeks: number = 8) {
 	return useSuspenseQuery({
-		...analyticsQueryKeys.cohort(weeks),
+		...growthQueryKeys.cohort(weeks),
+	});
+}
+
+export function useViralMetricsQuery(params: DateRangeParams) {
+	return useSuspenseQuery({
+		...growthQueryKeys.viralMetrics(params),
+	});
+}
+
+export function useShareChannelStatsQuery(params: DateRangeParams) {
+	return useSuspenseQuery({
+		...growthQueryKeys.shareChannelStats(params),
+	});
+}
+
+export function useShareBasedSessionsQuery(params: DateRangeParams) {
+	return useSuspenseQuery({
+		...growthQueryKeys.shareBasedSessions(params),
 	});
 }
