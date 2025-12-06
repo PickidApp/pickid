@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { feedbackService, type FeedbackStatus } from '@/services/feedback.service';
+import { feedbackService } from '@/services/feedback.service';
 import { feedbackQueryKeys, dashboardQueryKeys } from '@/api/query-keys';
+import type { FeedbackStatus } from '@pickid/supabase';
 
 export function useUpdateFeedbackStatus() {
 	const queryClient = useQueryClient();

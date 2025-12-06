@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { testService, type TestPayload } from '@/services/test.service';
+import { testService } from '@/services/test.service';
+import type { TestPayload } from '@/types/test';
 import { testQueryKeys } from '@/api/query-keys';
 
 interface PublishTestParams {

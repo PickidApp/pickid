@@ -6,7 +6,7 @@ export {
 	useTestResultsQuery,
 	useTestWithDetailsQuery,
 	useTestCategoryIdsQuery,
-	useTestRecentSessionsQuery,
+	useTestRecentResponsesQuery,
 } from './queries';
 
 // Mutations

@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { testQueryKeys } from '../query-keys';
-import type { IFetchTestsOptions } from '@/services/test.service';
+import type { IFetchTestsOptions } from '@/types/test';
 
 export function useTestsQuery(options?: IFetchTestsOptions) {
 	return useSuspenseQuery(testQueryKeys.list(options));
@@ -42,9 +42,9 @@ export function useTestCategoryIdsQuery(testId: string) {
 	});
 }
 
-export function useTestRecentSessionsQuery(testId: string, limit?: number) {
+export function useTestRecentResponsesQuery(testId: string, limit?: number) {
 	return useQuery({
-		...testQueryKeys.recentSessions(testId, limit),
+		...testQueryKeys.recentResponses(testId, limit),
 		enabled: !!testId,
 	});
 }

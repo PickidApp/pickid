@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { categoryService, type CategoryPayload, type CategoryStatus } from '@/services/category.service';
+import type { CategoryStatus } from '@pickid/supabase';
+import { categoryService } from '@/services/category.service';
+import type { CategoryPayload } from '@/types/category';
 import { categoryQueryKeys } from '../query-keys';
 
 export function useCreateCategory() {
