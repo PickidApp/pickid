@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { analyticsQueryKeys } from './query-keys';
-import type { DateRangeParams } from '@/services/analytics.service';
+import type { DateRangeParams } from '@/types/analytics';
 
 export function useGrowthSummaryQuery(params: DateRangeParams) {
 	return useSuspenseQuery({

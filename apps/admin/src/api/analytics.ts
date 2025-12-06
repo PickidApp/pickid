@@ -1,6 +1,7 @@
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { testAnalyticsQueryKeys } from './query-keys';
-import type { DateRangeParams, IFetchTestPerformanceOptions } from '@/services/test-analytics.service';
+import type { DateRangeParams } from '@/types/analytics';
+import type { IFetchTestPerformanceOptions } from '@/types/test-analytics';
 
 export function useTestPerformanceSummaryQuery(params: DateRangeParams) {
 	return useQuery({

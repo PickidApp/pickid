@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { userQueryKeys } from './query-keys';
-import type { IFetchUsersOptions } from '@/services/user.service';
+import type { IFetchUsersOptions } from '@/types/user';
 
 export function useUsersQuery(options?: IFetchUsersOptions) {
 	return useSuspenseQuery(userQueryKeys.list(options));
@@ -17,9 +17,9 @@ export function useUserDetailQuery(userId: string) {
 	});
 }
 
-export function useUserSessionsQuery(userId: string, limit?: number) {
+export function useUserResponsesQuery(userId: string, limit?: number) {
 	return useQuery({
-		...userQueryKeys.sessions(userId, limit),
+		...userQueryKeys.responses(userId, limit),
 		enabled: !!userId,
 	});
 }

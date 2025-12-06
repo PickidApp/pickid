@@ -19,7 +19,7 @@ export {
 	useTestResultsQuery,
 	useTestWithDetailsQuery,
 	useTestCategoryIdsQuery,
-	useTestRecentSessionsQuery,
+	useTestRecentResponsesQuery,
 	useSaveTest,
 	usePublishTest,
 	useSaveQuestions,
@@ -33,7 +33,7 @@ export {
 	useUsersQuery,
 	useUserSummaryQuery,
 	useUserDetailQuery,
-	useUserSessionsQuery,
+	useUserResponsesQuery,
 	useUserStatsQuery,
 } from './user';
 

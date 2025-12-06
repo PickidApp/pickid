@@ -1,25 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 import { dashboardQueryKeys } from './query-keys';
+import type { DateRangeParams } from '@/types/analytics';
 
-export function useDashboardSummary(from: Date, to: Date) {
-	return useQuery(dashboardQueryKeys.summary(from, to));
+export function useDashboardSummary(params: DateRangeParams) {
+	return useQuery(dashboardQueryKeys.summary(params));
 }
 
-export function useDailyGrowth(from: Date, to: Date) {
-	return useQuery(dashboardQueryKeys.dailyGrowth(from, to));
+export function useDailyGrowth(params: DateRangeParams) {
+	return useQuery(dashboardQueryKeys.dailyGrowth(params));
 }
 
-export function useChannelShare(from: Date, to: Date) {
-	return useQuery(dashboardQueryKeys.channelShare(from, to));
+export function useChannelShare(params: DateRangeParams) {
+	return useQuery(dashboardQueryKeys.channelShare(params));
 }
 
-export function useGlobalFunnel(from: Date, to: Date) {
-	return useQuery(dashboardQueryKeys.globalFunnel(from, to));
+export function useGlobalFunnel(params: DateRangeParams) {
+	return useQuery(dashboardQueryKeys.globalFunnel(params));
 }
 
-export function useTestFunnel(testId: string | null, from: Date, to: Date) {
+export function useTestFunnel(testId: string | null, params: DateRangeParams) {
 	return useQuery({
-		...dashboardQueryKeys.testFunnel(testId || '', from, to),
+		...dashboardQueryKeys.testFunnel(testId || '', params),
 		enabled: !!testId,
 	});
 }

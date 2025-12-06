@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { responseQueryKeys } from './query-keys';
-import type { IFetchResponsesOptions } from '@/services/response.service';
+import type { IFetchResponsesOptions } from '@/types/response';
 
 export function useResponsesQuery(options?: IFetchResponsesOptions) {
 	return useSuspenseQuery(responseQueryKeys.list(options));

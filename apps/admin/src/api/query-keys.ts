@@ -1,61 +1,47 @@
 import { createQueryKeys, mergeQueryKeys } from '@lukemorales/query-key-factory';
 import { dashboardService } from '@/services/dashboard.service';
-import { testService, type IFetchTestsOptions } from '@/services/test.service';
-import { categoryService, type IFetchCategoriesOptions } from '@/services/category.service';
-import { userService, type IFetchUsersOptions } from '@/services/user.service';
-import { feedbackService, type IFetchFeedbacksOptions } from '@/services/feedback.service';
-import { responseService, type IFetchResponsesOptions } from '@/services/response.service';
-import { analyticsService, type DateRangeParams } from '@/services/analytics.service';
-import {
-	testAnalyticsService,
-	type DateRangeParams as TestAnalyticsDateRangeParams,
-	type IFetchTestPerformanceOptions,
-} from '@/services/test-analytics.service';
+import { testService } from '@/services/test.service';
+import { categoryService } from '@/services/category.service';
+import { userService } from '@/services/user.service';
+import { feedbackService } from '@/services/feedback.service';
+import { responseService } from '@/services/response.service';
+import { analyticsService } from '@/services/analytics.service';
+import { testAnalyticsService } from '@/services/test-analytics.service';
+import type { DateRangeParams } from '@/types/analytics';
+import type { IFetchTestsOptions } from '@/types/test';
+import type { IFetchCategoriesOptions } from '@/types/category';
+import type { IFetchUsersOptions } from '@/types/user';
+import type { IFetchFeedbacksOptions } from '@/types/feedback';
+import type { IFetchResponsesOptions } from '@/types/response';
+import type { IFetchTestPerformanceOptions } from '@/types/test-analytics';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
-	summary: (from: Date, to: Date) => ({
-		queryKey: [from.toISOString(), to.toISOString()],
-		queryFn: () =>
-			dashboardService.fetchDashboardSummary({
-				from: from.toISOString(),
-				to: to.toISOString(),
-			}),
+	summary: (params: DateRangeParams) => ({
+		queryKey: [params.from, params.to],
+		queryFn: () => dashboardService.fetchDashboardSummary(params),
 	}),
 
-	dailyGrowth: (from: Date, to: Date) => ({
-		queryKey: [from.toISOString(), to.toISOString()],
-		queryFn: () =>
-			dashboardService.fetchDailyGrowth({
-				from: from.toISOString(),
-				to: to.toISOString(),
-			}),
+	dailyGrowth: (params: DateRangeParams) => ({
+		queryKey: [params.from, params.to],
+		queryFn: () => dashboardService.fetchDailyGrowth(params),
 	}),
 
-	channelShare: (from: Date, to: Date) => ({
-		queryKey: [from.toISOString(), to.toISOString()],
-		queryFn: () =>
-			dashboardService.fetchChannelShare({
-				from: from.toISOString(),
-				to: to.toISOString(),
-			}),
+	channelShare: (params: DateRangeParams) => ({
+		queryKey: [params.from, params.to],
+		queryFn: () => dashboardService.fetchChannelShare(params),
 	}),
 
-	globalFunnel: (from: Date, to: Date) => ({
-		queryKey: [from.toISOString(), to.toISOString()],
-		queryFn: () =>
-			dashboardService.fetchGlobalFunnel({
-				from: from.toISOString(),
-				to: to.toISOString(),
-			}),
+	globalFunnel: (params: DateRangeParams) => ({
+		queryKey: [params.from, params.to],
+		queryFn: () => dashboardService.fetchGlobalFunnel(params),
 	}),
 
-	testFunnel: (testId: string, from: Date, to: Date) => ({
-		queryKey: [testId, from.toISOString(), to.toISOString()],
+	testFunnel: (testId: string, params: DateRangeParams) => ({
+		queryKey: [testId, params.from, params.to],
 		queryFn: () =>
 			dashboardService.fetchTestFunnel({
 				testId,
-				from: from.toISOString(),
-				to: to.toISOString(),
+				...params,
 			}),
 	}),
 
@@ -70,6 +56,7 @@ export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	},
 });
 
+// =========================== 테스트 ===========================
 export const testQueryKeys = createQueryKeys('test', {
 	list: (options?: IFetchTestsOptions) => ({
 		queryKey: [options],
@@ -101,12 +88,13 @@ export const testQueryKeys = createQueryKeys('test', {
 		queryFn: () => testService.fetchTestCategoryIds(testId),
 	}),
 
-	recentSessions: (testId: string, limit?: number) => ({
-		queryKey: [testId, 'recent-sessions', limit],
-		queryFn: () => testService.fetchTestRecentSessions(testId, limit),
+	recentResponses: (testId: string, limit?: number) => ({
+		queryKey: [testId, 'recent-responses', limit],
+		queryFn: () => testService.fetchTestRecentResponses(testId, limit),
 	}),
 });
 
+// =========================== 카테고리 ===========================
 export const categoryQueryKeys = createQueryKeys('category', {
 	list: (options?: IFetchCategoriesOptions) => ({
 		queryKey: [options],
@@ -114,6 +102,7 @@ export const categoryQueryKeys = createQueryKeys('category', {
 	}),
 });
 
+// =========================== 유저 ===========================
 export const userQueryKeys = createQueryKeys('user', {
 	list: (options?: IFetchUsersOptions) => ({
 		queryKey: [options],
@@ -130,9 +119,9 @@ export const userQueryKeys = createQueryKeys('user', {
 		queryFn: () => userService.fetchUser(userId),
 	}),
 
-	sessions: (userId: string, limit?: number) => ({
-		queryKey: [userId, 'sessions', limit],
-		queryFn: () => userService.fetchUserSessions(userId, limit),
+	responses: (userId: string, limit?: number) => ({
+		queryKey: [userId, 'responses', limit],
+		queryFn: () => userService.fetchUserResponses(userId, limit),
 	}),
 
 	stats: (userId: string) => ({
@@ -141,6 +130,7 @@ export const userQueryKeys = createQueryKeys('user', {
 	}),
 });
 
+// =========================== 피드백 ===========================
 export const feedbackQueryKeys = createQueryKeys('feedback', {
 	list: (options?: IFetchFeedbacksOptions) => ({
 		queryKey: [options],
@@ -153,6 +143,7 @@ export const feedbackQueryKeys = createQueryKeys('feedback', {
 	},
 });
 
+// =========================== 응답 ===========================
 export const responseQueryKeys = createQueryKeys('response', {
 	list: (options?: IFetchResponsesOptions) => ({
 		queryKey: [options],
@@ -170,6 +161,7 @@ export const responseQueryKeys = createQueryKeys('response', {
 	}),
 });
 
+// =========================== 분석 ===========================
 export const analyticsQueryKeys = createQueryKeys('analytics', {
 	growthSummary: (params: DateRangeParams) => ({
 		queryKey: [params.from, params.to],
@@ -202,38 +194,39 @@ export const analyticsQueryKeys = createQueryKeys('analytics', {
 	}),
 });
 
+// =========================== 테스트 분석 ===========================
 export const testAnalyticsQueryKeys = createQueryKeys('test-analytics', {
-	summary: (params: TestAnalyticsDateRangeParams) => ({
+	summary: (params: DateRangeParams) => ({
 		queryKey: [params],
 		queryFn: () => testAnalyticsService.fetchTestPerformanceSummary(params),
 	}),
 
-	list: (params: TestAnalyticsDateRangeParams, options?: IFetchTestPerformanceOptions) => ({
+	list: (params: DateRangeParams, options?: IFetchTestPerformanceOptions) => ({
 		queryKey: [params, options],
 		queryFn: () => testAnalyticsService.fetchTestPerformanceList(params, options),
 	}),
 
-	detailMetrics: (testId: string, params: TestAnalyticsDateRangeParams) => ({
+	detailMetrics: (testId: string, params: DateRangeParams) => ({
 		queryKey: [testId, 'metrics', params],
 		queryFn: () => testAnalyticsService.fetchTestDetailMetrics(testId, params),
 	}),
 
-	deviceDistribution: (testId: string, params: TestAnalyticsDateRangeParams) => ({
+	deviceDistribution: (testId: string, params: DateRangeParams) => ({
 		queryKey: [testId, 'device', params],
 		queryFn: () => testAnalyticsService.fetchDeviceDistribution(testId, params),
 	}),
 
-	resultDistribution: (testId: string, params: TestAnalyticsDateRangeParams) => ({
+	resultDistribution: (testId: string, params: DateRangeParams) => ({
 		queryKey: [testId, 'result', params],
 		queryFn: () => testAnalyticsService.fetchResultDistribution(testId, params),
 	}),
 
-	dailyTrend: (testId: string, params: TestAnalyticsDateRangeParams) => ({
+	dailyTrend: (testId: string, params: DateRangeParams) => ({
 		queryKey: [testId, 'daily', params],
 		queryFn: () => testAnalyticsService.fetchDailyTrend(testId, params),
 	}),
 
-	questionMetrics: (testId: string, params: TestAnalyticsDateRangeParams) => ({
+	questionMetrics: (testId: string, params: DateRangeParams) => ({
 		queryKey: [testId, 'questions', params],
 		queryFn: () => testAnalyticsService.fetchQuestionMetrics(testId, params),
 	}),
