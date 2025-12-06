@@ -10,10 +10,10 @@ import {
 	Switch,
 	FormField,
 } from '@pickid/ui';
-import { useCreateCategory, useUpdateCategory } from '@/api/mutations';
+import { useCreateCategory, useUpdateCategory } from '@/api';
 import { generateSlug } from '@/utils';
 import type { Category } from '@pickid/supabase';
-import type { CategoryPayload } from '@/services/category.service';
+import type { CategoryPayload } from '@/types/category';
 
 interface CategoryModalProps {
 	isOpen: boolean;

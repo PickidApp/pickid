@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import type { FeedbackListItem } from '@/services/dashboard.service';
-import { useUpdateFeedbackStatus } from '@/api/mutations';
+import type { FeedbackListItem } from '@/types/dashboard';
+import { useUpdateFeedbackStatus } from '@/api';
 import { X } from 'lucide-react';
-import { FEEDBACK_CATEGORY_LABELS, FEEDBACK_STATUS_LABELS } from '@/constants';
-import { formatDateTimeKorean } from '@/utils';
-import { IconButton, Button, FormField, BaseSelect, Textarea } from '@pickid/ui';
+import { FEEDBACK_STATUSES } from '@/constants/feedback';
+import { formatDateTimeKorean, getFeedbackCategoryLabel } from '@/utils';
+import { IconButton, Button, FormField, DefaultSelect, Textarea } from '@pickid/ui';
 
 interface FeedbackDetailModalProps {
 	feedback: FeedbackListItem;
@@ -21,19 +21,19 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 
 	if (!isOpen) return null;
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		try {
-			await feedbackUpdate.mutateAsync({
+		feedbackUpdate.mutate(
+			{
 				id: feedback.id,
 				status,
 				adminNote: adminNote || undefined,
-			});
-			onClose();
-		} catch (error) {
-			console.error('피드백 업데이트 실패:', error);
-		}
+			},
+			{
+				onSuccess: () => onClose(),
+			}
+		);
 	};
 
 	return (
@@ -44,10 +44,9 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 					<IconButton icon={<X size={20} />} onClick={onClose} variant="ghost" className="hover:bg-gray-100" />
 				</div>
 
-				{/* 내용 */}
 				<div className="p-6 space-y-4">
 					<FormField label="카테고리">
-						<p className="mt-1">{FEEDBACK_CATEGORY_LABELS[feedback.category]}</p>
+						<p className="mt-1">{getFeedbackCategoryLabel(feedback.category)}</p>
 					</FormField>
 
 					<FormField label="작성자">
@@ -68,16 +67,15 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 
 					<hr />
 
-					{/* 상태 업데이트 폼 */}
 					<form onSubmit={handleSubmit} className="space-y-4">
 						<FormField label="상태 변경" htmlFor="status">
-							<BaseSelect
+							<DefaultSelect
 								id="status"
 								value={status}
 								onValueChange={(value) => setStatus(value as typeof status)}
-								options={Object.entries(FEEDBACK_STATUS_LABELS).map(([value, label]) => ({
-									value,
-									label,
+								options={FEEDBACK_STATUSES.map((s) => ({
+									value: s.value,
+									label: s.label,
 								}))}
 								placeholder="상태를 선택해주세요"
 							/>

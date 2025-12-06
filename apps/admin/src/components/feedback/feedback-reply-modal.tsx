@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import type { Feedback, FeedbackStatus } from '@/services/feedback.service';
+import type { Feedback } from '@/types/feedback';
+import type { FeedbackStatus } from '@pickid/supabase';
 import { FEEDBACK_STATUSES } from '@/constants/feedback';
 import {
-	BaseModal,
-	BaseModalContent,
-	BaseModalFooter,
-	BaseModalHeader,
-	BaseModalTitle,
-	BaseSelect,
+	DefaultModal,
+	DefaultModalContent,
+	DefaultModalFooter,
+	DefaultModalHeader,
+	DefaultModalTitle,
+	DefaultSelect,
 	Button,
 	Textarea,
 } from '@pickid/ui';
@@ -39,18 +40,18 @@ export function FeedbackReplyModal({ feedback, open, onOpenChange, onSubmit, isL
 	};
 
 	return (
-		<BaseModal open={open} onOpenChange={onOpenChange}>
-			<BaseModalHeader onClose={handleClose}>
-				<BaseModalTitle>피드백 처리</BaseModalTitle>
-			</BaseModalHeader>
-			<BaseModalContent className="space-y-4">
+		<DefaultModal open={open} onOpenChange={onOpenChange}>
+			<DefaultModalHeader onClose={handleClose}>
+				<DefaultModalTitle>피드백 처리</DefaultModalTitle>
+			</DefaultModalHeader>
+			<DefaultModalContent className="space-y-4">
 				<div>
 					<p className="text-sm font-medium text-neutral-700 mb-1">내용</p>
 					<p className="text-sm text-neutral-600 line-clamp-3">{feedback.content}</p>
 				</div>
 				<div>
 					<label className="text-sm font-medium text-neutral-700 mb-2 block">상태 변경</label>
-					<BaseSelect
+					<DefaultSelect
 						value={status}
 						onValueChange={(value) => setStatus(value as FeedbackStatus)}
 						options={FEEDBACK_STATUSES}
@@ -67,11 +68,11 @@ export function FeedbackReplyModal({ feedback, open, onOpenChange, onSubmit, isL
 						className="resize-none"
 					/>
 				</div>
-			</BaseModalContent>
-			<BaseModalFooter>
+			</DefaultModalContent>
+			<DefaultModalFooter>
 				<Button variant="outline" onClick={handleClose} text="취소" />
 				<Button onClick={handleSubmit} loading={isLoading} text="저장" />
-			</BaseModalFooter>
-		</BaseModal>
+			</DefaultModalFooter>
+		</DefaultModal>
 	);
 }

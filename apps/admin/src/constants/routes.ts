@@ -6,7 +6,6 @@ export const PATH = {
 	TEST_EDIT: '/tests/:testId/edit',
 	CATEGORIES: '/categories',
 	USERS: '/users',
-	RESPONSES: '/responses',
 	FEEDBACKS: '/feedbacks',
 	ANALYTICS: '/analytics',
 	ANALYTICS_TEST_DETAIL: '/analytics/tests/:testId',
@@ -22,3 +21,7 @@ export const HREF = {
 	TEST_DETAIL: (testId: string | number) => `/tests/${testId}`,
 	ANALYTICS_TEST_DETAIL: (testId: string | number) => `/analytics/tests/${testId}`,
 };
+
+
+
+

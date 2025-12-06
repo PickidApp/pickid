@@ -1,4 +1,4 @@
-import { useDashboardFilters } from '@/hooks/useDashboardFilters';
+import { useState, useMemo } from 'react';
 import {
 	useDashboardSummary,
 	useDailyGrowth,
@@ -6,49 +6,69 @@ import {
 	useGlobalFunnel,
 	useTestFunnel,
 	useRecentFeedback,
-} from '@/api/queries';
+} from '@/api';
 import { DashboardSummarySection } from '@/components/dashboard/dashboard-summary-section';
 import { GrowthChartSection } from '@/components/dashboard/growth-chart-section';
 import { FunnelSection } from '@/components/dashboard/funnel-section';
 import { FeedbackSection } from '@/components/dashboard/feedback-section';
-import dayjs from 'dayjs';
+import { PageLoadingSkeleton } from '@/components/common';
+import { getDateRangeParams } from '@/utils';
+import { type DateRangeOption } from '@/constants/analytics';
 
 export function DashboardPage() {
-	const { dateRange, setDateRange, selectedTestId, setSelectedTestId } = useDashboardFilters();
+	const [dateRange, setDateRange] = useState<DateRangeOption>('7d');
+	const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 
-	const summaryQuery = useDashboardSummary(dateRange.from, dateRange.to);
-	const growthQuery = useDailyGrowth(dateRange.from, dateRange.to);
-	const channelQuery = useChannelShare(dateRange.from, dateRange.to);
-	const globalFunnelQuery = useGlobalFunnel(dateRange.from, dateRange.to);
-	const testFunnelQuery = useTestFunnel(selectedTestId, dateRange.from, dateRange.to);
+	const dateParams = useMemo(() => getDateRangeParams(dateRange), [dateRange]);
+
+	const summaryQuery = useDashboardSummary(dateParams);
+	const growthQuery = useDailyGrowth(dateParams);
+	const channelQuery = useChannelShare(dateParams);
+	const globalFunnelQuery = useGlobalFunnel(dateParams);
 	const feedbackQuery = useRecentFeedback(10);
+	const testFunnelQuery = useTestFunnel(selectedTestId, dateParams);
 
 	const handleQuickFilter = (days: number) => {
-		setDateRange({
-			from: dayjs().subtract(days, 'day').toDate(),
-			to: new Date(),
-		});
+		setDateRange(`${days}d` as DateRangeOption);
 	};
 
+	const isLoading =
+		summaryQuery.isLoading ||
+		growthQuery.isLoading ||
+		channelQuery.isLoading ||
+		globalFunnelQuery.isLoading ||
+		feedbackQuery.isLoading;
+
+	if (isLoading) {
+		return <PageLoadingSkeleton />;
+	}
+
 	return (
-		<div className="flex-1 p-8 overflow-auto bg-neutral-50">
-			<DashboardSummarySection query={summaryQuery} />
+		<>
+			<header className="bg-white border-b px-6 py-4">
+				<h1 className="text-2xl text-neutral-900">대시보드</h1>
+				<p className="text-sm text-neutral-500 mt-1">서비스 핵심 지표를 한눈에 확인하세요</p>
+			</header>
 
-			<GrowthChartSection
-				growthQuery={growthQuery}
-				channelQuery={channelQuery}
-				dateRange={dateRange}
-				onQuickFilter={handleQuickFilter}
-			/>
+			<div className="p-6">
+				<DashboardSummarySection data={summaryQuery.data!} />
 
-			<FunnelSection
-				globalFunnelQuery={globalFunnelQuery}
-				testFunnelQuery={testFunnelQuery}
-				selectedTestId={selectedTestId}
-				onTestChange={setSelectedTestId}
-			/>
+				<GrowthChartSection
+					growthData={growthQuery.data ?? []}
+					channelData={channelQuery.data ?? []}
+					dateRange={dateRange}
+					onQuickFilter={handleQuickFilter}
+				/>
 
-			<FeedbackSection feedbackQuery={feedbackQuery} />
-		</div>
+				<FunnelSection
+					globalFunnelData={globalFunnelQuery.data ?? []}
+					testFunnelQuery={testFunnelQuery}
+					selectedTestId={selectedTestId}
+					onTestChange={setSelectedTestId}
+				/>
+
+				<FeedbackSection data={feedbackQuery.data ?? []} />
+			</div>
+		</>
 	);
 }

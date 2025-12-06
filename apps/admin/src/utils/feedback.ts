@@ -1,15 +1,20 @@
-import { FEEDBACK_STATUSES, FEEDBACK_CATEGORIES } from '@/constants/feedback';
+import type { FeedbackStatus, FeedbackCategory } from '@pickid/supabase';
 import type { BadgeProps } from '@pickid/ui';
+import { FEEDBACK_STATUSES, FEEDBACK_CATEGORIES } from '@/constants/feedback';
 
-export function getFeedbackStatusLabel(status: string): string {
+export function getFeedbackStatusLabel(status: FeedbackStatus): string {
 	return FEEDBACK_STATUSES.find((s) => s.value === status)?.label ?? status;
 }
 
-export function getFeedbackCategoryLabel(category: string): string {
+export function getFeedbackCategoryLabel(category: FeedbackCategory): string {
 	return FEEDBACK_CATEGORIES.find((c) => c.value === category)?.label ?? category;
 }
 
-export function getFeedbackStatusVariant(status: string): BadgeProps['variant'] {
+export function getFeedbackStatusColor(status: FeedbackStatus): string {
+	return FEEDBACK_STATUSES.find((s) => s.value === status)?.color ?? '';
+}
+
+export function getFeedbackStatusVariant(status: FeedbackStatus): BadgeProps['variant'] {
 	switch (status) {
 		case 'new':
 			return 'red';
@@ -24,7 +29,7 @@ export function getFeedbackStatusVariant(status: string): BadgeProps['variant'] 
 	}
 }
 
-export function getFeedbackCategoryVariant(category: string): BadgeProps['variant'] {
+export function getFeedbackCategoryVariant(category: FeedbackCategory): BadgeProps['variant'] {
 	switch (category) {
 		case 'bug':
 			return 'red';

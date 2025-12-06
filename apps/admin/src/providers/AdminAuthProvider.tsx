@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { authService, type AdminUser } from '@/services';
+import { authService } from '@/services/auth.service';
+import type { AdminUser } from '@/types/auth';
 
 interface AdminAuthContextType {
 	adminUser: AdminUser | null;

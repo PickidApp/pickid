@@ -1,31 +1,13 @@
-import { useUsersQuery, useUserSummaryQuery } from '@/api/queries';
+import { useUsersQuery, useUserSummaryQuery } from '@/api';
 import { StatCard } from '@/components/common/stat-card';
+import { UserDetailModal } from '@/components/users';
+import { USER_PROVIDERS, USER_STATUSES } from '@/constants/user';
 import { usePagination } from '@/hooks';
-import type { UserProvider, UserStatus } from '@/services/user.service';
+import type { UserProvider, UserStatus } from '@/types/user';
 import { formatDate } from '@/utils';
-import {
-	getUserProviderLabel,
-	getUserProviderVariant,
-	getUserStatusLabel,
-	getUserStatusVariant,
-	USER_PROVIDERS,
-	USER_STATUSES,
-} from '@/utils/user';
+import { getUserProviderLabel, getUserProviderVariant, getUserStatusLabel, getUserStatusVariant } from '@/utils/user';
 import type { Json, User } from '@pickid/supabase';
-import {
-	Badge,
-	BaseModal,
-	BaseModalContent,
-	BaseModalFooter,
-	BaseModalHeader,
-	BaseModalTitle,
-	BaseTable,
-	Button,
-	DefaultPagination,
-	IconButton,
-	SearchInput,
-	type BaseTableColumn,
-} from '@pickid/ui';
+import { Badge, BaseTable, DefaultPagination, IconButton, SearchInput, type BaseTableColumn } from '@pickid/ui';
 import { Eye, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -188,18 +170,11 @@ export function UserListPage() {
 				)}
 			</main>
 
-			<BaseModal open={!!selectedUserId} onOpenChange={handleCloseModal}>
-				<BaseModalHeader onClose={handleCloseModal}>
-					<BaseModalTitle>사용자 상세</BaseModalTitle>
-				</BaseModalHeader>
-				<BaseModalContent>
-					<p className="text-neutral-500">사용자 ID: {selectedUserId}</p>
-					<p className="text-sm text-neutral-400 mt-2">상세 정보는 추후 구현 예정입니다.</p>
-				</BaseModalContent>
-				<BaseModalFooter>
-					<Button variant="outline" onClick={handleCloseModal} text="닫기" />
-				</BaseModalFooter>
-			</BaseModal>
+			<UserDetailModal userId={selectedUserId} open={!!selectedUserId} onOpenChange={handleCloseModal} />
 		</>
 	);
 }
+
+
+
+

@@ -1,9 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
-
-export interface AdminUser {
-	email?: string;
-	id?: string;
-}
+import type { AdminUser } from '@/types/auth';
 
 export const authService = {
 	async getCurrentAdmin(): Promise<AdminUser | null> {

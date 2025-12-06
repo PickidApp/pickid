@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Plus, Eye, Edit } from 'lucide-react';
 import { usePagination } from '@/hooks';
-import { useTestsQuery } from '@/api/queries';
+import { useTestsQuery } from '@/api';
 import { TestDetailModal } from '@/components/tests/test-detail-modal';
 import { BaseTable, Badge, DefaultPagination, IconButton, SearchInput, type BaseTableColumn } from '@pickid/ui';
 import { PATH, HREF } from '@/constants/routes';
 import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
 import { formatDate } from '@/utils';
-import { getTestTypeLabel, getTestStatusLabel, getTestStatusVariant } from '@/utils/test';
+import { getTestTypeLabel, getTestTypeVariant, getTestStatusLabel, getTestStatusVariant } from '@/utils/test';
 import type { Test, TestType, TestStatus } from '@pickid/supabase';
 
 export function TestListPage() {
@@ -80,7 +80,7 @@ export function TestListPage() {
 			filterValue: typeFilter,
 			onFilterChange: (values) => setTypeFilter(values as TestType[]),
 			renderCell: (row) => (
-				<Badge variant="outline" className="whitespace-nowrap">
+				<Badge variant={getTestTypeVariant(row.type)} className="whitespace-nowrap">
 					{getTestTypeLabel(row.type)}
 				</Badge>
 			),

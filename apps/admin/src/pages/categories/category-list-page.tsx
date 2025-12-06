@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Plus, Edit, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 import { usePagination } from '@/hooks';
-import { useCategoriesQuery } from '@/api/queries';
-import { useDeleteCategory, useUpdateCategoryStatus } from '@/api/mutations';
+import { useCategoriesQuery, useDeleteCategory, useUpdateCategoryStatus } from '@/api';
 import {
 	BaseTable,
 	Badge,
@@ -18,8 +17,7 @@ import { CategoryModal } from '@/components/categories/category-modal';
 import { CATEGORY_STATUSES } from '@/constants/category';
 import { formatDate } from '@/utils';
 import { getCategoryStatusLabel, getCategoryStatusVariant } from '@/utils/category';
-import type { Category } from '@pickid/supabase';
-import type { CategoryStatus } from '@/services/category.service';
+import type { Category, CategoryStatus } from '@pickid/supabase';
 
 export default function CategoryListPage() {
 	const [statusFilter, setStatusFilter] = useState<CategoryStatus[]>([]);
@@ -75,9 +73,12 @@ export default function CategoryListPage() {
 
 	const handleConfirmDelete = () => {
 		if (deleteTarget) {
-			deleteCategory.mutate(deleteTarget.id);
-			deleteConfirm.close();
-			setDeleteTarget(null);
+			deleteCategory.mutate(deleteTarget.id, {
+				onSuccess: () => {
+					deleteConfirm.close();
+					setDeleteTarget(null);
+				},
+			});
 		}
 	};
 
@@ -94,11 +95,6 @@ export default function CategoryListPage() {
 			key: 'name',
 			header: '카테고리명',
 			renderCell: (row) => <span className="text-neutral-900 font-medium">{row.name}</span>,
-		},
-		{
-			key: 'slug',
-			header: '슬러그',
-			renderCell: (row) => <span className="text-sm text-neutral-500">{row.slug}</span>,
 		},
 		{
 			key: 'status',
@@ -209,3 +205,7 @@ export default function CategoryListPage() {
 		</>
 	);
 }
+
+
+
+

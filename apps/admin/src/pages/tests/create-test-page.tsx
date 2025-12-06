@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSaveTest, useSaveQuestions, useSaveResults, useSaveTestCategories } from '@/api/mutations';
+import { useSaveTest, useSaveQuestions, useSaveResults, useSaveTestCategories } from '@/api';
 import { TestForm } from '@/components/tests/test-form';
 import { TestQuestionsForm } from '@/components/tests/test-questions-form';
 import { TestResultsForm } from '@/components/tests/test-results-form';
@@ -81,13 +81,13 @@ export function CreateTestPage() {
 		}
 
 		try {
-			const test = (await saveTest.mutateAsync(basicData)) as any;
+			const test = (await saveTest.mutateAsync(basicData)) as { id: string };
 
 			if (!test?.id) {
 				throw new Error('테스트 생성 실패: ID를 받지 못했습니다.');
 			}
 
-			const testId = test.id as string;
+			const testId = test.id;
 
 			await Promise.all([
 				saveQuestions.mutateAsync({
@@ -106,11 +106,9 @@ export function CreateTestPage() {
 					: Promise.resolve(),
 			]);
 
-			alert('테스트가 성공적으로 생성되었습니다!');
 			navigate(PATH.TESTS);
 		} catch (error) {
 			console.error('테스트 생성 실패:', error);
-			alert('테스트 생성에 실패했습니다.');
 		}
 	};
 
@@ -143,7 +141,7 @@ export function CreateTestPage() {
 				<Tabs value={activeTab} onValueChange={(value) => handleTabClick(value as TestTabType)}>
 					<TabsList className="bg-transparent p-0 h-auto gap-8">
 						{TEST_TABS.map((tab) => {
-							const clickable = isTabClickable(tab.id);
+							const clickable = isTabClickable(tab.id as TestTabType);
 							return (
 								<TabsTrigger
 									key={tab.id}

@@ -6,6 +6,20 @@ export function getTestTypeLabel(type: TestType): string {
 	return TEST_TYPES.find((t) => t.value === type)?.label ?? type;
 }
 
+export function getTestTypeVariant(type: TestType): BadgeProps['variant'] {
+	switch (type) {
+		case 'psychology':
+			return 'purple';
+		case 'balance':
+			return 'blue';
+		case 'quiz':
+			return 'amber';
+		case 'other':
+		default:
+			return 'outline';
+	}
+}
+
 export function getTestStatusLabel(status: TestStatus): string {
 	return TEST_STATUSES.find((s) => s.value === status)?.label ?? status;
 }

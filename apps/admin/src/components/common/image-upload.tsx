@@ -1,4 +1,5 @@
-import { uploadFile, type StorageFolder } from '@/lib/storage/upload';
+import { uploadFile } from '@/lib/storage/upload';
+import type { StorageFolder } from '@/types/storage';
 import { cn } from '@pickid/shared';
 import { FormField } from '@pickid/ui';
 import { Image as ImageIcon, X } from 'lucide-react';
@@ -103,3 +104,7 @@ export function ImageUpload({
 		</FormField>
 	);
 }
+
+
+
+

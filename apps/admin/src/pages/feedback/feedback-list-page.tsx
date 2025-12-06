@@ -1,11 +1,11 @@
-import { useFeedbacksQuery, useFeedbackSummaryQuery } from '@/api/queries';
-import { useDeleteFeedback, useUpdateFeedbackStatus } from '@/api/mutations';
+import { useFeedbacksQuery, useFeedbackSummaryQuery, useDeleteFeedback, useUpdateFeedbackStatus } from '@/api';
 import { StatCard } from '@/components/common/stat-card';
 import { FeedbackDetailModal } from '@/components/feedback/feedback-detail-modal';
 import { FeedbackReplyModal } from '@/components/feedback/feedback-reply-modal';
 import { FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from '@/constants/feedback';
 import { usePagination } from '@/hooks';
-import type { Feedback, FeedbackCategory, FeedbackStatus } from '@/services/feedback.service';
+import type { Feedback } from '@/types/feedback';
+import type { FeedbackCategory, FeedbackStatus } from '@pickid/supabase';
 import { getFeedbackCategoryLabel, getFeedbackStatusLabel, getFeedbackCategoryVariant, getFeedbackStatusVariant } from '@/utils/feedback';
 import { formatDate } from '@/utils';
 import {
@@ -15,7 +15,6 @@ import {
 	DefaultPagination,
 	IconButton,
 	SearchInput,
-	toast,
 	useModal,
 	type BaseTableColumn,
 } from '@pickid/ui';
@@ -76,12 +75,8 @@ export function FeedbackListPage() {
 			{ id: selectedFeedback.id, status, adminNote },
 			{
 				onSuccess: () => {
-					toast.success('피드백이 업데이트되었습니다.');
 					replyModal.close();
 					detailModal.close();
-				},
-				onError: () => {
-					toast.error('업데이트에 실패했습니다.');
 				},
 			}
 		);
@@ -96,12 +91,8 @@ export function FeedbackListPage() {
 		if (deleteTargetId) {
 			deleteMutation.mutate(deleteTargetId, {
 				onSuccess: () => {
-					toast.success('삭제되었습니다.');
 					deleteConfirm.close();
 					setDeleteTargetId(null);
-				},
-				onError: () => {
-					toast.error('삭제에 실패했습니다.');
 				},
 			});
 		}
@@ -261,3 +252,6 @@ export function FeedbackListPage() {
 		</>
 	);
 }
+
+
+

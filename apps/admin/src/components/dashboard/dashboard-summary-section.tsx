@@ -1,57 +1,23 @@
-import type { UseQueryResult } from '@tanstack/react-query';
-import type { DashboardSummary } from '@/services/dashboard.service';
-import { FlaskConical, Users, MessageSquare, TrendingUp, Clock } from 'lucide-react';
+import type { DashboardSummary } from '@pickid/supabase';
+import { PlayCircle, Users, CheckCircle, TrendingUp, MessageSquare } from 'lucide-react';
 
 interface DashboardSummarySectionProps {
-	query: UseQueryResult<DashboardSummary, Error>;
+	data: DashboardSummary;
 }
 
-export function DashboardSummarySection(props: DashboardSummarySectionProps) {
-	const { query } = props;
-
-	if (query.isLoading) {
-		return (
-			<div className="grid grid-cols-5 gap-6 mb-8">
-				{[...Array(5)].map((_, i) => (
-					<div key={i} className="bg-white border border-neutral-200 rounded-lg p-6 animate-pulse">
-						<div className="h-10 bg-neutral-200 rounded-lg mb-4"></div>
-						<div className="h-4 bg-neutral-200 rounded w-3/4 mb-2"></div>
-						<div className="h-8 bg-neutral-200 rounded w-1/2"></div>
-					</div>
-				))}
-			</div>
-		);
-	}
-
-	if (query.isError) {
-		return (
-			<div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-				<p className="text-red-600">대시보드 요약 데이터를 불러오는데 실패했습니다.</p>
-			</div>
-		);
-	}
-
-	const { data } = query;
-
-	if (!data) return null;
-
+export function DashboardSummarySection({ data }: DashboardSummarySectionProps) {
 	const completionRate =
 		data.total_sessions > 0 ? ((data.completed_sessions / data.total_sessions) * 100).toFixed(1) : '0.0';
 
 	const kpiCards = [
 		{
-			icon: FlaskConical,
-			title: '전체 테스트',
+			icon: PlayCircle,
+			title: '테스트 시작',
 			value: data.total_sessions.toLocaleString(),
 		},
 		{
-			icon: Users,
-			title: '총 사용자',
-			value: data.new_users.toLocaleString(),
-		},
-		{
-			icon: MessageSquare,
-			title: '총 응답',
+			icon: CheckCircle,
+			title: '테스트 완료',
 			value: data.completed_sessions.toLocaleString(),
 		},
 		{
@@ -60,7 +26,12 @@ export function DashboardSummarySection(props: DashboardSummarySectionProps) {
 			value: `${completionRate}%`,
 		},
 		{
-			icon: Clock,
+			icon: Users,
+			title: '신규 사용자',
+			value: data.new_users.toLocaleString(),
+		},
+		{
+			icon: MessageSquare,
 			title: '신규 피드백',
 			value: data.new_feedback.toLocaleString(),
 		},

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { useTestQuery, useTestQuestionsQuery, useTestResultsQuery, useTestCategoryIdsQuery } from '@/api/queries';
-import { useSaveTest, useSaveQuestions, useSaveResults, useSaveTestCategories } from '@/api/mutations';
+import { useTestQuery, useTestQuestionsQuery, useTestResultsQuery, useTestCategoryIdsQuery, useSaveTest, useSaveQuestions, useSaveResults, useSaveTestCategories } from '@/api';
+import { FormLoadingSkeleton } from '@/components/common';
 import { TestForm } from '@/components/tests/test-form';
 import { TestQuestionsForm } from '@/components/tests/test-questions-form';
 import { TestResultsForm } from '@/components/tests/test-results-form';
@@ -14,7 +14,9 @@ export function EditTestPage() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { testId } = useParams<{ testId: string }>();
-	const [activeTab, setActiveTab] = useState<TestTabType>((location.state?.activeTab as TestTabType) || 'basic');
+	const [activeTab, setActiveTab] = useState<TestTabType>(
+		(location.state?.activeTab as TestTabType) ?? 'basic'
+	);
 
 	const { data: test, isLoading } = useTestQuery(testId || '');
 	const { data: questions } = useTestQuestionsQuery(testId || '');
@@ -26,52 +28,36 @@ export function EditTestPage() {
 	const saveResults = useSaveResults();
 	const saveCategories = useSaveTestCategories();
 
-	const handleBasicSubmit = async (data: any) => {
-		try {
-			await saveTest.mutateAsync({
-				...data,
-				id: testId,
-			});
-
-			if (testId && data.category_ids) {
-				await saveCategories.mutateAsync({
-					testId,
-					categoryIds: data.category_ids,
-				});
+	const handleBasicSubmit = (data: any) => {
+		saveTest.mutate(
+			{ ...data, id: testId },
+			{
+				onSuccess: () => {
+					if (testId && data.category_ids) {
+						saveCategories.mutate(
+							{ testId, categoryIds: data.category_ids },
+							{ onSuccess: () => navigate(PATH.TESTS) }
+						);
+					} else {
+						navigate(PATH.TESTS);
+					}
+				},
 			}
-
-			alert('테스트 기본 정보가 수정되었습니다.');
-			navigate(PATH.TESTS);
-		} catch (error) {
-			console.error('테스트 수정 실패:', error);
-			alert('테스트 수정에 실패했습니다.');
-		}
+		);
 	};
 
-	const handleQuestionsSubmit = async (questionsData: any[]) => {
-		try {
-			await saveQuestions.mutateAsync({
-				testId: testId || '',
-				questions: questionsData,
-			});
-			alert('질문이 저장되었습니다.');
-		} catch (error) {
-			console.error('질문 저장 실패:', error);
-			alert('질문 저장에 실패했습니다.');
-		}
+	const handleQuestionsSubmit = (questionsData: any[]) => {
+		saveQuestions.mutate({
+			testId: testId || '',
+			questions: questionsData,
+		});
 	};
 
-	const handleResultsSubmit = async (resultsData: any[]) => {
-		try {
-			await saveResults.mutateAsync({
-				testId: testId || '',
-				results: resultsData,
-			});
-			alert('결과가 저장되었습니다.');
-		} catch (error) {
-			console.error('결과 저장 실패:', error);
-			alert('결과 저장에 실패했습니다.');
-		}
+	const handleResultsSubmit = (resultsData: any[]) => {
+		saveResults.mutate({
+			testId: testId || '',
+			results: resultsData,
+		});
 	};
 
 	const handleBack = () => {
@@ -80,8 +66,8 @@ export function EditTestPage() {
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center justify-center py-12">
-				<p className="text-neutral-500">로딩 중...</p>
+			<div className="p-6">
+				<FormLoadingSkeleton />
 			</div>
 		);
 	}

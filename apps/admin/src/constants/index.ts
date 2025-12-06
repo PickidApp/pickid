@@ -4,3 +4,5 @@ export * from './test';
 export * from './user';
 export * from './routes';
 export * from './category';
+export * from './analytics';
+export * from './growth';

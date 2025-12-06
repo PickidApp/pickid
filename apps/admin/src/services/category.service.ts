@@ -1,26 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
-import type { Category } from '@pickid/supabase';
-
-export type CategoryStatus = 'active' | 'inactive';
-
-export interface CategoriesResponse {
-	categories: Category[];
-	count: number;
-}
-
-export interface IFetchCategoriesOptions {
-	status?: CategoryStatus;
-	search?: string;
-	page?: number;
-	pageSize?: number;
-}
-
-export interface CategoryPayload {
-	name: string;
-	slug: string;
-	sort_order?: number;
-	status?: CategoryStatus;
-}
+import type { Category, CategoryStatus } from '@pickid/supabase';
+import type { CategoriesResponse, IFetchCategoriesOptions, CategoryPayload } from '@/types/category';
 
 export const categoryService = {
 	async fetchCategories(options?: IFetchCategoriesOptions): Promise<CategoriesResponse> {
@@ -43,7 +23,7 @@ export const categoryService = {
 			query = query.or(`name.ilike.%${options.search}%,slug.ilike.%${options.search}%`);
 		}
 
-		const { data, error, count } = await query.order('sort_order', { ascending: true }).range(from, to);
+		const { data, error, count } = await query.order('created_at', { ascending: false }).range(from, to);
 
 		if (error) throw error;
 
@@ -52,17 +32,6 @@ export const categoryService = {
 			categories: (data ?? []) as Category[],
 			count: count ?? 0,
 		};
-	},
-
-	async fetchCategory(categoryId: string): Promise<Category> {
-		const { data, error } = await supabase
-			.from('test_categories')
-			.select('id, name, slug, description, status, sort_order, created_at, updated_at')
-			.eq('id', categoryId)
-			.single();
-
-		if (error) throw error;
-		return data;
 	},
 
 	async updateCategoryStatus(categoryId: string, status: CategoryStatus): Promise<Category> {
@@ -81,18 +50,6 @@ export const categoryService = {
 		const { error } = await supabase.from('test_categories').delete().eq('id', categoryId);
 
 		if (error) throw error;
-	},
-
-	async updateCategorySortOrder(categoryId: string, sortOrder: number): Promise<Category> {
-		const { data, error } = await supabase
-			.from('test_categories')
-			.update({ sort_order: sortOrder })
-			.eq('id', categoryId)
-			.select('id, name, slug, description, status, sort_order, created_at, updated_at')
-			.single();
-
-		if (error) throw error;
-		return data;
 	},
 
 	async reorderCategories(orders: { id: string; sort_order: number }[]): Promise<void> {

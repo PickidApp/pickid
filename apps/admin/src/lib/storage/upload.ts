@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
-
-export type StorageFolder = 'thumbnails' | 'questions' | 'results/thumbnails' | 'results/backgrounds';
+import type { StorageFolder } from '@/types/storage';
 
 interface UploadOptions {
 	folder: StorageFolder;
@@ -13,7 +12,6 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'im
 export async function uploadFile(file: File, options: UploadOptions): Promise<{ url: string }> {
 	const { folder, maxSizeMB = 5 } = options;
 
-	// 유효성 검사
 	if (!ALLOWED_TYPES.includes(file.type)) {
 		throw new Error('허용되지 않는 파일 형식입니다.');
 	}
@@ -21,7 +19,6 @@ export async function uploadFile(file: File, options: UploadOptions): Promise<{ 
 		throw new Error(`파일 크기는 ${maxSizeMB}MB를 초과할 수 없습니다.`);
 	}
 
-	// 파일명 생성 (timestamp로 유니크하게)
 	const ext = file.name.split('.').pop() || 'jpg';
 	const fileName = `${Date.now()}.${ext}`;
 	const filePath = `${folder}/${fileName}`;
@@ -35,7 +32,9 @@ export async function uploadFile(file: File, options: UploadOptions): Promise<{ 
 		throw new Error(`파일 업로드 실패: ${error.message}`);
 	}
 
-	const { data: { publicUrl } } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
+	const {
+		data: { publicUrl },
+	} = supabase.storage.from(BUCKET).getPublicUrl(data.path);
 
 	return { url: publicUrl };
 }

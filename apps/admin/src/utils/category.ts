@@ -1,4 +1,4 @@
-import type { CategoryStatus } from '@/services/category.service';
+import type { CategoryStatus } from '@pickid/supabase';
 import { CATEGORY_STATUSES } from '@/constants/category';
 import type { BadgeProps } from '@pickid/ui';
 

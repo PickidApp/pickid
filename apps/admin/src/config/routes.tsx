@@ -1,13 +1,12 @@
 import { AdminLayout } from '@/components/layout';
 import { PATH } from '@/constants/routes';
 import { AnalyticsPage } from '@/pages/analytics/analytics-page';
-import { AnalyticsTestDetailPage } from '@/pages/analytics/analytics-test-detail-page';
+import { TestAnalyticsDetailPage } from '@/pages/analytics/test-analytics-detail-page';
 import { AdminLoginPage } from '@/pages/auth/admin-login-page';
 import CategoryListPage from '@/pages/categories/category-list-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { FeedbackListPage } from '@/pages/feedback/feedback-list-page';
 import { GrowthPage } from '@/pages/growth/growth-pages';
-import { UserResponsesPage } from '@/pages/responses/user-responses-page';
 import { CreateTestPage } from '@/pages/tests/create-test-page';
 import { EditTestPage } from '@/pages/tests/edit-test-page';
 import { TestListPage } from '@/pages/tests/test-list-page';
@@ -35,9 +34,8 @@ export function AppRoutes() {
 				<Route path={PATH.TEST_CREATE} element={<CreateTestPage />} />
 				<Route path={PATH.TEST_EDIT} element={<EditTestPage />} />
 				<Route path={PATH.CATEGORIES} element={<CategoryListPage />} />
-				<Route path={PATH.RESPONSES} element={<UserResponsesPage />} />
 				<Route path={PATH.ANALYTICS} element={<AnalyticsPage />} />
-				<Route path={PATH.ANALYTICS_TEST_DETAIL} element={<AnalyticsTestDetailPage />} />
+				<Route path={PATH.ANALYTICS_TEST_DETAIL} element={<TestAnalyticsDetailPage />} />
 				<Route path={PATH.GROWTH} element={<GrowthPage />} />
 			</Route>
 			<Route path="*" element={<Navigate to={PATH.AUTH} replace />} />

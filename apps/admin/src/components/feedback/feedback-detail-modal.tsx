@@ -1,4 +1,4 @@
-import type { Feedback } from '@/services/feedback.service';
+import type { Feedback } from '@/types/feedback';
 import { getFeedbackCategoryLabel, getFeedbackStatusLabel, getFeedbackCategoryVariant, getFeedbackStatusVariant } from '@/utils/feedback';
 import { formatDate } from '@/utils';
 import {

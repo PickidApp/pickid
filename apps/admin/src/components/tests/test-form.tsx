@@ -1,15 +1,11 @@
 import { useState } from 'react';
-import type { Test, TestType, TestStatus, TestInsert } from '@pickid/supabase';
+import type { Test, TestType, TestStatus } from '@pickid/supabase';
 import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
-import { Button, Input, Textarea, Switch, FormField, BaseSelect } from '@pickid/ui';
+import { Button, Input, Textarea, Switch, FormField, DefaultSelect } from '@pickid/ui';
 import { ImageUpload } from '@/components/common/image-upload';
-import { useCategoriesQuery } from '@/api/queries';
+import { useCategoriesQuery } from '@/api';
 import { generateSlug } from '@/utils';
-
-type TestPayload = Omit<TestInsert, 'id' | 'created_at' | 'updated_at'> & {
-	id?: string;
-	category_ids?: string[];
-};
+import type { TestPayload } from '@/types/test';
 
 interface TestFormProps {
 	initialData?: Test | TestPayload;
@@ -22,6 +18,7 @@ interface TestFormProps {
 export function TestForm(props: TestFormProps) {
 	const { initialData, initialCategoryIds, onSubmit, isSubmitting, submitButtonText } = props;
 
+	// TODO: state 너무 많아서 관리 필요할듯 .. reducer나 react hook form, 객체로 관리해야할듯 ?
 	const [title, setTitle] = useState(initialData?.title || '');
 	const [description, setDescription] = useState(initialData?.description || '');
 	const [type, setType] = useState<TestType>(initialData?.type || 'psychology');
@@ -86,7 +83,7 @@ export function TestForm(props: TestFormProps) {
 
 				<div className="grid grid-cols-2 gap-4">
 					<FormField label="타입" htmlFor="type" required>
-						<BaseSelect
+						<DefaultSelect
 							id="type"
 							value={type}
 							onValueChange={(value: string) => setType(value as TestType)}
@@ -96,7 +93,7 @@ export function TestForm(props: TestFormProps) {
 					</FormField>
 
 					<FormField label="카테고리" htmlFor="category">
-						<BaseSelect
+						<DefaultSelect
 							id="category"
 							value={categoryId}
 							onValueChange={(value: string) => setCategoryId(value)}
@@ -107,7 +104,7 @@ export function TestForm(props: TestFormProps) {
 				</div>
 
 				<FormField label="상태" htmlFor="status">
-					<BaseSelect
+					<DefaultSelect
 						id="status"
 						value={status}
 						onValueChange={(value: string) => setStatus(value as TestStatus)}

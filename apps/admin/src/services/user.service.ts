@@ -1,32 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
-import type { User } from '@pickid/supabase';
-
-// ========================================
-// Service-specific types
-// ========================================
-
-export type UserStatus = 'active' | 'inactive' | 'deleted';
-export type UserProvider = 'email' | 'google' | 'kakao';
-
-export interface UsersResponse {
-	users: User[];
-	count: number;
-}
-
-export interface UserSummary {
-	total: number;
-	active: number;
-	inactive: number;
-	deleted: number;
-}
-
-export interface IFetchUsersOptions {
-	status?: UserStatus;
-	provider?: UserProvider;
-	search?: string;
-	page?: number;
-	pageSize?: number;
-}
+import type { User, UserSummary as RpcUserSummary } from '@pickid/supabase';
+import type { UsersResponse, UserSummary, IFetchUsersOptions } from '@/types/user';
 
 export const userService = {
 	async fetchUsers(options?: IFetchUsersOptions): Promise<UsersResponse> {
@@ -72,11 +46,18 @@ export const userService = {
 	},
 
 	async fetchUserSummary(): Promise<UserSummary> {
-		const { data, error } = await supabase.rpc('get_user_summary' as any);
+		const { data, error } = (await supabase.rpc('get_user_summary' as never)) as {
+			data: RpcUserSummary[] | null;
+			error: unknown;
+		};
 
 		if (error) throw error;
 
-		const result = (data as { total_count: number; active_count: number; inactive_count: number; deleted_count: number }[])[0];
+		const result = data?.[0];
+		if (!result) {
+			return { total: 0, active: 0, inactive: 0, deleted: 0 };
+		}
+
 		return {
 			total: result.total_count,
 			active: result.active_count,
@@ -96,28 +77,57 @@ export const userService = {
 		return data;
 	},
 
-	async updateUserStatus(userId: string, status: UserStatus): Promise<User> {
+	async fetchUserResponses(userId: string, limit: number = 10) {
 		const { data, error } = await supabase
-			.from('users')
-			.update({ status })
-			.eq('id', userId)
-			.select('id, auth_user_id, email, name, role, status, avatar_url, meta, created_at, updated_at')
-			.single();
+			.from('test_sessions')
+			.select(
+				`
+				id,
+				status,
+				total_score,
+				started_at,
+				completed_at,
+				completion_time_seconds,
+				device_type,
+				tests (
+					id,
+					title,
+					type
+				),
+				test_results (
+					id,
+					name
+				)
+			`
+			)
+			.eq('user_id', userId)
+			.order('started_at', { ascending: false })
+			.limit(limit);
 
 		if (error) throw error;
-		return data;
+		return data ?? [];
 	},
 
-	async updateUsersStatus(userIds: string[], status: UserStatus): Promise<void> {
-		const { error } = await supabase.from('users').update({ status }).in('id', userIds);
+	async fetchUserStats(userId: string) {
+		const { data, error, count } = await supabase
+			.from('test_sessions')
+			.select('id, status, completion_time_seconds', { count: 'exact' })
+			.eq('user_id', userId);
 
 		if (error) throw error;
-	},
 
-	async deleteUser(userId: string): Promise<void> {
-		// 실제 삭제 대신 상태를 deleted로 변경 (soft delete)
-		const { error } = await supabase.from('users').update({ status: 'deleted' }).eq('id', userId);
+		const responses = data ?? [];
+		const total = count ?? 0;
+		const completed = responses.filter((s) => s.status === 'completed').length;
+		const avgTime =
+			responses.filter((s) => s.completion_time_seconds).reduce((sum, s) => sum + (s.completion_time_seconds ?? 0), 0) /
+				(completed || 1) || 0;
 
-		if (error) throw error;
+		return {
+			totalResponses: total,
+			completedResponses: completed,
+			completionRate: total > 0 ? Math.round((completed / total) * 100) : 0,
+			avgCompletionTime: Math.round(avgTime),
+		};
 	},
 };

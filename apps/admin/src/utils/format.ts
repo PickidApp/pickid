@@ -1,8 +1,29 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import type { DateRangeParams } from '@/types/analytics';
+
+export function getDateRangeParams(dateRange: string): DateRangeParams {
+	const to = dayjs().endOf('day');
+	const days = parseInt(dateRange);
+	const from = to.subtract(days, 'day').startOf('day');
+	return {
+		from: from.toISOString(),
+		to: to.toISOString(),
+	};
+}
 
 export function formatDate(date: string | Date): string {
 	return dayjs(date).locale('ko').format('YYYY-MM-DD');
+}
+
+export function formatTime(seconds: number | null): string {
+	if (!seconds) return '-';
+	const minutes = Math.floor(seconds / 60);
+	const secs = seconds % 60;
+	if (minutes > 0) {
+		return `${minutes}분 ${secs}초`;
+	}
+	return `${secs}초`;
 }
 
 export function formatDateTimeKorean(date: string | Date): string {

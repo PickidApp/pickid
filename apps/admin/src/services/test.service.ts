@@ -1,13 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
-import type { Test, TestInsert, TestType, TestStatus } from '@pickid/supabase';
-
-export interface IFetchTestsOptions {
-	type?: TestType;
-	status?: TestStatus;
-	search?: string;
-	page?: number;
-	pageSize?: number;
-}
+import type { Test } from '@pickid/supabase';
+import type { IFetchTestsOptions, TestPayload } from '@/types/test';
 
 export const testService = {
 	async fetchTests(options?: IFetchTestsOptions) {
@@ -57,7 +50,7 @@ export const testService = {
 		return data;
 	},
 
-	async upsertTest(payload: Omit<TestInsert, 'id' | 'created_at' | 'updated_at'> & { id?: string; category_ids?: string[] }) {
+	async upsertTest(payload: TestPayload) {
 		const { data, error } = await supabase.rpc('upsert_test_metadata', {
 			p_test: payload,
 		});
@@ -189,7 +182,7 @@ export const testService = {
 		}
 	},
 
-	async fetchTestRecentSessions(testId: string, limit: number = 5) {
+	async fetchTestRecentResponses(testId: string, limit: number = 5) {
 		const { data, error } = await supabase
 			.from('test_sessions')
 			.select(
@@ -208,13 +201,13 @@ export const testService = {
 
 		if (error) throw error;
 
-		return (data ?? []).map((session: any) => ({
-			id: session.id,
-			status: session.status,
-			started_at: session.started_at,
-			completed_at: session.completed_at,
-			completion_time_seconds: session.completion_time_seconds,
-			result_name: session.result?.name ?? null,
+		return (data ?? []).map((row: any) => ({
+			id: row.id,
+			status: row.status,
+			started_at: row.started_at,
+			completed_at: row.completed_at,
+			completion_time_seconds: row.completion_time_seconds,
+			result_name: row.result?.name ?? null,
 		}));
 	},
 };

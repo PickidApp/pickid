@@ -1,19 +1,20 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import type { FunnelStepPoint } from '@/services/dashboard.service';
-import { useAllTests } from '@/api/queries';
+import type { GlobalFunnel } from '@pickid/supabase';
+import { useAllTests } from '@/api';
 import { ArrowRight } from 'lucide-react';
+import { EmptyState } from '@/components/common';
 import { FUNNEL_STEP_LABELS, DASHBOARD_COLORS } from '@/constants';
 import { formatNumber } from '@/utils';
 
 interface FunnelSectionProps {
-	globalFunnelQuery: UseQueryResult<FunnelStepPoint[], Error>;
-	testFunnelQuery: UseQueryResult<FunnelStepPoint[], Error>;
+	globalFunnelData: GlobalFunnel[];
+	testFunnelQuery: UseQueryResult<GlobalFunnel[], Error>;
 	selectedTestId: string | null;
 	onTestChange: (testId: string | null) => void;
 }
 
 export function FunnelSection(props: FunnelSectionProps) {
-	const { globalFunnelQuery, testFunnelQuery, selectedTestId, onTestChange } = props;
+	const { globalFunnelData, testFunnelQuery, selectedTestId, onTestChange } = props;
 
 	const testsQuery = useAllTests();
 
@@ -22,32 +23,18 @@ export function FunnelSection(props: FunnelSectionProps) {
 		onTestChange(testId || null);
 	};
 
-	const renderFunnel = (query: UseQueryResult<FunnelStepPoint[], Error>, isGlobal = true) => {
-		if (query.isLoading) {
-			return (
-				<div className="h-64 bg-neutral-50 rounded flex items-center justify-center">
-					<p className="text-neutral-400">로딩 중...</p>
-				</div>
-			);
+	const renderGlobalFunnel = () => {
+		if (globalFunnelData.length === 0) {
+			return <EmptyState className="h-64" />;
 		}
 
-		if (query.isError) {
-			return (
-				<div className="h-64 flex items-center justify-center text-red-600">데이터를 불러오는데 실패했습니다.</div>
-			);
-		}
-
-		if (!query.data || query.data.length === 0) {
-			return <div className="h-64 flex items-center justify-center text-neutral-400">데이터가 없습니다.</div>;
-		}
-
-		const total = query.data[0]?.count || 0;
+		const total = globalFunnelData[0]?.count || 0;
 
 		return (
 			<div className="space-y-4">
-				{query.data.map((step, index) => {
+				{globalFunnelData.map((step, index) => {
 					const percentage = total > 0 ? ((step.count / total) * 100).toFixed(1) : '0';
-					const colorIndex = isGlobal ? index : Math.min(index, DASHBOARD_COLORS.length - 1);
+					const colorIndex = Math.min(index, DASHBOARD_COLORS.length - 1);
 
 					return (
 						<div key={step.funnel_step}>
@@ -74,6 +61,22 @@ export function FunnelSection(props: FunnelSectionProps) {
 	};
 
 	const renderTestFunnel = () => {
+		if (testFunnelQuery.isLoading) {
+			return (
+				<div className="space-y-5 animate-pulse">
+					{[...Array(5)].map((_, i) => (
+						<div key={i}>
+							<div className="flex items-center justify-between mb-2">
+								<div className="h-4 bg-neutral-200 rounded w-32" />
+								<div className="h-4 bg-neutral-200 rounded w-12" />
+							</div>
+							<div className="h-2 bg-neutral-100 rounded-full" />
+						</div>
+					))}
+				</div>
+			);
+		}
+
 		if (!testFunnelQuery.data || testFunnelQuery.data.length === 0) {
 			return (
 				<div className="space-y-5">
@@ -159,7 +162,7 @@ export function FunnelSection(props: FunnelSectionProps) {
 					<h3 className="text-lg text-neutral-900">전체 퍼널</h3>
 					<p className="text-sm text-neutral-500 mt-1">사용자 전환 단계별 분석</p>
 				</div>
-				{renderFunnel(globalFunnelQuery, true)}
+				{renderGlobalFunnel()}
 			</div>
 
 			{/* 테스트별 퍼널 */}
@@ -178,7 +181,6 @@ export function FunnelSection(props: FunnelSectionProps) {
 						value={selectedTestId || ''}
 						onChange={handleTestChange}
 						className="w-full px-3 py-2 text-sm border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-900"
-						disabled={testsQuery.isLoading}
 					>
 						<option value="">전체 테스트</option>
 						{testsQuery.data?.map((test) => (
@@ -188,17 +190,7 @@ export function FunnelSection(props: FunnelSectionProps) {
 						))}
 					</select>
 				</div>
-				{selectedTestId ? (
-					testFunnelQuery.isLoading ? (
-						<div className="h-64 bg-neutral-50 rounded flex items-center justify-center">
-							<p className="text-neutral-400">로딩 중...</p>
-						</div>
-					) : (
-						renderTestFunnel()
-					)
-				) : (
-					renderTestFunnel()
-				)}
+				{renderTestFunnel()}
 			</div>
 		</div>
 	);

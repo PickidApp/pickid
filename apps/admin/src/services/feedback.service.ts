@@ -1,47 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
-
-// ========================================
-// Service-specific types (기존 DB 스키마 기준)
-// ========================================
-
-export type FeedbackStatus = 'new' | 'in_progress' | 'resolved' | 'rejected';
-export type FeedbackCategory = 'bug' | 'feature' | 'ui' | 'etc';
-
-export interface Feedback {
-	id: string;
-	content: string;
-	category: FeedbackCategory;
-	status: FeedbackStatus;
-	admin_note: string | null;
-	test_id: string | null;
-	user_id: string | null;
-	created_at: string;
-	updated_at: string;
-	// Relations
-	users?: { email: string | null } | null;
-	tests?: { title: string | null } | null;
-}
-
-export interface FeedbacksResponse {
-	feedbacks: Feedback[];
-	count: number;
-}
-
-export interface FeedbackSummary {
-	total: number;
-	new: number;
-	in_progress: number;
-	resolved: number;
-	rejected: number;
-}
-
-export interface IFetchFeedbacksOptions {
-	status?: FeedbackStatus;
-	category?: FeedbackCategory;
-	search?: string;
-	page?: number;
-	pageSize?: number;
-}
+import type { FeedbackStatus } from '@pickid/supabase';
+import type { Feedback, FeedbacksResponse, FeedbackSummary, IFetchFeedbacksOptions } from '@/types/feedback';
 
 export const feedbackService = {
 	async fetchFeedbacks(options?: IFetchFeedbacksOptions): Promise<FeedbacksResponse> {
@@ -104,19 +63,6 @@ export const feedbackService = {
 		return summary;
 	},
 
-	async fetchFeedback(feedbackId: string): Promise<Feedback> {
-		const { data, error } = await supabase
-			.from('feedback')
-			.select(
-				'id, content, category, status, admin_note, test_id, user_id, created_at, updated_at, users(email), tests(title)'
-			)
-			.eq('id', feedbackId)
-			.single();
-
-		if (error) throw error;
-		return data as unknown as Feedback;
-	},
-
 	async updateFeedbackStatus(feedbackId: string, status: FeedbackStatus, adminNote?: string): Promise<Feedback> {
 		const { data, error } = await supabase
 			.from('feedback')
@@ -129,12 +75,6 @@ export const feedbackService = {
 
 		if (error) throw error;
 		return data as unknown as Feedback;
-	},
-
-	async updateFeedbacksStatus(feedbackIds: string[], status: FeedbackStatus): Promise<void> {
-		const { error } = await supabase.from('feedback').update({ status }).in('id', feedbackIds);
-
-		if (error) throw error;
 	},
 
 	async deleteFeedback(feedbackId: string): Promise<void> {
