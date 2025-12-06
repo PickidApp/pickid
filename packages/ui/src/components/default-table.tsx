@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DefaultPagination } from './default-pagination';
-export interface BaseTableColumn<T> {
+export interface DefaultTableColumn<T> {
 	key: keyof T | 'actions' | string;
 	header: string;
 	width?: number;
@@ -14,9 +14,9 @@ export interface BaseTableColumn<T> {
 	onFilterChange?: (values: string[]) => void;
 }
 
-export interface BaseTableProps<T> {
+export interface DefaultTableProps<T> {
 	data: T[];
-	columns: BaseTableColumn<T>[];
+	columns: DefaultTableColumn<T>[];
 	isLoading?: boolean;
 	emptyMessage?: string;
 	className?: string;
@@ -27,6 +27,11 @@ export interface BaseTableProps<T> {
 		onPageChange: (page: number) => void;
 	};
 }
+
+/** @deprecated Use DefaultTableColumn instead */
+export type BaseTableColumn<T> = DefaultTableColumn<T>;
+/** @deprecated Use DefaultTableProps instead */
+export type BaseTableProps<T> = DefaultTableProps<T>;
 
 function ColumnFilter({
 	header,
@@ -154,7 +159,7 @@ function ColumnFilter({
 	);
 }
 
-export function BaseTable<T extends Record<string, any>>({
+export function DefaultTable<T extends Record<string, any>>({
 	data,
 	columns,
 	isLoading = false,
@@ -162,7 +167,7 @@ export function BaseTable<T extends Record<string, any>>({
 	className,
 	onRowClick,
 	pagination,
-}: BaseTableProps<T>) {
+}: DefaultTableProps<T>) {
 	const isEmpty = !data || data.length === 0;
 	const showPagination = pagination && pagination.totalPages > 1;
 
@@ -236,3 +241,6 @@ export function BaseTable<T extends Record<string, any>>({
 		</div>
 	);
 }
+
+/** @deprecated Use DefaultTable instead */
+export const BaseTable = DefaultTable;

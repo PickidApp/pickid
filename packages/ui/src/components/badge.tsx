@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cn } from '@pickid/shared';
 
 const variants = {
-	// Color variants
+	// -- color
 	gray: 'bg-gray-100 text-gray-700 fill-gray-700',
 	blue: 'bg-blue-100 text-blue-700 fill-blue-700',
 	purple: 'bg-purple-100 text-purple-700 fill-purple-700',
@@ -11,11 +11,11 @@ const variants = {
 	pink: 'bg-pink-100 text-pink-700 fill-pink-700',
 	green: 'bg-green-100 text-green-700 fill-green-700',
 	teal: 'bg-teal-100 text-teal-700 fill-teal-700',
-	// Semantic variants
+	// -- semantic
 	default: 'bg-neutral-900 text-white fill-white',
 	secondary: 'bg-neutral-100 text-neutral-700 fill-neutral-700',
 	outline: 'bg-white text-neutral-700 fill-neutral-700 border border-neutral-300',
-	// Gradient variants
+	// -- gradient
 	popular: 'bg-gradient-to-r from-red-500 to-pink-500 text-white fill-white',
 	new: 'bg-gradient-to-r from-green-500 to-emerald-500 text-white fill-white',
 	recommended: 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white fill-white',
@@ -57,7 +57,6 @@ function Badge({ children, variant = 'default', size = 'md', icon, className, ..
 	);
 }
 
-// cva와 호환성을 위한 export
 const badgeVariants = (options: { variant?: BadgeVariant }) => {
 	return cn(
 		'inline-flex justify-center items-center shrink-0 rounded-full font-medium whitespace-nowrap',

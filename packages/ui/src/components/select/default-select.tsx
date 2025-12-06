@@ -1,4 +1,3 @@
-import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { cn } from '@pickid/shared';
 
@@ -21,6 +20,7 @@ export interface DefaultSelectProps {
 	required?: boolean;
 	error?: string;
 	helperText?: string;
+	id?: string;
 }
 
 const sizeClasses = {
@@ -48,9 +48,10 @@ export const DefaultSelect = ({
 	required,
 	error,
 	helperText,
+	id,
 	...props
 }: DefaultSelectProps) => {
-	const selectId = `select-${Math.random().toString(36).substr(2, 9)}`;
+	const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
 
 	return (
 		<div className="space-y-2">

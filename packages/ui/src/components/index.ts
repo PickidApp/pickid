@@ -1,6 +1,6 @@
 export * from './alert';
 export * from './badge';
-export * from './base-modal';
+export * from './default-modal';
 export * from './button';
 export * from './card';
 export * from './carousel';
@@ -17,7 +17,7 @@ export * from './label';
 export * from './pagination';
 export * from './switch';
 export * from './table';
-export * from './base-table';
+export * from './default-table';
 export * from './tabs';
 export * from './toaster';
 export * from './form-field';
@@ -28,6 +28,7 @@ export * from './input/input-password';
 export * from './input/search-input';
 
 export * from './select/select';
-export * from './select/base-select';
+export * from './select/default-select';
 
 export * from './textarea/textarea';
+export * from './textarea/default-textarea';

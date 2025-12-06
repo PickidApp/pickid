@@ -10,6 +10,7 @@ type Enum<T extends keyof Database['public']['Enums']> = Database['public']['Enu
 export type Category = TableRow<'test_categories'>;
 export type CategoryInsert = TableInsert<'test_categories'>;
 export type CategoryUpdate = TableUpdate<'test_categories'>;
+export type CategoryStatus = Enum<'test_category_status'>;
 
 // Tests
 export type Test = TableRow<'tests'>;
@@ -31,13 +32,53 @@ export type TestResult = TableRow<'test_results'>;
 export type TestResultInsert = TableInsert<'test_results'>;
 export type TestResultUpdate = TableUpdate<'test_results'>;
 
+// Test 응답 관련
+export type TestSession = TableRow<'test_sessions'>;
+export type TestSessionInsert = TableInsert<'test_sessions'>;
+export type TestSessionUpdate = TableUpdate<'test_sessions'>;
+export type TestSessionStatus = Enum<'test_session_status'>;
+
 // Users
 export type User = TableRow<'users'>;
 export type UserInsert = TableInsert<'users'>;
 export type UserUpdate = TableUpdate<'users'>;
+
+// Feedback
+export type Feedback = TableRow<'feedback'>;
+export type FeedbackInsert = TableInsert<'feedback'>;
+export type FeedbackUpdate = TableUpdate<'feedback'>;
 
 // Enums
 export type TestType = Enum<'test_type'>;
 export type TestStatus = Enum<'test_status'>;
 export type QuestionType = Enum<'question_type'>;
 export type ResultConditionType = Enum<'result_condition_type'>;
+export type FeedbackCategory = Enum<'feedback_category'>;
+export type FeedbackStatus = Enum<'feedback_status'>;
+export type FunnelStep = Enum<'funnel_step'>;
+export type DeviceType = Enum<'device_type'>;
+export type ChannelType = Enum<'channel_type'>;
+export type ConversionType = Enum<'conversion_type'>;
+
+// RPC Function Return Types
+type FunctionReturn<T extends keyof Database['public']['Functions']> =
+	Database['public']['Functions'][T]['Returns'];
+
+// Dashboard RPC
+export type DashboardSummary = FunctionReturn<'get_dashboard_summary'>[number];
+export type ChannelShare = FunctionReturn<'get_channel_share'>[number];
+export type GlobalFunnel = FunctionReturn<'get_global_funnel'>[number];
+export type TestFunnel = FunctionReturn<'get_test_funnel'>[number];
+
+// Growth & Analytics RPC
+export type GrowthSummary = FunctionReturn<'get_growth_summary'>[number];
+export type ChannelAnalysis = FunctionReturn<'get_channel_analysis'>[number];
+export type FunnelAnalysis = FunctionReturn<'get_funnel_analysis'>[number];
+export type LandingPageAnalysis = FunctionReturn<'get_landing_page_analysis'>[number];
+export type CohortAnalysis = FunctionReturn<'get_cohort_analysis'>[number];
+
+// User RPC
+export type UserSummary = FunctionReturn<'get_user_summary'>[number];
+
+// Admin Session RPC
+export type AdminTestSession = FunctionReturn<'get_admin_test_sessions'>[number];
