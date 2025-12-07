@@ -8,15 +8,7 @@ export {
 } from './skeleton';
 
 // Chart
-export {
-	DefaultLineChart,
-	DefaultBarChart,
-	DefaultPieChart,
-	// deprecated aliases
-	BaseLineChart,
-	BaseBarChart,
-	BasePieChart,
-} from './chart';
+export { DefaultLineChart, DefaultBarChart, DefaultPieChart } from './chart';
 
 // Components
 export { StatCard } from './stat-card';

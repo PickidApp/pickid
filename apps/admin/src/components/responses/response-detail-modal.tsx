@@ -5,16 +5,18 @@ import {
 	getDeviceTypeLabel,
 	getDeviceTypeVariant,
 	formatCompletionTime,
+	getShareChannelLabel,
+	getShareChannelVariant,
 } from '@/utils/response';
 import { formatDate } from '@/utils';
 import { InfoRow, ModalLoadingSkeleton, EmptyState } from '@/components/common';
 import {
 	Badge,
-	BaseModal,
-	BaseModalContent,
-	BaseModalFooter,
-	BaseModalHeader,
-	BaseModalTitle,
+	DefaultModal,
+	DefaultModalContent,
+	DefaultModalFooter,
+	DefaultModalHeader,
+	DefaultModalTitle,
 	Button,
 } from '@pickid/ui';
 
@@ -45,11 +47,11 @@ export function ResponseDetailModal(props: ResponseDetailModalProps) {
 	const answers = (data?.answers || []) as ResponseAnswer[];
 
 	return (
-		<BaseModal open={open} onOpenChange={onOpenChange}>
-			<BaseModalHeader onClose={handleClose}>
-				<BaseModalTitle>응답 상세</BaseModalTitle>
-			</BaseModalHeader>
-			<BaseModalContent className="max-h-[70vh] overflow-y-auto">
+		<DefaultModal open={open} onOpenChange={onOpenChange}>
+			<DefaultModalHeader onClose={handleClose}>
+				<DefaultModalTitle>응답 상세</DefaultModalTitle>
+			</DefaultModalHeader>
+			<DefaultModalContent className="max-h-[70vh] overflow-y-auto">
 				{isLoading ? (
 					<ModalLoadingSkeleton variant="detail" />
 				) : !response ? (
@@ -119,6 +121,38 @@ export function ResponseDetailModal(props: ResponseDetailModalProps) {
 							</div>
 						</section>
 
+						{/* 세션/공유 정보 */}
+						<section>
+							<h3 className="text-sm font-medium text-neutral-500 mb-3">세션 · 공유 정보</h3>
+							<div className="bg-neutral-50 rounded-lg p-4 space-y-2">
+								{response.tests_in_session > 0 && (
+									<InfoRow
+										label="세션 내 테스트"
+										value={`${response.session_order || 1}번째 / 총 ${response.tests_in_session}개`}
+									/>
+								)}
+								<InfoRow
+									label="공유 여부"
+									value={
+										response.is_shared ? (
+											<Badge variant={getShareChannelVariant(response.share_channel)}>
+												{getShareChannelLabel(response.share_channel)}
+											</Badge>
+										) : (
+											<span className="text-neutral-400">공유 안함</span>
+										)
+									}
+								/>
+								{response.web_session_id && (
+									<InfoRow
+										label="웹 세션 ID"
+										value={response.web_session_id}
+										valueClassName="text-neutral-500 font-mono text-xs"
+									/>
+								)}
+							</div>
+						</section>
+
 						{/* 응답 목록 */}
 						{answers.length > 0 && (
 							<section>
@@ -147,10 +181,10 @@ export function ResponseDetailModal(props: ResponseDetailModalProps) {
 						)}
 					</div>
 				)}
-			</BaseModalContent>
-			<BaseModalFooter>
+			</DefaultModalContent>
+			<DefaultModalFooter>
 				<Button variant="outline" onClick={handleClose} text="닫기" />
-			</BaseModalFooter>
-		</BaseModal>
+			</DefaultModalFooter>
+		</DefaultModal>
 	);
 }

@@ -1,13 +1,13 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { responseQueryKeys } from './query-keys';
 import type { IFetchResponsesOptions } from '@/types/response';
 
 export function useResponsesQuery(options?: IFetchResponsesOptions) {
-	return useSuspenseQuery(responseQueryKeys.list(options));
+	return useQuery(responseQueryKeys.list(options));
 }
 
 export function useResponseStatsQuery(options?: Omit<IFetchResponsesOptions, 'page' | 'pageSize'>) {
-	return useSuspenseQuery(responseQueryKeys.stats(options));
+	return useQuery(responseQueryKeys.stats(options));
 }
 
 export function useResponseDetailQuery(responseId: string) {

@@ -92,7 +92,13 @@ export function CategoryPerformanceContent({ dateParams }: CategoryPerformanceCo
 					<h4 className="text-sm font-medium text-neutral-700">카테고리별 성과</h4>
 					<p className="text-xs text-neutral-500 mt-1">각 카테고리의 테스트 성과를 비교합니다</p>
 				</div>
-				<DefaultTable columns={columns} data={data || []} isLoading={isLoading} emptyMessage="카테고리 데이터가 없습니다" />
+				<DefaultTable
+					columns={columns}
+					data={data || []}
+					isLoading={isLoading}
+					emptyMessage="카테고리 데이터가 없습니다"
+					className="border-0 rounded-none"
+				/>
 			</div>
 		</div>
 	);

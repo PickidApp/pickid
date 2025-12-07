@@ -1,8 +1,22 @@
 import { supabase } from '@/lib/supabase/client';
-import type { Test } from '@pickid/supabase';
-import type { IFetchTestsOptions, TestPayload } from '@/types/test';
+import type { Test, SeriesListItem, ThemesListItem, TestChoice, TestSessionStatus, Json } from '@pickid/supabase';
+import type { IFetchTestsOptions, TestPayload, QuestionWithChoices, TestWithDetails, TestRecentResponse, TestResultDisplay } from '@/types/test';
 
 export const testService = {
+	async fetchSeriesList() {
+		const { data, error } = await supabase.rpc('get_series_list');
+
+		if (error) throw error;
+		return (data ?? []) as SeriesListItem[];
+	},
+
+	async fetchThemesList() {
+		const { data, error } = await supabase.rpc('get_themes_list');
+
+		if (error) throw error;
+		return (data ?? []) as ThemesListItem[];
+	},
+
 	async fetchTests(options?: IFetchTestsOptions) {
 		const page = options?.page ?? 1;
 		const pageSize = options?.pageSize ?? 20;
@@ -41,7 +55,7 @@ export const testService = {
 		const { data, error } = await supabase
 			.from('tests')
 			.select(
-				'id, title, description, slug, type, status, thumbnail_url, intro_text, estimated_time_minutes, requires_gender, published_at, scheduled_at, settings, created_at, updated_at'
+				'id, title, description, slug, type, status, thumbnail_url, intro_text, estimated_time_minutes, requires_gender, published_at, scheduled_at, settings, series_id, series_order, theme_id, recommended_slot, production_priority, target_release_date, operation_memo, created_at, updated_at'
 			)
 			.eq('id', testId)
 			.single();
@@ -59,20 +73,20 @@ export const testService = {
 		return data;
 	},
 
-	async syncQuestions(testId: string, questions: any[]) {
+	async syncQuestions(testId: string, questions: QuestionInput[]) {
 		const { data, error } = await supabase.rpc('sync_test_questions', {
 			p_test_id: testId,
-			p_questions: questions,
+			p_questions: questions as unknown as Json,
 		});
 
 		if (error) throw error;
 		return data;
 	},
 
-	async syncResults(testId: string, results: any[]) {
+	async syncResults(testId: string, results: ResultInput[]) {
 		const { data, error } = await supabase.rpc('sync_test_results', {
 			p_test_id: testId,
-			p_results: results,
+			p_results: results as unknown as Json,
 		});
 
 		if (error) throw error;
@@ -89,13 +103,13 @@ export const testService = {
 		return data as Test;
 	},
 
-	async fetchTestWithDetails(testId: string) {
+	async fetchTestWithDetails(testId: string): Promise<TestWithDetails | null> {
 		const { data, error } = await supabase.rpc('get_test_with_details', {
 			p_test_id: testId,
 		});
 
 		if (error) throw error;
-		return data;
+		return data as TestWithDetails | null;
 	},
 
 	async duplicateTest(testId: string, newTitle?: string, newSlug?: string) {
@@ -136,16 +150,29 @@ export const testService = {
 
 		if (error) throw error;
 
-		return (
-			data?.map((q: any) => ({
-				...q,
-				choices: q.test_choices || [],
-				test_choices: undefined,
-			})) || []
-		);
+		// Supabase 쿼리 결과 타입
+		type QuestionQueryResult = {
+			id: string;
+			order: number;
+			text: string;
+			question_type: string | null;
+			image_url: string | null;
+			settings: Record<string, unknown> | null;
+			test_choices: TestChoice[] | null;
+		};
+
+		return ((data as QuestionQueryResult[] | null) ?? []).map((q): QuestionWithChoices => ({
+			id: q.id,
+			order: q.order,
+			text: q.text,
+			question_type: q.question_type,
+			image_url: q.image_url,
+			settings: q.settings,
+			choices: q.test_choices ?? [],
+		}));
 	},
 
-	async fetchTestResults(testId: string) {
+	async fetchTestResults(testId: string): Promise<TestResultDisplay[]> {
 		const { data, error } = await supabase
 			.from('test_results')
 			.select(
@@ -155,7 +182,7 @@ export const testService = {
 			.order('order', { ascending: true });
 
 		if (error) throw error;
-		return data || [];
+		return (data ?? []) as TestResultDisplay[];
 	},
 
 	async fetchTestCategoryIds(testId: string) {
@@ -201,7 +228,17 @@ export const testService = {
 
 		if (error) throw error;
 
-		return (data ?? []).map((row: any) => ({
+		// Supabase 쿼리 결과 타입
+		type ResponseQueryResult = {
+			id: string;
+			status: TestSessionStatus;
+			started_at: string;
+			completed_at: string | null;
+			completion_time_seconds: number | null;
+			result: { name: string } | null;
+		};
+
+		return ((data as ResponseQueryResult[] | null) ?? []).map((row): TestRecentResponse => ({
 			id: row.id,
 			status: row.status,
 			started_at: row.started_at,
@@ -211,3 +248,38 @@ export const testService = {
 		}));
 	},
 };
+
+// Input types for RPC functions
+export interface QuestionInput {
+	id?: string;
+	order: number;
+	text: string;
+	question_type?: string | null;
+	image_url?: string | null;
+	settings?: Record<string, unknown> | null;
+	choices?: ChoiceInput[];
+}
+
+export interface ChoiceInput {
+	id?: string;
+	order: number;
+	text: string;
+	image_url?: string | null;
+	score?: number | null;
+	is_correct?: boolean | null;
+	code?: string | null;
+}
+
+export interface ResultInput {
+	id?: string;
+	order: number;
+	name: string;
+	slug: string;
+	description?: string | null;
+	thumbnail_url?: string | null;
+	background_image_url?: string | null;
+	theme_color?: string | null;
+	condition_type: string;
+	match_condition?: Record<string, unknown> | null;
+	metadata?: Record<string, unknown> | null;
+}

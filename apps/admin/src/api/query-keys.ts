@@ -14,6 +14,10 @@ import type { IFetchUsersOptions } from '@/types/user';
 import type { IFetchFeedbacksOptions } from '@/types/feedback';
 import type { IFetchResponsesOptions } from '@/types/response';
 import type { IFetchTestPerformanceOptions } from '@/types/test-analytics';
+import type { IFetchSeriesOptions } from '@/types/series';
+import type { IFetchThemesOptions } from '@/types/theme';
+import { seriesService } from '@/services/series.service';
+import { themeService } from '@/services/theme.service';
 
 export const dashboardQueryKeys = createQueryKeys('dashboard', {
 	summary: (params: DateRangeParams) => ({
@@ -107,6 +111,16 @@ export const testQueryKeys = createQueryKeys('test', {
 		queryKey: [testId, 'recent-responses', limit],
 		queryFn: () => testService.fetchTestRecentResponses(testId, limit),
 	}),
+
+	seriesList: {
+		queryKey: ['series-list'],
+		queryFn: () => testService.fetchSeriesList(),
+	},
+
+	themesList: {
+		queryKey: ['themes-list'],
+		queryFn: () => testService.fetchThemesList(),
+	},
 });
 
 // =========================== 카테고리 ===========================
@@ -114,6 +128,42 @@ export const categoryQueryKeys = createQueryKeys('category', {
 	list: (options?: IFetchCategoriesOptions) => ({
 		queryKey: [options],
 		queryFn: () => categoryService.fetchCategories(options),
+	}),
+});
+
+// =========================== 시리즈 ===========================
+export const seriesQueryKeys = createQueryKeys('series', {
+	list: (options?: IFetchSeriesOptions) => ({
+		queryKey: [options],
+		queryFn: () => seriesService.fetchSeries(options),
+	}),
+
+	testCount: (seriesId: string) => ({
+		queryKey: [seriesId, 'test-count'],
+		queryFn: () => seriesService.getSeriesTestCount(seriesId),
+	}),
+
+	tests: (seriesId: string) => ({
+		queryKey: [seriesId, 'tests'],
+		queryFn: () => seriesService.fetchSeriesTests(seriesId),
+	}),
+});
+
+// =========================== 테마 ===========================
+export const themeQueryKeys = createQueryKeys('theme', {
+	list: (options?: IFetchThemesOptions) => ({
+		queryKey: [options],
+		queryFn: () => themeService.fetchThemes(options),
+	}),
+
+	testCount: (themeId: string) => ({
+		queryKey: [themeId, 'test-count'],
+		queryFn: () => themeService.getThemeTestCount(themeId),
+	}),
+
+	tests: (themeId: string) => ({
+		queryKey: [themeId, 'tests'],
+		queryFn: () => themeService.fetchThemeTests(themeId),
 	}),
 });
 
@@ -303,6 +353,8 @@ export const queryKeys = mergeQueryKeys(
 	dashboardQueryKeys,
 	testQueryKeys,
 	categoryQueryKeys,
+	seriesQueryKeys,
+	themeQueryKeys,
 	userQueryKeys,
 	feedbackQueryKeys,
 	responseQueryKeys,

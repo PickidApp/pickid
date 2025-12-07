@@ -597,7 +597,10 @@ export type Database = {
           estimated_time_minutes: number | null
           id: string
           intro_text: string | null
+          operation_memo: string | null
+          production_priority: Database["public"]["Enums"]["production_priority"] | null
           published_at: string | null
+          recommended_slot: Database["public"]["Enums"]["recommended_slot_type"] | null
           requires_gender: boolean
           scheduled_at: string | null
           series_id: string | null
@@ -605,6 +608,7 @@ export type Database = {
           settings: Json
           slug: string
           status: Database["public"]["Enums"]["test_status"]
+          target_release_date: string | null
           theme_id: string | null
           thumbnail_url: string | null
           title: string
@@ -617,7 +621,10 @@ export type Database = {
           estimated_time_minutes?: number | null
           id?: string
           intro_text?: string | null
+          operation_memo?: string | null
+          production_priority?: Database["public"]["Enums"]["production_priority"] | null
           published_at?: string | null
+          recommended_slot?: Database["public"]["Enums"]["recommended_slot_type"] | null
           requires_gender?: boolean
           scheduled_at?: string | null
           series_id?: string | null
@@ -625,6 +632,7 @@ export type Database = {
           settings?: Json
           slug: string
           status?: Database["public"]["Enums"]["test_status"]
+          target_release_date?: string | null
           theme_id?: string | null
           thumbnail_url?: string | null
           title: string
@@ -637,7 +645,10 @@ export type Database = {
           estimated_time_minutes?: number | null
           id?: string
           intro_text?: string | null
+          operation_memo?: string | null
+          production_priority?: Database["public"]["Enums"]["production_priority"] | null
           published_at?: string | null
+          recommended_slot?: Database["public"]["Enums"]["recommended_slot_type"] | null
           requires_gender?: boolean
           scheduled_at?: string | null
           series_id?: string | null
@@ -645,6 +656,7 @@ export type Database = {
           settings?: Json
           slug?: string
           status?: Database["public"]["Enums"]["test_status"]
+          target_release_date?: string | null
           theme_id?: string | null
           thumbnail_url?: string | null
           title?: string
@@ -1087,6 +1099,28 @@ export type Database = {
           title: string
         }[]
       }
+      get_series_list: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          is_active: boolean
+          test_count: number
+        }[]
+      }
+      get_themes_list: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          is_active: boolean
+          start_date: string | null
+          end_date: string | null
+          test_count: number
+        }[]
+      }
       get_user_summary: {
         Args: never
         Returns: {
@@ -1154,6 +1188,8 @@ export type Database = {
       test_session_status: "in_progress" | "completed" | "abandoned"
       test_status: "draft" | "published" | "scheduled" | "archived"
       test_type: "psychology" | "balance" | "quiz" | "other"
+      recommended_slot_type: "none" | "today_pick" | "theme_pick"
+      production_priority: "low" | "medium" | "high"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1318,6 +1354,8 @@ export const Constants = {
       test_session_status: ["in_progress", "completed", "abandoned"],
       test_status: ["draft", "published", "scheduled", "archived"],
       test_type: ["psychology", "balance", "quiz", "other"],
+      recommended_slot_type: ["none", "today_pick", "theme_pick"],
+      production_priority: ["low", "medium", "high"],
     },
   },
 } as const

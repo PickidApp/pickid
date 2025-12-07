@@ -1,11 +1,11 @@
-import { BaseTable, type BaseTableColumn } from '@pickid/ui';
+import { DefaultTable, type DefaultTableColumn } from '@pickid/ui';
 import type { LandingPageData } from '@/types/analytics';
 
 interface LandingPageTableProps {
 	data?: LandingPageData[];
 }
 
-const columns: BaseTableColumn<LandingPageData>[] = [
+const columns: DefaultTableColumn<LandingPageData>[] = [
 	{
 		key: 'path',
 		header: '페이지 경로',
@@ -39,7 +39,7 @@ const columns: BaseTableColumn<LandingPageData>[] = [
 
 export function LandingPageTable({ data }: LandingPageTableProps) {
 	return (
-		<BaseTable
+		<DefaultTable
 			columns={columns}
 			data={data || []}
 			emptyMessage="데이터가 없습니다"

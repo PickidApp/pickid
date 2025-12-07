@@ -61,14 +61,3 @@ DefaultModalContent.displayName = 'DefaultModalContent';
 DefaultModalFooter.displayName = 'DefaultModalFooter';
 
 export { DefaultModal, DefaultModalHeader, DefaultModalTitle, DefaultModalContent, DefaultModalFooter };
-
-/** @deprecated Use DefaultModal instead */
-export const BaseModal = DefaultModal;
-/** @deprecated Use DefaultModalHeader instead */
-export const BaseModalHeader = DefaultModalHeader;
-/** @deprecated Use DefaultModalTitle instead */
-export const BaseModalTitle = DefaultModalTitle;
-/** @deprecated Use DefaultModalContent instead */
-export const BaseModalContent = DefaultModalContent;
-/** @deprecated Use DefaultModalFooter instead */
-export const BaseModalFooter = DefaultModalFooter;

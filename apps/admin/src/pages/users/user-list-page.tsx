@@ -7,7 +7,7 @@ import type { UserProvider, UserStatus } from '@/types/user';
 import { formatDate } from '@/utils';
 import { getUserProviderLabel, getUserProviderVariant, getUserStatusLabel, getUserStatusVariant } from '@/utils/user';
 import type { Json, User } from '@pickid/supabase';
-import { Badge, BaseTable, DefaultPagination, IconButton, SearchInput, type BaseTableColumn } from '@pickid/ui';
+import { Badge, DefaultTable, DefaultPagination, IconButton, SearchInput, type DefaultTableColumn } from '@pickid/ui';
 import { Eye, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -45,7 +45,7 @@ export function UserListPage() {
 
 	const handleCloseModal = () => setSelectedUserId(null);
 
-	const columns: BaseTableColumn<User>[] = [
+	const columns: DefaultTableColumn<User>[] = [
 		{
 			key: 'no',
 			header: 'No',
@@ -94,7 +94,6 @@ export function UserListPage() {
 			renderCell: (row) => (
 				<div className="flex items-center space-x-1">
 					<IconButton
-						variant="ghost"
 						icon={<Eye className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="상세보기"
@@ -104,7 +103,6 @@ export function UserListPage() {
 						}}
 					/>
 					<IconButton
-						variant="ghost"
 						icon={row.status === 'active' ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="상태 변경"
@@ -114,7 +112,6 @@ export function UserListPage() {
 						}}
 					/>
 					<IconButton
-						variant="ghost"
 						icon={<Trash2 className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-red-600"
 						aria-label="삭제"
@@ -156,7 +153,7 @@ export function UserListPage() {
 					))}
 				</div>
 
-				<BaseTable
+				<DefaultTable
 					data={users}
 					columns={columns}
 					isLoading={isLoading}
@@ -174,6 +171,7 @@ export function UserListPage() {
 		</>
 	);
 }
+
 
 
 

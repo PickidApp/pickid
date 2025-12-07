@@ -10,13 +10,13 @@ import { getFeedbackCategoryLabel, getFeedbackStatusLabel, getFeedbackCategoryVa
 import { formatDate } from '@/utils';
 import {
 	Badge,
-	BaseTable,
+	DefaultTable,
 	ConfirmDialog,
 	DefaultPagination,
 	IconButton,
 	SearchInput,
 	useModal,
-	type BaseTableColumn,
+	type DefaultTableColumn,
 } from '@pickid/ui';
 import { Eye, MessageSquare, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -98,7 +98,7 @@ export function FeedbackListPage() {
 		}
 	};
 
-	const columns: BaseTableColumn<Feedback>[] = [
+	const columns: DefaultTableColumn<Feedback>[] = [
 		{
 			key: 'no',
 			header: 'No',
@@ -217,7 +217,7 @@ export function FeedbackListPage() {
 					))}
 				</div>
 
-				<BaseTable data={feedbacks} columns={columns} isLoading={isLoading} onRowClick={handleOpenDetail} />
+				<DefaultTable data={feedbacks} columns={columns} isLoading={isLoading} onRowClick={handleOpenDetail} />
 
 				{!isLoading && totalPages > 1 && (
 					<div className="mt-6 flex justify-center">

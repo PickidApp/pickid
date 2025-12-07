@@ -1,29 +1,49 @@
-import { useState } from 'react';
-import type { FeedbackListItem } from '@/types/dashboard';
 import { useUpdateFeedbackStatus } from '@/api';
-import { X } from 'lucide-react';
 import { FEEDBACK_STATUSES } from '@/constants/feedback';
-import { formatDateTimeKorean, getFeedbackCategoryLabel } from '@/utils';
-import { IconButton, Button, FormField, DefaultSelect, Textarea } from '@pickid/ui';
+import type { FeedbackListItem } from '@/types/dashboard';
+import {
+	formatDateTimeKorean,
+	getFeedbackCategoryLabel,
+	getFeedbackCategoryVariant,
+	getFeedbackStatusLabel,
+	getFeedbackStatusVariant,
+} from '@/utils';
+import type { FeedbackStatus } from '@pickid/supabase';
+import {
+	Badge,
+	DefaultModal,
+	DefaultModalContent,
+	DefaultModalFooter,
+	DefaultModalHeader,
+	DefaultModalTitle,
+	Button,
+	DefaultSelect,
+	DefaultTextarea,
+} from '@pickid/ui';
+import { useEffect, useState } from 'react';
 
 interface FeedbackDetailModalProps {
-	feedback: FeedbackListItem;
+	feedback: FeedbackListItem | null;
 	isOpen: boolean;
 	onClose: () => void;
 }
 
-export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
-	const { feedback, isOpen, onClose } = props;
+export function FeedbackDetailModal({ feedback, isOpen, onClose }: FeedbackDetailModalProps) {
 	const feedbackUpdate = useUpdateFeedbackStatus();
 
-	const [status, setStatus] = useState(feedback.status);
+	const [status, setStatus] = useState<FeedbackStatus>('new');
 	const [adminNote, setAdminNote] = useState('');
 
-	if (!isOpen) return null;
+	useEffect(() => {
+		if (isOpen && feedback) {
+			setStatus(feedback.status);
+			setAdminNote('');
+		}
+	}, [isOpen, feedback]);
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
+	if (!feedback) return null;
 
+	const handleSubmit = () => {
 		feedbackUpdate.mutate(
 			{
 				id: feedback.id,
@@ -37,72 +57,62 @@ export function FeedbackDetailModal(props: FeedbackDetailModalProps) {
 	};
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-			<div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-auto">
-				<div className="flex items-center justify-between p-6 border-b">
-					<h2 className="text-xl font-bold">피드백 상세</h2>
-					<IconButton icon={<X size={20} />} onClick={onClose} variant="ghost" className="hover:bg-gray-100" />
+		<DefaultModal open={isOpen} onOpenChange={onClose}>
+			<DefaultModalHeader onClose={onClose}>
+				<DefaultModalTitle>피드백 상세</DefaultModalTitle>
+			</DefaultModalHeader>
+			<DefaultModalContent className="space-y-4">
+				<div className="flex items-center gap-2 flex-wrap">
+					<Badge variant={getFeedbackCategoryVariant(feedback.category)}>
+						{getFeedbackCategoryLabel(feedback.category)}
+					</Badge>
+					<Badge variant={getFeedbackStatusVariant(feedback.status)}>{getFeedbackStatusLabel(feedback.status)}</Badge>
 				</div>
 
-				<div className="p-6 space-y-4">
-					<FormField label="카테고리">
-						<p className="mt-1">{getFeedbackCategoryLabel(feedback.category)}</p>
-					</FormField>
-
-					<FormField label="작성자">
-						<p className="mt-1">{feedback.users?.email || '익명'}</p>
-					</FormField>
-
-					<FormField label="관련 테스트">
-						<p className="mt-1">{feedback.tests?.title || '-'}</p>
-					</FormField>
-
-					<FormField label="내용">
-						<p className="mt-1 whitespace-pre-wrap bg-gray-50 p-3 rounded">{feedback.content}</p>
-					</FormField>
-
-					<FormField label="작성일시">
-						<p className="mt-1">{formatDateTimeKorean(feedback.created_at)}</p>
-					</FormField>
-
-					<hr />
-
-					<form onSubmit={handleSubmit} className="space-y-4">
-						<FormField label="상태 변경" htmlFor="status">
-							<DefaultSelect
-								id="status"
-								value={status}
-								onValueChange={(value) => setStatus(value as typeof status)}
-								options={FEEDBACK_STATUSES.map((s) => ({
-									value: s.value,
-									label: s.label,
-								}))}
-								placeholder="상태를 선택해주세요"
-							/>
-						</FormField>
-
-						<FormField label="관리자 메모" htmlFor="adminNote">
-							<Textarea
-								id="adminNote"
-								value={adminNote}
-								onChange={(e) => setAdminNote(e.target.value)}
-								rows={4}
-								placeholder="처리 내용이나 메모를 입력하세요..."
-							/>
-						</FormField>
-
-						<div className="flex gap-2 justify-end">
-							<Button type="button" onClick={onClose} variant="outline" text="취소" />
-							<Button
-								type="submit"
-								disabled={feedbackUpdate.isPending}
-								loading={feedbackUpdate.isPending}
-								text="저장"
-							/>
-						</div>
-					</form>
+				<div className="text-sm text-neutral-500 space-y-1">
+					<p>작성자: {feedback.users?.email || '익명'}</p>
+					{feedback.tests?.title && <p>관련 테스트: {feedback.tests.title}</p>}
+					<p>작성일: {formatDateTimeKorean(feedback.created_at)}</p>
 				</div>
-			</div>
-		</div>
+
+				<div className="border-t pt-4">
+					<h4 className="text-sm font-medium text-neutral-700 mb-2">내용</h4>
+					<p className="text-sm text-neutral-600 whitespace-pre-wrap bg-neutral-50 p-3 rounded-md">
+						{feedback.content}
+					</p>
+				</div>
+
+				<div className="border-t pt-4 space-y-4">
+					<div>
+						<DefaultSelect
+							value={status}
+							onValueChange={(value) => setStatus(value as FeedbackStatus)}
+							options={FEEDBACK_STATUSES}
+							placeholder="상태 선택"
+							label="상태 변경"
+						/>
+					</div>
+					<div>
+						<DefaultTextarea
+							value={adminNote}
+							onChange={(e) => setAdminNote(e.target.value)}
+							placeholder="처리 내용이나 메모를 입력하세요..."
+							rows={3}
+							className="resize-none"
+							label="관리자 메모"
+						/>
+					</div>
+				</div>
+			</DefaultModalContent>
+			<DefaultModalFooter className="py-3">
+				<Button variant="outline" onClick={onClose} text="취소" />
+				<Button
+					onClick={handleSubmit}
+					disabled={feedbackUpdate.isPending}
+					text="저장"
+					loading={feedbackUpdate.isPending}
+				/>
+			</DefaultModalFooter>
+		</DefaultModal>
 	);
 }

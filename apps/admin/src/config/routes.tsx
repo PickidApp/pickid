@@ -4,6 +4,8 @@ import { AnalyticsPage } from '@/pages/analytics/analytics-page';
 import { TestAnalyticsDetailPage } from '@/pages/analytics/test-analytics-detail-page';
 import { AdminLoginPage } from '@/pages/auth/admin-login-page';
 import CategoryListPage from '@/pages/categories/category-list-page';
+import SeriesListPage from '@/pages/series/series-list-page';
+import ThemeListPage from '@/pages/themes/theme-list-page';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { FeedbackListPage } from '@/pages/feedback/feedback-list-page';
 import { GrowthPage } from '@/pages/growth/growth-pages';
@@ -34,6 +36,8 @@ export function AppRoutes() {
 				<Route path={PATH.TEST_CREATE} element={<CreateTestPage />} />
 				<Route path={PATH.TEST_EDIT} element={<EditTestPage />} />
 				<Route path={PATH.CATEGORIES} element={<CategoryListPage />} />
+				<Route path={PATH.SERIES} element={<SeriesListPage />} />
+				<Route path={PATH.THEMES} element={<ThemeListPage />} />
 				<Route path={PATH.ANALYTICS} element={<AnalyticsPage />} />
 				<Route path={PATH.ANALYTICS_TEST_DETAIL} element={<TestAnalyticsDetailPage />} />
 				<Route path={PATH.GROWTH} element={<GrowthPage />} />

@@ -243,9 +243,12 @@ export function AnalyticsPage() {
 							className="w-36"
 						/>
 						{selectedTests.length >= 2 && (
-							<Button variant="outline" size="sm" onClick={handleCompareTests}>
-								{selectedTests.length}개 테스트 비교
-							</Button>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={handleCompareTests}
+								text={`${selectedTests.length}개 테스트 비교`}
+							/>
 						)}
 					</div>
 				</div>

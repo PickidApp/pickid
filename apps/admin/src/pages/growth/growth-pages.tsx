@@ -71,9 +71,8 @@ export function GrowthPage() {
 							size="sm"
 							className="text-blue-600 border-blue-200 hover:bg-blue-50"
 							onClick={() => window.open('https://analytics.google.com', '_blank')}
-						>
-							GA 대시보드
-						</Button>
+							text="GA 대시보드"
+						/>
 					</div>
 				</div>
 			</header>
@@ -309,4 +308,5 @@ export function GrowthPage() {
 		</>
 	);
 }
+
 

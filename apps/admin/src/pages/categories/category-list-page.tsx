@@ -4,14 +4,14 @@ import { Plus, Edit, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 import { usePagination } from '@/hooks';
 import { useCategoriesQuery, useDeleteCategory, useUpdateCategoryStatus } from '@/api';
 import {
-	BaseTable,
+	DefaultTable,
 	Badge,
 	ConfirmDialog,
 	DefaultPagination,
 	IconButton,
 	SearchInput,
 	useModal,
-	type BaseTableColumn,
+	type DefaultTableColumn,
 } from '@pickid/ui';
 import { CategoryModal } from '@/components/categories/category-modal';
 import { CATEGORY_STATUSES } from '@/constants/category';
@@ -82,7 +82,7 @@ export default function CategoryListPage() {
 		}
 	};
 
-	const columns: BaseTableColumn<Category>[] = [
+	const columns: DefaultTableColumn<Category>[] = [
 		{
 			key: 'no',
 			header: 'No',
@@ -120,7 +120,6 @@ export default function CategoryListPage() {
 			renderCell: (row) => (
 				<div className="flex items-center space-x-1">
 					<IconButton
-						variant="ghost"
 						icon={<Edit className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="수정"
@@ -130,7 +129,6 @@ export default function CategoryListPage() {
 						}}
 					/>
 					<IconButton
-						variant="ghost"
 						icon={row.status === 'active' ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="상태 변경"
@@ -141,7 +139,6 @@ export default function CategoryListPage() {
 						disabled={updateCategoryStatus.isPending}
 					/>
 					<IconButton
-						variant="ghost"
 						icon={<Trash2 className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-red-600"
 						aria-label="삭제"
@@ -183,7 +180,7 @@ export default function CategoryListPage() {
 			</header>
 
 			<main className="p-6">
-				<BaseTable data={categories} columns={columns} isLoading={isLoading} />
+				<DefaultTable data={categories} columns={columns} isLoading={isLoading} />
 
 				{!isLoading && totalPages > 1 && (
 					<div className="mt-6 flex justify-center">
@@ -205,6 +202,7 @@ export default function CategoryListPage() {
 		</>
 	);
 }
+
 
 
 

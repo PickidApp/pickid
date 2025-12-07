@@ -48,6 +48,14 @@ export type Feedback = TableRow<'feedback'>;
 export type FeedbackInsert = TableInsert<'feedback'>;
 export type FeedbackUpdate = TableUpdate<'feedback'>;
 
+// Series & Themes
+export type TestSeries = TableRow<'test_series'>;
+export type TestSeriesInsert = TableInsert<'test_series'>;
+export type TestSeriesUpdate = TableUpdate<'test_series'>;
+export type TestTheme = TableRow<'test_themes'>;
+export type TestThemeInsert = TableInsert<'test_themes'>;
+export type TestThemeUpdate = TableUpdate<'test_themes'>;
+
 // Enums
 export type TestType = Enum<'test_type'>;
 export type TestStatus = Enum<'test_status'>;
@@ -59,6 +67,8 @@ export type FunnelStep = Enum<'funnel_step'>;
 export type DeviceType = Enum<'device_type'>;
 export type ChannelType = Enum<'channel_type'>;
 export type ConversionType = Enum<'conversion_type'>;
+export type RecommendedSlotType = Enum<'recommended_slot_type'>;
+export type ProductionPriority = Enum<'production_priority'>;
 
 // RPC Function Return Types
 type FunctionReturn<T extends keyof Database['public']['Functions']> =
@@ -92,3 +102,7 @@ export type ShareBasedSessions = FunctionReturn<'get_share_based_sessions'>[numb
 export type FeaturedTest = FunctionReturn<'get_featured_test'>[number];
 export type CurrentTheme = FunctionReturn<'get_current_theme'>[number];
 export type ThemeTest = FunctionReturn<'get_theme_tests'>[number];
+
+// Series & Themes List (for form selects)
+export type SeriesListItem = FunctionReturn<'get_series_list'>[number];
+export type ThemesListItem = FunctionReturn<'get_themes_list'>[number];

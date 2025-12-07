@@ -25,10 +25,13 @@ export const growthService = {
 	 * 성장 요약 KPI 조회 (변화율 포함)
 	 */
 	async fetchGrowthSummary(params: DateRangeParams): Promise<GrowthSummary> {
-		const { data, error } = (await supabase.rpc('get_growth_summary' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcGrowthSummary[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_growth_summary' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcGrowthSummary[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchGrowthSummary 에러:', error);
@@ -90,10 +93,13 @@ export const growthService = {
 	 * 퍼널 분석 데이터 조회
 	 */
 	async fetchFunnelAnalysis(params: DateRangeParams): Promise<FunnelStep[]> {
-		const { data, error } = (await supabase.rpc('get_funnel_analysis' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcFunnelAnalysis[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_funnel_analysis' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcFunnelAnalysis[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchFunnelAnalysis 에러:', error);
@@ -113,10 +119,13 @@ export const growthService = {
 	 * 채널별 분석 데이터 조회
 	 */
 	async fetchChannelAnalysis(params: DateRangeParams): Promise<ChannelData[]> {
-		const { data, error } = (await supabase.rpc('get_channel_analysis' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcChannelAnalysis[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_channel_analysis' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcChannelAnalysis[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchChannelAnalysis 에러:', error);
@@ -136,10 +145,13 @@ export const growthService = {
 	 * 랜딩 페이지별 분석 데이터 조회
 	 */
 	async fetchLandingPageAnalysis(params: DateRangeParams): Promise<LandingPageData[]> {
-		const { data, error } = (await supabase.rpc('get_landing_page_analysis' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcLandingPageAnalysis[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_landing_page_analysis' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcLandingPageAnalysis[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchLandingPageAnalysis 에러:', error);
@@ -159,9 +171,12 @@ export const growthService = {
 	 * 코호트 리텐션 분석 데이터 조회
 	 */
 	async fetchCohortAnalysis(weeks: number): Promise<CohortData[]> {
-		const { data, error } = (await supabase.rpc('get_cohort_analysis' as never, {
-			p_weeks: weeks,
-		} as never)) as { data: RpcCohortAnalysis[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_cohort_analysis' as never,
+			{
+				p_weeks: weeks,
+			} as never
+		)) as { data: RpcCohortAnalysis[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchCohortAnalysis 에러:', error);
@@ -195,10 +210,13 @@ export const growthService = {
 	 * 바이럴 지표 조회 (공유 전환율, 세션당 테스트 수)
 	 */
 	async fetchViralMetrics(params: DateRangeParams): Promise<RpcViralMetrics> {
-		const { data, error } = (await supabase.rpc('get_viral_metrics' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcViralMetrics[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_viral_metrics' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcViralMetrics[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchViralMetrics 에러:', error);
@@ -219,10 +237,13 @@ export const growthService = {
 	 * 공유 채널별 통계 조회
 	 */
 	async fetchShareChannelStats(params: DateRangeParams): Promise<RpcShareChannelStats[]> {
-		const { data, error } = (await supabase.rpc('get_share_channel_stats' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcShareChannelStats[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_share_channel_stats' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcShareChannelStats[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchShareChannelStats 에러:', error);
@@ -236,10 +257,13 @@ export const growthService = {
 	 * 공유 기반 유입 세션 통계 조회
 	 */
 	async fetchShareBasedSessions(params: DateRangeParams): Promise<RpcShareBasedSessions> {
-		const { data, error } = (await supabase.rpc('get_share_based_sessions' as never, {
-			p_from: toDateString(params.from),
-			p_to: toDateString(params.to),
-		} as never)) as { data: RpcShareBasedSessions[] | null; error: unknown };
+		const { data, error } = (await supabase.rpc(
+			'get_share_based_sessions' as never,
+			{
+				p_from: toDateString(params.from),
+				p_to: toDateString(params.to),
+			} as never
+		)) as { data: RpcShareBasedSessions[] | null; error: unknown };
 
 		if (error) {
 			console.error('[GrowthService] fetchShareBasedSessions 에러:', error);

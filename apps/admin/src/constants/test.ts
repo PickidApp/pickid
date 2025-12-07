@@ -27,3 +27,15 @@ export const RESULT_CONDITION_TYPES = [
 	{ value: 'quiz_score', label: '퀴즈 점수', description: '정답 개수/점수로 결과 매칭' },
 	{ value: 'custom', label: '커스텀', description: '커스텀 로직으로 결과 매칭' },
 ];
+
+export const RECOMMENDED_SLOTS = [
+	{ value: 'none', label: '없음' },
+	{ value: 'today_pick', label: '오늘의 픽' },
+	{ value: 'theme_pick', label: '테마 픽' },
+];
+
+export const PRODUCTION_PRIORITIES = [
+	{ value: 'low', label: '낮음', color: 'gray' },
+	{ value: 'medium', label: '보통', color: 'blue' },
+	{ value: 'high', label: '높음', color: 'red' },
+];

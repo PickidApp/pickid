@@ -10,7 +10,7 @@ import {
 	DefaultModalTitle,
 	DefaultSelect,
 	Button,
-	Textarea,
+	DefaultTextarea,
 } from '@pickid/ui';
 
 interface FeedbackReplyModalProps {
@@ -58,16 +58,14 @@ export function FeedbackReplyModal({ feedback, open, onOpenChange, onSubmit, isL
 						placeholder="상태 선택"
 					/>
 				</div>
-				<div>
-					<label className="text-sm font-medium text-neutral-700 mb-2 block">관리자 메모</label>
-					<Textarea
-						value={adminNote}
-						onChange={(e) => setAdminNote(e.target.value)}
-						placeholder="처리 내용이나 메모를 입력하세요..."
-						rows={4}
-						className="resize-none"
-					/>
-				</div>
+				<DefaultTextarea
+					label="관리자 메모"
+					value={adminNote}
+					onChange={(e) => setAdminNote(e.target.value)}
+					placeholder="처리 내용이나 메모를 입력하세요..."
+					rows={4}
+					className="resize-none"
+				/>
 			</DefaultModalContent>
 			<DefaultModalFooter>
 				<Button variant="outline" onClick={handleClose} text="취소" />

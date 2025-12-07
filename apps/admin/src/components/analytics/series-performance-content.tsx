@@ -108,6 +108,7 @@ export function SeriesPerformanceContent({ dateParams }: SeriesPerformanceConten
 					isLoading={seriesListLoading}
 					emptyMessage="시리즈 데이터가 없습니다"
 					onRowClick={handleSeriesSelect}
+					className="border-0 rounded-none"
 				/>
 			</div>
 

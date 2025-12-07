@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-	BaseModal,
-	BaseModalHeader,
-	BaseModalTitle,
-	BaseModalContent,
-	BaseModalFooter,
+	DefaultModal,
+	DefaultModalHeader,
+	DefaultModalTitle,
+	DefaultModalContent,
+	DefaultModalFooter,
 	Button,
 	Input,
 	Switch,
@@ -78,13 +78,13 @@ export function CategoryModal({ isOpen, onClose, category }: CategoryModalProps)
 	};
 
 	return (
-		<BaseModal open={isOpen} onOpenChange={onClose} className="max-w-md">
+		<DefaultModal open={isOpen} onOpenChange={onClose} className="max-w-md">
 			<form onSubmit={handleSubmit}>
-				<BaseModalHeader onClose={onClose}>
-					<BaseModalTitle>{isEditMode ? '카테고리 수정' : '카테고리 추가'}</BaseModalTitle>
-				</BaseModalHeader>
+				<DefaultModalHeader onClose={onClose}>
+					<DefaultModalTitle>{isEditMode ? '카테고리 수정' : '카테고리 추가'}</DefaultModalTitle>
+				</DefaultModalHeader>
 
-				<BaseModalContent className="space-y-4">
+				<DefaultModalContent className="space-y-4">
 					<FormField label="카테고리명" htmlFor="name" required>
 						<Input
 							id="name"
@@ -113,17 +113,18 @@ export function CategoryModal({ isOpen, onClose, category }: CategoryModalProps)
 						</div>
 						<Switch checked={isActive} onCheckedChange={setIsActive} />
 					</div>
-				</BaseModalContent>
+				</DefaultModalContent>
 
-				<BaseModalFooter>
-					<Button type="button" variant="outline" onClick={onClose}>
-						취소
-					</Button>
-					<Button type="submit" disabled={isSubmitting || !name}>
-						{isSubmitting ? '저장 중...' : isEditMode ? '수정' : '추가'}
-					</Button>
-				</BaseModalFooter>
+				<DefaultModalFooter>
+					<Button type="button" variant="outline" onClick={onClose} text="취소" />
+					<Button
+						type="submit"
+						disabled={isSubmitting || !name}
+						loading={isSubmitting}
+						text={isEditMode ? '수정' : '추가'}
+					/>
+				</DefaultModalFooter>
 			</form>
-		</BaseModal>
+		</DefaultModal>
 	);
 }

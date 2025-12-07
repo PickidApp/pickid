@@ -3,11 +3,6 @@ import { testService } from '@/services/test.service';
 import type { TestPayload } from '@/types/test';
 import { testQueryKeys } from '@/api/query-keys';
 
-interface PublishTestParams {
-	testId: string;
-	scheduledAt?: string;
-}
-
 interface DuplicateTestParams {
 	testId: string;
 	newTitle?: string;
@@ -19,19 +14,6 @@ export function useSaveTest() {
 
 	return useMutation({
 		mutationFn: (payload: TestPayload) => testService.upsertTest(payload),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: testQueryKeys.list().queryKey,
-			});
-		},
-	});
-}
-
-export function usePublishTest() {
-	const queryClient = useQueryClient();
-
-	return useMutation({
-		mutationFn: ({ testId, scheduledAt }: PublishTestParams) => testService.publishTest(testId, scheduledAt),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: testQueryKeys.list().queryKey,

@@ -1,11 +1,11 @@
-import { BaseTable, type BaseTableColumn } from '@pickid/ui';
+import { DefaultTable, type DefaultTableColumn } from '@pickid/ui';
 import type { ChannelData } from '@/types/analytics';
 
 interface ChannelTableProps {
 	data?: ChannelData[];
 }
 
-const columns: BaseTableColumn<ChannelData>[] = [
+const columns: DefaultTableColumn<ChannelData>[] = [
 	{
 		key: 'label',
 		header: '채널',
@@ -29,5 +29,5 @@ const columns: BaseTableColumn<ChannelData>[] = [
 ];
 
 export function ChannelTable({ data }: ChannelTableProps) {
-	return <BaseTable columns={columns} data={data || []} emptyMessage="데이터가 없습니다" />;
+	return <DefaultTable columns={columns} data={data || []} emptyMessage="데이터가 없습니다" />;
 }

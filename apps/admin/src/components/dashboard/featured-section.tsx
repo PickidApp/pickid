@@ -1,6 +1,6 @@
 import type { FeaturedTest, CurrentTheme, ThemeTest } from '@pickid/supabase';
 import { Star, Calendar, ExternalLink, Edit, Tag } from 'lucide-react';
-import { Button } from '@pickid/ui';
+import { IconButton } from '@pickid/ui';
 import { HREF } from '@/constants';
 
 interface FeaturedSectionProps {
@@ -10,8 +10,7 @@ interface FeaturedSectionProps {
 }
 
 export function FeaturedSection({ featuredTest, currentTheme, themeTests }: FeaturedSectionProps) {
-	// TODO: 웹 앱 URL 설정 필요 - 환경변수로 관리
-	const webBaseUrl = 'https://pickid.app';
+	const webBaseUrl = import.meta.env.VITE_WEB_APP_URL || 'https://pickid.app';
 
 	const handleViewOnWeb = (slug: string | null | undefined) => {
 		if (slug) {
@@ -71,19 +70,24 @@ export function FeaturedSection({ featuredTest, currentTheme, themeTests }: Feat
 						</div>
 
 						<div className="flex gap-2">
-							<Button
+							<IconButton
 								variant="outline"
 								size="sm"
 								className="flex-1"
 								onClick={() => handleViewOnWeb(featuredTest.slug)}
-							>
-								<ExternalLink className="w-4 h-4 mr-1" />
-								웹에서 보기
-							</Button>
-							<Button variant="outline" size="sm" className="flex-1" onClick={() => handleEditTest(featuredTest.id)}>
-								<Edit className="w-4 h-4 mr-1" />
-								테스트 수정
-							</Button>
+								icon={<ExternalLink className="w-4 h-4" />}
+								text="웹에서 보기"
+								aria-label="웹에서 보기"
+							/>
+							<IconButton
+								variant="outline"
+								size="sm"
+								className="flex-1"
+								onClick={() => handleEditTest(featuredTest.id)}
+								icon={<Edit className="w-4 h-4" />}
+								text="테스트 수정"
+								aria-label="테스트 수정"
+							/>
 						</div>
 					</div>
 				) : (

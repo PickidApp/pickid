@@ -131,7 +131,6 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 							<div className="flex items-center gap-2">
 								<IconButton
 									type="button"
-									variant="ghost"
 									icon={<MoveUp className="w-4 h-4" />}
 									onClick={() => moveQuestion(qIndex, 'up')}
 									disabled={qIndex === 0}
@@ -139,7 +138,6 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 								/>
 								<IconButton
 									type="button"
-									variant="ghost"
 									icon={<MoveDown className="w-4 h-4" />}
 									onClick={() => moveQuestion(qIndex, 'down')}
 									disabled={qIndex === questions.length - 1}
@@ -147,7 +145,6 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 								/>
 								<IconButton
 									type="button"
-									variant="ghost"
 									icon={<Trash2 className="w-4 h-4 text-red-500" />}
 									onClick={() => removeQuestion(qIndex)}
 									disabled={questions.length === 1}
@@ -177,10 +174,15 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 						<div className="space-y-3">
 							<div className="flex items-center justify-between">
 								<Label>선택지</Label>
-								<Button type="button" variant="outline" size="sm" onClick={() => addChoice(qIndex)}>
-									<Plus className="w-4 h-4 mr-1" />
-									선택지 추가
-								</Button>
+								<IconButton
+									type="button"
+									variant="outline"
+									size="sm"
+									onClick={() => addChoice(qIndex)}
+									icon={<Plus className="w-4 h-4" />}
+									text="선택지 추가"
+									aria-label="선택지 추가"
+								/>
 							</div>
 
 							{question.choices.map((choice, cIndex) => (
@@ -221,7 +223,6 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 
 									<IconButton
 										type="button"
-										variant="ghost"
 										icon={<Trash2 className="w-4 h-4 text-red-500" />}
 										onClick={() => removeChoice(qIndex, cIndex)}
 										disabled={question.choices.length <= 2}
@@ -234,10 +235,15 @@ export function TestQuestionsForm(props: TestQuestionsFormProps) {
 				))}
 			</div>
 
-			<Button type="button" variant="outline" onClick={addQuestion} className="w-full">
-				<Plus className="w-4 h-4 mr-2" />
-				질문 추가
-			</Button>
+			<IconButton
+				type="button"
+				variant="outline"
+				onClick={addQuestion}
+				className="w-full"
+				icon={<Plus className="w-4 h-4" />}
+				text="질문 추가"
+				aria-label="질문 추가"
+			/>
 
 			<div className="flex items-center justify-between pt-6 border-t border-neutral-200">
 				{onPrevious ? (

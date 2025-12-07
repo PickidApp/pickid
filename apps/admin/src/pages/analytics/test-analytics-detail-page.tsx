@@ -18,7 +18,7 @@ import {
 	type DateRangeOption,
 	type TestDetailTab,
 } from '@/constants/analytics';
-import { AnalysisGuideTooltip, StatBox, ProgressBar, BasePieChart, EmptyState } from '@/components/common';
+import { AnalysisGuideTooltip, StatBox, ProgressBar, DefaultPieChart, EmptyState } from '@/components/common';
 import { StatCard } from '@/components/common/stat-card';
 import { getTestTypeLabel, getTestStatusLabel, getTestStatusVariant, getTestTypeVariant } from '@/utils/test';
 import { formatDate, formatDateShort, formatTime, getDateRangeParams } from '@/utils/format';
@@ -79,7 +79,6 @@ export function TestAnalyticsDetailPage() {
 						<IconButton
 							icon={<ArrowLeft className="w-5 h-5" />}
 							onClick={handleBack}
-							variant="ghost"
 							aria-label="뒤로가기"
 						/>
 						<div>
@@ -245,7 +244,7 @@ function OverviewTab({
 					) : (
 						<div className="flex items-center gap-8">
 							<div className="w-48 h-48">
-								<BasePieChart
+								<DefaultPieChart
 									data={deviceChartData}
 									colors={deviceChartColors}
 									height={192}

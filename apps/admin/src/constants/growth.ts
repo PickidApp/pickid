@@ -10,15 +10,6 @@ export const GROWTH_TABS = [
 	{ value: 'viral', label: '바이럴 분석' },
 ];
 
-export const CHANNEL_LABELS: Record<string, string> = {
-	direct: '직접 방문',
-	search: '검색',
-	social: '소셜 미디어',
-	referral: '외부 링크',
-	email: '이메일',
-	other: '기타',
-};
-
 export const GROWTH_ANALYSIS_GUIDES = {
 	overview: {
 		title: '성장 요약이란?',

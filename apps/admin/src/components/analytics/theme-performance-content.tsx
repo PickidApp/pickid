@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { useThemePerformanceQuery, useThemeDailyTrendQuery } from '@/api';
-import { ProgressBar, ChartSkeleton, BaseLineChart } from '@/components/common';
+import { ProgressBar, ChartSkeleton, DefaultLineChart } from '@/components/common';
 import { getCompletionRateColor } from '@/utils/analytics';
 import { formatDate } from '@/utils/format';
 import { DefaultTable, DefaultSelect, type DefaultTableColumn } from '@pickid/ui';
@@ -116,6 +116,7 @@ export function ThemePerformanceContent({ dateParams }: ThemePerformanceContentP
 					isLoading={themeListLoading}
 					emptyMessage="테마 데이터가 없습니다"
 					onRowClick={handleThemeSelect}
+					className="border-0 rounded-none"
 				/>
 			</div>
 
@@ -140,7 +141,7 @@ export function ThemePerformanceContent({ dateParams }: ThemePerformanceContentP
 						) : !trendData || trendData.length === 0 ? (
 							<div className="text-center text-neutral-500 py-8">트렌드 데이터가 없습니다</div>
 						) : (
-							<BaseLineChart data={trendData} lines={lineConfigs} xAxisKey="date" height={288} />
+							<DefaultLineChart data={trendData} lines={lineConfigs} xAxisKey="date" height={288} />
 						)}
 					</div>
 				</div>

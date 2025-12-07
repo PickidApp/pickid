@@ -3,11 +3,11 @@ import { getFeedbackCategoryLabel, getFeedbackStatusLabel, getFeedbackCategoryVa
 import { formatDate } from '@/utils';
 import {
 	Badge,
-	BaseModal,
-	BaseModalContent,
-	BaseModalFooter,
-	BaseModalHeader,
-	BaseModalTitle,
+	DefaultModal,
+	DefaultModalContent,
+	DefaultModalFooter,
+	DefaultModalHeader,
+	DefaultModalTitle,
 	Button,
 } from '@pickid/ui';
 
@@ -24,11 +24,11 @@ export function FeedbackDetailModal({ feedback, open, onOpenChange, onReply }: F
 	const handleClose = () => onOpenChange(false);
 
 	return (
-		<BaseModal open={open} onOpenChange={onOpenChange}>
-			<BaseModalHeader onClose={handleClose}>
-				<BaseModalTitle>피드백 상세</BaseModalTitle>
-			</BaseModalHeader>
-			<BaseModalContent className="space-y-4">
+		<DefaultModal open={open} onOpenChange={onOpenChange}>
+			<DefaultModalHeader onClose={handleClose}>
+				<DefaultModalTitle>피드백 상세</DefaultModalTitle>
+			</DefaultModalHeader>
+			<DefaultModalContent className="space-y-4">
 				<div className="flex items-center gap-2 flex-wrap">
 					<Badge variant={getFeedbackCategoryVariant(feedback.category)}>{getFeedbackCategoryLabel(feedback.category)}</Badge>
 					<Badge variant={getFeedbackStatusVariant(feedback.status)}>{getFeedbackStatusLabel(feedback.status)}</Badge>
@@ -55,13 +55,13 @@ export function FeedbackDetailModal({ feedback, open, onOpenChange, onReply }: F
 						</p>
 					</div>
 				)}
-			</BaseModalContent>
-			<BaseModalFooter>
+			</DefaultModalContent>
+			<DefaultModalFooter>
 				<Button variant="outline" onClick={handleClose} text="닫기" />
 				{feedback.status !== 'resolved' && (
 					<Button onClick={onReply} text="처리하기" />
 				)}
-			</BaseModalFooter>
-		</BaseModal>
+			</DefaultModalFooter>
+		</DefaultModal>
 	);
 }

@@ -28,10 +28,6 @@ export interface DefaultTableProps<T> {
 	};
 }
 
-/** @deprecated Use DefaultTableColumn instead */
-export type BaseTableColumn<T> = DefaultTableColumn<T>;
-/** @deprecated Use DefaultTableProps instead */
-export type BaseTableProps<T> = DefaultTableProps<T>;
 
 function ColumnFilter({
 	header,
@@ -241,6 +237,3 @@ export function DefaultTable<T extends Record<string, any>>({
 		</div>
 	);
 }
-
-/** @deprecated Use DefaultTable instead */
-export const BaseTable = DefaultTable;

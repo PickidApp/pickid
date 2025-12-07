@@ -48,3 +48,11 @@ export function useTestRecentResponsesQuery(testId: string, limit?: number) {
 		enabled: !!testId,
 	});
 }
+
+export function useSeriesListQuery() {
+	return useQuery(testQueryKeys.seriesList);
+}
+
+export function useThemesListQuery() {
+	return useQuery(testQueryKeys.themesList);
+}

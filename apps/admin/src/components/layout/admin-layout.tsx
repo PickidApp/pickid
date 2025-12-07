@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useAdminAuth } from '@/hooks';
 import { AdminSidebar } from './admin-sidebar';
 import { PageLoadingSkeleton } from '@/components/common';
@@ -8,8 +8,6 @@ import { PATH } from '@/constants/routes';
 export function AdminLayout() {
 	const navigate = useNavigate();
 	const { adminUser, logout, loading } = useAdminAuth();
-
-	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
 	useEffect(() => {
 		if (!loading && !adminUser) {
@@ -29,18 +27,9 @@ export function AdminLayout() {
 		return null;
 	}
 
-	const handleToggleSidebar = () => {
-		setSidebarCollapsed((prev) => !prev);
-	};
-
 	return (
 		<div className="flex h-screen bg-white">
-			<AdminSidebar
-				sidebarCollapsed={sidebarCollapsed}
-				onToggleSidebar={handleToggleSidebar}
-				user={adminUser}
-				onLogout={logout}
-			/>
+			<AdminSidebar user={adminUser} onLogout={logout} />
 
 			<main className="flex-1 overflow-auto bg-neutral-50">
 				<Suspense fallback={<PageLoadingSkeleton />}>

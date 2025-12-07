@@ -8,7 +8,7 @@ import {
 	getFeedbackCategoryLabel,
 	getFeedbackStatusColor,
 } from '@/utils';
-import { useModal, Button, BaseTable, type BaseTableColumn } from '@pickid/ui';
+import { useModal, IconButton, DefaultTable, type DefaultTableColumn } from '@pickid/ui';
 
 interface FeedbackSectionProps {
 	data: FeedbackListItem[];
@@ -23,7 +23,7 @@ export function FeedbackSection({ data }: FeedbackSectionProps) {
 		open();
 	};
 
-	const columns: BaseTableColumn<FeedbackListItem>[] = [
+	const columns: DefaultTableColumn<FeedbackListItem>[] = [
 		{
 			key: 'status',
 			header: '상태',
@@ -72,12 +72,16 @@ export function FeedbackSection({ data }: FeedbackSectionProps) {
 					<h3 className="text-lg text-neutral-900">최근 피드백</h3>
 					<p className="text-sm text-neutral-500 mt-1">사용자 피드백 및 제안사항</p>
 				</div>
-				<Button variant="ghost" size="sm" className="text-neutral-600 hover:text-neutral-900">
-					전체보기 <ArrowRight className="w-3 h-3 ml-1" />
-				</Button>
+				<IconButton
+					size="sm"
+					className="text-neutral-600 hover:text-neutral-900"
+					icon={<ArrowRight className="w-3 h-3" />}
+					text="전체보기"
+					aria-label="전체보기"
+				/>
 			</div>
 
-			<BaseTable
+			<DefaultTable
 				data={data}
 				columns={columns}
 				emptyMessage="최근 피드백이 없습니다."

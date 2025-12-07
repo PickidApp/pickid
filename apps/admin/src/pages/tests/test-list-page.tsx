@@ -4,7 +4,7 @@ import { Plus, Eye, Edit } from 'lucide-react';
 import { usePagination } from '@/hooks';
 import { useTestsQuery } from '@/api';
 import { TestDetailModal } from '@/components/tests/test-detail-modal';
-import { BaseTable, Badge, DefaultPagination, IconButton, SearchInput, type BaseTableColumn } from '@pickid/ui';
+import { DefaultTable, Badge, DefaultPagination, IconButton, SearchInput, type DefaultTableColumn } from '@pickid/ui';
 import { PATH, HREF } from '@/constants/routes';
 import { TEST_TYPES, TEST_STATUSES } from '@/constants/test';
 import { formatDate } from '@/utils';
@@ -40,7 +40,7 @@ export function TestListPage() {
 
 	const handleCloseModal = () => setSelectedTestId(null);
 
-	const columns: BaseTableColumn<Test>[] = [
+	const columns: DefaultTableColumn<Test>[] = [
 		{
 			key: 'no',
 			header: 'No',
@@ -117,7 +117,6 @@ export function TestListPage() {
 			renderCell: (row) => (
 				<div className="flex items-center space-x-1">
 					<IconButton
-						variant="ghost"
 						icon={<Eye className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="상세보기"
@@ -127,7 +126,6 @@ export function TestListPage() {
 						}}
 					/>
 					<IconButton
-						variant="ghost"
 						icon={<Edit className="w-4 h-4" />}
 						className="text-neutral-400 hover:text-neutral-600"
 						aria-label="수정"
@@ -168,7 +166,7 @@ export function TestListPage() {
 			</header>
 
 			<main className="p-6">
-				<BaseTable data={tests} columns={columns} isLoading={isLoading} onRowClick={(row) => setSelectedTestId(row.id)} />
+				<DefaultTable data={tests} columns={columns} isLoading={isLoading} onRowClick={(row) => setSelectedTestId(row.id)} />
 
 				{!isLoading && totalPages > 1 && (
 					<div className="mt-6 flex justify-center">

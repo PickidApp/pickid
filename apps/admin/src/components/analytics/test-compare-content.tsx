@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useTestsComparisonMetrics, useTestsComparisonInfo, useTestsComparisonDailyTrend } from '@/api';
 import { CHART_COLORS } from '@/constants/analytics';
 import { formatTime } from '@/utils/format';
-import { ProgressBar, ChartSkeleton, BaseLineChart } from '@/components/common';
+import { ProgressBar, ChartSkeleton, DefaultLineChart } from '@/components/common';
 import { Badge } from '@pickid/ui';
 
 interface TestCompareContentProps {
@@ -164,7 +164,7 @@ export function TestCompareContent({ testIds, dateParams }: TestCompareContentPr
 			{trendData.length > 0 && (
 				<div className="bg-white border border-neutral-200 rounded-lg p-6">
 					<h4 className="text-sm font-medium text-neutral-700 mb-4">일별 응답 트렌드</h4>
-					<BaseLineChart data={trendData} lines={lineConfigs} xAxisKey="date" height={288} />
+					<DefaultLineChart data={trendData} lines={lineConfigs} xAxisKey="date" height={288} />
 				</div>
 			)}
 		</div>

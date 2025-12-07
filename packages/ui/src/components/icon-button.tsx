@@ -9,8 +9,8 @@ interface IconButtonProps extends Omit<ButtonProps, 'children'> {
 }
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-	({ icon, text, className, 'aria-label': ariaLabel, ...props }, ref) => (
-		<Button ref={ref} className={cn('p-2', className)} aria-label={ariaLabel || text} {...props}>
+	({ icon, text, className, 'aria-label': ariaLabel, variant = 'ghost', ...props }, ref) => (
+		<Button ref={ref} variant={variant} className={cn('p-2', className)} aria-label={ariaLabel || text} {...props}>
 			{icon}
 			{text && <span>{text}</span>}
 		</Button>

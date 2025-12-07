@@ -1,4 +1,4 @@
-import { BaseTable, type BaseTableColumn } from '@pickid/ui';
+import { DefaultTable, type DefaultTableColumn } from '@pickid/ui';
 import type { ViralMetrics, ShareChannelStats, ShareBasedSessions } from '@pickid/supabase';
 
 interface ViralContentProps {
@@ -7,7 +7,7 @@ interface ViralContentProps {
 	shareBasedSessions?: ShareBasedSessions;
 }
 
-const shareChannelColumns: BaseTableColumn<ShareChannelStats>[] = [
+const shareChannelColumns: DefaultTableColumn<ShareChannelStats>[] = [
 	{
 		key: 'label',
 		header: '채널',
@@ -71,7 +71,7 @@ export function ViralContent({ viralMetrics, shareChannelStats, shareBasedSessio
 			<div className="grid grid-cols-2 gap-6">
 				<div className="bg-white border border-neutral-200 rounded-lg p-6">
 					<h3 className="text-lg font-medium text-neutral-900 mb-4">공유 채널별 분포</h3>
-					<BaseTable columns={shareChannelColumns} data={shareChannelStats || []} emptyMessage="데이터가 없습니다" />
+					<DefaultTable columns={shareChannelColumns} data={shareChannelStats || []} emptyMessage="데이터가 없습니다" />
 				</div>
 
 				<div className="bg-white border border-neutral-200 rounded-lg p-6">

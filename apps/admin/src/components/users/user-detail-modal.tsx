@@ -19,11 +19,11 @@ import {
 	Tabs,
 	TabsList,
 	TabsTrigger,
-	BaseModal,
-	BaseModalHeader,
-	BaseModalTitle,
-	BaseModalContent,
-	BaseModalFooter,
+	DefaultModal,
+	DefaultModalHeader,
+	DefaultModalTitle,
+	DefaultModalContent,
+	DefaultModalFooter,
 } from '@pickid/ui';
 
 interface UserDetailModalProps {
@@ -62,9 +62,9 @@ export function UserDetailModal(props: UserDetailModalProps) {
 
 	return (
 		<>
-			<BaseModal open={open} onOpenChange={onOpenChange} className="max-w-4xl w-[90%]">
-				<BaseModalHeader onClose={handleClose}>
-					<BaseModalTitle>사용자 상세 정보</BaseModalTitle>
+			<DefaultModal open={open} onOpenChange={onOpenChange} className="max-w-4xl w-[90%]">
+				<DefaultModalHeader onClose={handleClose}>
+					<DefaultModalTitle>사용자 상세 정보</DefaultModalTitle>
 					{user && (
 						<>
 							<Badge variant={getUserProviderVariant(getProvider(user.meta))}>
@@ -73,7 +73,7 @@ export function UserDetailModal(props: UserDetailModalProps) {
 							<Badge variant={getUserStatusVariant(user.status)}>{getUserStatusLabel(user.status)}</Badge>
 						</>
 					)}
-				</BaseModalHeader>
+				</DefaultModalHeader>
 
 				<div className="border-b border-neutral-200 px-6 shrink-0">
 					<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as UserTabType)}>
@@ -95,7 +95,7 @@ export function UserDetailModal(props: UserDetailModalProps) {
 					</Tabs>
 				</div>
 
-				<BaseModalContent className="max-h-[65vh]">
+				<DefaultModalContent className="max-h-[65vh]">
 					{userLoading ? (
 						<ModalLoadingSkeleton />
 					) : !user ? (
@@ -269,6 +269,9 @@ export function UserDetailModal(props: UserDetailModalProps) {
 																	{response.test_results?.name && (
 																		<span className="text-blue-600">결과: {response.test_results.name}</span>
 																	)}
+																	{response.total_score !== null && response.total_score !== undefined && (
+																		<span className="text-neutral-600">점수: {response.total_score}점</span>
+																	)}
 																	<Badge variant={getDeviceTypeVariant(response.device_type)} size="sm">
 																		{getDeviceTypeLabel(response.device_type)}
 																	</Badge>
@@ -292,12 +295,12 @@ export function UserDetailModal(props: UserDetailModalProps) {
 							)}
 						</>
 					)}
-				</BaseModalContent>
+				</DefaultModalContent>
 
-				<BaseModalFooter>
+				<DefaultModalFooter>
 					<Button variant="outline" text="닫기" onClick={handleClose} />
-				</BaseModalFooter>
-			</BaseModal>
+				</DefaultModalFooter>
+			</DefaultModal>
 
 			<ResponseDetailModal
 				responseId={selectedResponseId}

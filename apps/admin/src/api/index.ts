@@ -4,6 +4,8 @@ export {
 	dashboardQueryKeys,
 	testQueryKeys,
 	categoryQueryKeys,
+	seriesQueryKeys,
+	themeQueryKeys,
 	userQueryKeys,
 	feedbackQueryKeys,
 	responseQueryKeys,
@@ -20,8 +22,9 @@ export {
 	useTestWithDetailsQuery,
 	useTestCategoryIdsQuery,
 	useTestRecentResponsesQuery,
+	useSeriesListQuery,
+	useThemesListQuery,
 	useSaveTest,
-	usePublishTest,
 	useSaveQuestions,
 	useSaveResults,
 	useSaveTestCategories,
@@ -100,3 +103,30 @@ export {
 
 // Response
 export { useResponsesQuery, useResponseStatsQuery, useResponseDetailQuery } from './response';
+
+// Series
+export {
+	useSeriesQuery,
+	useSeriesTestCountQuery,
+	useSeriesTestsQuery,
+	useCreateSeries,
+	useUpdateSeries,
+	useDeleteSeries,
+	useUpdateSeriesStatus,
+	useAddTestsToSeries,
+	useRemoveTestFromSeries,
+	useUpdateSeriesTestOrder,
+} from './series';
+
+// Theme
+export {
+	useThemesQuery,
+	useThemeTestCountQuery,
+	useThemeTestsQuery,
+	useCreateTheme,
+	useUpdateTheme,
+	useDeleteTheme,
+	useUpdateThemeStatus,
+	useAddTestsToTheme,
+	useRemoveTestFromTheme,
+} from './theme';

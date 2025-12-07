@@ -186,3 +186,166 @@ function detectChannel(): string {
 1. 세션 ID는 브라우저 쿠키 또는 sessionStorage에 저장하여 중복 생성 방지
 2. 비로그인 사용자도 추적 가능하도록 user_id는 nullable
 3. 테스트 완료 시 web_session의 converted도 true로 업데이트
+
+---
+
+## 사용자 응답 관리 연계 (PRD 3.6 세션/공유 메타 정보)
+
+### 4. 공유 이벤트 추적 (`funnel_events.share`)
+**기록 시점**: 결과 화면에서 공유 버튼 클릭 시
+**필요 데이터**:
+- `session_id`: 테스트 세션 ID
+- `funnel_step`: 'share'
+- `share_channel`: 공유 채널 (instagram, kakao, link 등)
+
+```typescript
+// TODO: 공유 이벤트 기록
+export async function trackShareEvent(
+  sessionId: string,
+  channel: 'instagram' | 'story' | 'kakao' | 'link' | 'other',
+  testId?: string,
+  userId?: string
+) {
+  const { error } = await supabase
+    .from('funnel_events')
+    .insert({
+      session_id: sessionId,
+      test_id: testId || null,
+      user_id: userId || null,
+      funnel_step: 'share',
+      share_channel: channel,
+      occurred_at: new Date().toISOString(),
+    });
+
+  if (error) throw error;
+}
+```
+
+### 5. `test_sessions` 추가 필드
+테스트 세션 생성 시 다음 정보도 함께 저장:
+
+```typescript
+// TODO: 테스트 시작 시 추가 정보 기록
+export async function startTestSession(
+  testId: string,
+  options: {
+    userId?: string;
+    webSessionId?: string;  // 웹 세션 ID 연결
+    deviceType?: 'mobile' | 'desktop' | 'tablet';
+    ipAddress?: string;
+    userAgent?: string;
+    referrer?: string;
+  }
+) {
+  const { data, error } = await supabase
+    .from('test_sessions')
+    .insert({
+      test_id: testId,
+      user_id: options.userId || null,
+      web_session_id: options.webSessionId || null,
+      device_type: options.deviceType || null,
+      ip_address: options.ipAddress || null,
+      user_agent: options.userAgent || null,
+      referrer: options.referrer || null,
+      started_at: new Date().toISOString(),
+      status: 'in_progress',
+    })
+    .select('id')
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+// TODO: 테스트 완료 시 결과 정보 기록
+export async function completeTestSession(
+  sessionId: string,
+  options: {
+    resultId?: string;
+    totalScore?: number;
+    completionTimeSeconds?: number;
+  }
+) {
+  const { error } = await supabase
+    .from('test_sessions')
+    .update({
+      status: 'completed',
+      completed_at: new Date().toISOString(),
+      result_id: options.resultId || null,
+      total_score: options.totalScore || null,
+      completion_time_seconds: options.completionTimeSeconds || null,
+    })
+    .eq('id', sessionId);
+
+  if (error) throw error;
+}
+```
+
+### 6. `test_session_answers` - 질문별 응답 저장
+**기록 시점**: 사용자가 각 질문에 답변할 때마다
+**필요 데이터**:
+- `session_id`: 테스트 세션 ID
+- `question_id`: 질문 ID
+- `choice_id`: 선택한 선택지 ID (객관식)
+- `answer_text`: 텍스트 답변 (주관식)
+- `order`: 질문 순서
+
+```typescript
+// TODO: 질문별 응답 기록
+export async function saveSessionAnswer(
+  sessionId: string,
+  answer: {
+    questionId: string;
+    choiceId?: string;
+    answerText?: string;
+    order: number;
+  }
+) {
+  const { error } = await supabase
+    .from('test_session_answers')
+    .insert({
+      session_id: sessionId,
+      question_id: answer.questionId,
+      choice_id: answer.choiceId || null,
+      answer_text: answer.answerText || null,
+      order: answer.order,
+      answered_at: new Date().toISOString(),
+    });
+
+  if (error) throw error;
+}
+```
+
+## 디바이스 타입 감지
+```typescript
+// TODO: 디바이스 타입 감지
+function detectDeviceType(): 'mobile' | 'desktop' | 'tablet' {
+  if (typeof window === 'undefined') return 'desktop';
+
+  const ua = navigator.userAgent;
+
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    return 'tablet';
+  }
+
+  if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    return 'mobile';
+  }
+
+  return 'desktop';
+}
+```
+
+## 구현 우선순위
+
+1. **필수 (어드민 응답 관리 기본 기능)**
+   - `test_sessions` 생성/완료 (status, started_at, completed_at)
+   - `test_session_answers` 저장
+
+2. **권장 (어드민 통계/필터링)**
+   - `test_sessions`의 device_type, result_id, total_score
+   - `web_sessions` 연계 (web_session_id)
+
+3. **선택 (바이럴 분석)**
+   - `funnel_events.share` 이벤트
+   - 공유 채널 추적

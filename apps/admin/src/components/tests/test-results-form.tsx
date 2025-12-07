@@ -232,33 +232,27 @@ export function TestResultsForm(props: TestResultsFormProps) {
 						<div className="flex items-center justify-between">
 							<h3 className="text-lg font-semibold">결과 {index + 1}</h3>
 							<div className="flex items-center gap-2">
-								<Button
+								<IconButton
 									type="button"
-									variant="ghost"
-									size="icon"
+									icon={<MoveUp className="w-4 h-4" />}
 									onClick={() => moveResult(index, 'up')}
 									disabled={index === 0}
-								>
-									<MoveUp className="w-4 h-4" />
-								</Button>
-								<Button
+									aria-label="위로 이동"
+								/>
+								<IconButton
 									type="button"
-									variant="ghost"
-									size="icon"
+									icon={<MoveDown className="w-4 h-4" />}
 									onClick={() => moveResult(index, 'down')}
 									disabled={index === results.length - 1}
-								>
-									<MoveDown className="w-4 h-4" />
-								</Button>
-								<Button
+									aria-label="아래로 이동"
+								/>
+								<IconButton
 									type="button"
-									variant="ghost"
-									size="icon"
+									icon={<Trash2 className="w-4 h-4 text-red-500" />}
 									onClick={() => removeResult(index)}
 									disabled={results.length === 1}
-								>
-									<Trash2 className="w-4 h-4 text-red-500" />
-								</Button>
+									aria-label="결과 삭제"
+								/>
 							</div>
 						</div>
 
@@ -293,10 +287,14 @@ export function TestResultsForm(props: TestResultsFormProps) {
 						<div>
 							<div className="flex items-center justify-between mb-3">
 								<label className="block text-sm text-neutral-700">결과 특징</label>
-								<Button type="button" variant="ghost" size="sm" onClick={() => addFeature(index)}>
-									<Plus className="w-4 h-4 mr-1" />
-									특징 추가
-								</Button>
+								<IconButton
+									type="button"
+									size="sm"
+									onClick={() => addFeature(index)}
+									icon={<Plus className="w-4 h-4" />}
+									text="특징 추가"
+									aria-label="특징 추가"
+								/>
 							</div>
 							<div className="space-y-3">
 								{getFeatures(result).length === 0 ? (
@@ -315,7 +313,6 @@ export function TestResultsForm(props: TestResultsFormProps) {
 												/>
 												<IconButton
 													type="button"
-													variant="ghost"
 													icon={<X className="w-4 h-4" />}
 													onClick={() => removeFeature(index, fIndex)}
 													className="text-neutral-400 hover:text-red-500 flex-shrink-0"
@@ -357,10 +354,15 @@ export function TestResultsForm(props: TestResultsFormProps) {
 				))}
 			</div>
 
-			<Button type="button" variant="outline" onClick={addResult} className="w-full">
-				<Plus className="w-4 h-4 mr-2" />
-				결과 추가
-			</Button>
+			<IconButton
+				type="button"
+				variant="outline"
+				onClick={addResult}
+				className="w-full"
+				icon={<Plus className="w-4 h-4" />}
+				text="결과 추가"
+				aria-label="결과 추가"
+			/>
 
 			<div className="flex items-center justify-between pt-6 border-t border-neutral-200">
 				{onPrevious ? (

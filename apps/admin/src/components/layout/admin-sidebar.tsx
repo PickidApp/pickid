@@ -6,15 +6,18 @@ import { IconButton, Button } from '@pickid/ui';
 import { cn } from '@pickid/shared';
 
 interface AdminSidebarProps {
-	sidebarCollapsed: boolean;
-	onToggleSidebar: () => void;
 	user: { email?: string } | null;
 	onLogout: () => void;
 }
 
-export function AdminSidebar({ sidebarCollapsed, onToggleSidebar, user, onLogout }: AdminSidebarProps) {
+export function AdminSidebar({ user, onLogout }: AdminSidebarProps) {
 	const location = useLocation();
+	const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 	const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+	const handleToggleSidebar = () => {
+		setSidebarCollapsed((prev) => !prev);
+	};
 
 	const handleLogout = () => {
 		setUserMenuOpen(false);
@@ -69,8 +72,7 @@ export function AdminSidebar({ sidebarCollapsed, onToggleSidebar, user, onLogout
 				</div>
 				<IconButton
 					icon={sidebarCollapsed ? <ChevronRight className="size-4" /> : <ChevronLeft className="size-4" />}
-					onClick={onToggleSidebar}
-					variant="ghost"
+					onClick={handleToggleSidebar}
 					size="icon"
 					aria-label="사이드바 토글"
 				/>

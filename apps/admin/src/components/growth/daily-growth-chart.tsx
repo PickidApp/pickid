@@ -1,4 +1,4 @@
-import { BaseLineChart, EmptyState } from '@/components/common';
+import { DefaultLineChart, EmptyState } from '@/components/common';
 import type { DailyGrowth } from '@/types/analytics';
 
 interface DailyGrowthChartProps {
@@ -18,7 +18,7 @@ export function DailyGrowthChart({ data }: DailyGrowthChartProps) {
 	return (
 		<div className="bg-white border border-neutral-200 rounded-lg p-6">
 			<h3 className="text-lg font-medium text-neutral-900 mb-4">일별 성장 추이</h3>
-			<BaseLineChart
+			<DefaultLineChart
 				data={chartData}
 				lines={[
 					{ dataKey: 'visits', name: '방문', color: '#3b82f6' },

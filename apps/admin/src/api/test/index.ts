@@ -7,12 +7,13 @@ export {
 	useTestWithDetailsQuery,
 	useTestCategoryIdsQuery,
 	useTestRecentResponsesQuery,
+	useSeriesListQuery,
+	useThemesListQuery,
 } from './queries';
 
 // Mutations
 export {
 	useSaveTest,
-	usePublishTest,
 	useSaveQuestions,
 	useSaveResults,
 	useSaveTestCategories,

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { DashboardSummary } from '@pickid/supabase';
 import { PlayCircle, CheckCircle, TrendingUp, FileText, Share2, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@pickid/ui';
+import { IconButton } from '@pickid/ui';
 
 interface DashboardSummarySectionProps {
 	data: DashboardSummary;
@@ -74,19 +74,14 @@ export function DashboardSummarySection({ data }: DashboardSummarySectionProps) 
 		<div className="mb-8">
 			<div className="flex items-center justify-between mb-4">
 				<h2 className="text-lg font-medium text-neutral-900">핵심 KPI</h2>
-				<Button variant="ghost" size="sm" onClick={handleToggle} className="text-neutral-500 hover:text-neutral-700">
-					{showExtendedKpi ? (
-						<>
-							<ChevronUp className="w-4 h-4 mr-1" />
-							확장 지표 숨기기
-						</>
-					) : (
-						<>
-							<ChevronDown className="w-4 h-4 mr-1" />
-							확장 지표 보기
-						</>
-					)}
-				</Button>
+				<IconButton
+					size="sm"
+					onClick={handleToggle}
+					className="text-neutral-500 hover:text-neutral-700"
+					icon={showExtendedKpi ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+					text={showExtendedKpi ? '확장 지표 숨기기' : '확장 지표 보기'}
+					aria-label={showExtendedKpi ? '확장 지표 숨기기' : '확장 지표 보기'}
+				/>
 			</div>
 
 			<div className={`grid gap-4 ${showExtendedKpi ? 'grid-cols-6' : 'grid-cols-4'}`}>

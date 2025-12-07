@@ -32,7 +32,11 @@
       "Bash(pnpm --filter @pickid/admin type-check:*)",
       "Bash(grep:*)",
       "Bash(mkdir:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(yes:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

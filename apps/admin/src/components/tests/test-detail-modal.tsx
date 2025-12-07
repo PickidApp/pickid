@@ -6,11 +6,15 @@ import {
 	useCategoriesQuery,
 	useTestRecentResponsesQuery,
 	useResponsesQuery,
+	useSeriesListQuery,
+	useThemesListQuery,
 } from '@/api';
 import { StatBox, ModalLoadingSkeleton } from '@/components/common';
 import { ResponseDetailModal } from '@/components/responses/response-detail-modal';
 import { HREF } from '@/constants/routes';
 import { TEST_TABS, type TestTabType } from '@/constants/test';
+import type { TestWithDetails, QuestionWithChoices, TestResultDisplay } from '@/types/test';
+import type { Response } from '@/types/response';
 import { formatDateTimeKorean } from '@/utils';
 import {
 	getResponseStatusLabel,
@@ -26,14 +30,12 @@ import {
 	Tabs,
 	TabsList,
 	TabsTrigger,
-	BaseModal,
-	BaseModalHeader,
-	BaseModalTitle,
-	BaseModalContent,
-	BaseModalFooter,
-	IconButton,
+	DefaultModal,
+	DefaultModalHeader,
+	DefaultModalTitle,
+	DefaultModalContent,
+	DefaultModalFooter,
 } from '@pickid/ui';
-import { Edit } from 'lucide-react';
 
 interface TestDetailModalProps {
 	testId: string;
@@ -46,20 +48,25 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 	const { data: testData, isLoading } = useTestWithDetailsQuery(testId);
 	const { data: categoryIds } = useTestCategoryIdsQuery(testId);
 	const { data: categoriesData } = useCategoriesQuery({ status: 'active' });
+	const { data: seriesList } = useSeriesListQuery();
+	const { data: themesList } = useThemesListQuery();
 	const { data: recentResponses, isLoading: isRecentResponsesLoading } = useTestRecentResponsesQuery(testId, 5);
 	const { data: responsesData, isLoading: isAllResponsesLoading } = useResponsesQuery({ testId, pageSize: 20 });
 	const [activeTab, setActiveTab] = useState<TestTabType>('basic');
 	const [selectedResponseId, setSelectedResponseId] = useState<string | null>(null);
 
-	const test = testData as any;
-	const questions = test?.questions || [];
-	const results = test?.results || [];
+	const test = testData as TestWithDetails | null;
+	const questions: QuestionWithChoices[] = test?.questions ?? [];
+	const results: TestResultDisplay[] = test?.results ?? [];
 
 	const categoryNames =
 		categoryIds
 			?.map((id) => categoriesData?.categories?.find((cat) => cat.id === id)?.name)
 			.filter(Boolean)
 			.join(', ') || '-';
+
+	const seriesName = test?.series_id ? seriesList?.find((s) => s.id === test.series_id)?.name : null;
+	const themeName = test?.theme_id ? themesList?.find((t) => t.id === test.theme_id)?.name : null;
 
 	if (!isOpen) return null;
 
@@ -70,8 +77,8 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 		}
 	};
 
-	const responses = responsesData?.responses || [];
-	const responsesCount = responsesData?.count || 0;
+	const responses: Response[] = responsesData?.responses ?? [];
+	const responsesCount = responsesData?.count ?? 0;
 
 	const tabs = TEST_TABS.map((tab) => ({
 		...tab,
@@ -86,16 +93,16 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 	}));
 
 	return (
-		<BaseModal open={isOpen} onOpenChange={onClose} className="max-w-6xl w-[90%]">
-			<BaseModalHeader onClose={onClose}>
-				<BaseModalTitle>테스트 상세 정보</BaseModalTitle>
+		<DefaultModal open={isOpen} onOpenChange={onClose} className="max-w-6xl w-[90%]">
+			<DefaultModalHeader onClose={onClose}>
+				<DefaultModalTitle>테스트 상세 정보</DefaultModalTitle>
 				{test && (
 					<>
 						<Badge variant="outline">{getTestTypeLabel(test.type)}</Badge>
 						<Badge variant={getTestStatusVariant(test.status)}>{getTestStatusLabel(test.status)}</Badge>
 					</>
 				)}
-			</BaseModalHeader>
+			</DefaultModalHeader>
 
 			<div className="border-b border-neutral-200 px-6 shrink-0">
 				<Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TestTabType)}>
@@ -117,7 +124,7 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 				</Tabs>
 			</div>
 
-			<BaseModalContent className="max-h-[65vh]">
+			<DefaultModalContent className="max-h-[65vh]">
 				{isLoading ? (
 					<ModalLoadingSkeleton />
 				) : (
@@ -146,6 +153,26 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 												<div>
 													<label className="block text-xs font-medium text-neutral-500 mb-1">카테고리</label>
 													<div className="text-neutral-900">{categoryNames}</div>
+												</div>
+												<div>
+													<label className="block text-xs font-medium text-neutral-500 mb-1">시리즈</label>
+													<div className="text-neutral-900">
+														{seriesName ? (
+															<Badge variant="outline">{seriesName}</Badge>
+														) : (
+															'-'
+														)}
+													</div>
+												</div>
+												<div>
+													<label className="block text-xs font-medium text-neutral-500 mb-1">테마</label>
+													<div className="text-neutral-900">
+														{themeName ? (
+															<Badge variant="secondary">{themeName}</Badge>
+														) : (
+															'-'
+														)}
+													</div>
 												</div>
 												<div>
 													<label className="block text-xs font-medium text-neutral-500 mb-1">예상 시간</label>
@@ -252,7 +279,7 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 								{questions.length === 0 ? (
 									<div className="text-center py-12 text-neutral-500">등록된 질문이 없습니다.</div>
 								) : (
-									questions.map((question: any, index: number) => (
+									questions.map((question, index) => (
 										<div key={question.id} className="border border-neutral-200 rounded-lg p-4">
 											<div className="flex items-start gap-3">
 												<div className="w-8 h-8 bg-neutral-900 text-white rounded-full flex items-center justify-center text-sm shrink-0">
@@ -270,7 +297,7 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 														</div>
 													)}
 													<div className="space-y-2">
-														{question.choices?.map((choice: any, cIndex: number) => (
+														{question.choices.map((choice, cIndex) => (
 															<div key={choice.id} className="flex items-center gap-2 text-sm text-neutral-600">
 																<span className="w-5 h-5 bg-neutral-100 rounded-full flex items-center justify-center text-xs">
 																	{String.fromCharCode(65 + cIndex)}
@@ -293,7 +320,7 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 								{results.length === 0 ? (
 									<div className="text-center py-12 text-neutral-500">등록된 결과가 없습니다.</div>
 								) : (
-									results.map((result: any, index: number) => (
+									results.map((result, index) => (
 										<div key={result.id} className="border border-neutral-200 rounded-lg p-4">
 											<div className="flex items-start gap-4">
 												{result.thumbnail_url && (
@@ -329,25 +356,25 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 											<StatBox label="총 응답" value={responsesCount} />
 											<StatBox
 												label="완료"
-												value={responses.filter((r: any) => r.status === 'completed').length}
+												value={responses.filter((r) => r.status === 'completed').length}
 												color="green"
 											/>
 											<StatBox
 												label="진행중"
-												value={responses.filter((r: any) => r.status === 'in_progress').length}
+												value={responses.filter((r) => r.status === 'in_progress').length}
 												color="blue"
 											/>
 											<StatBox
 												label="이탈"
-												value={responses.filter((r: any) => r.status === 'abandoned').length}
+												value={responses.filter((r) => r.status === 'abandoned').length}
 												color="gray"
 											/>
 										</div>
 										<div className="space-y-2">
-											{responses.map((response: any) => (
+											{responses.map((response) => (
 												<button
-													key={response.id}
-													onClick={() => setSelectedResponseId(response.id)}
+													key={response.session_id}
+													onClick={() => setSelectedResponseId(response.session_id)}
 													className="w-full bg-neutral-50 hover:bg-neutral-100 rounded-lg p-4 text-left transition-colors"
 												>
 													<div className="flex items-center justify-between gap-4">
@@ -364,10 +391,13 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 																		결과: {response.result_name}
 																	</span>
 																)}
+																{response.total_score !== null && response.total_score !== undefined && (
+																	<span className="text-sm text-neutral-600">
+																		점수: {response.total_score}점
+																	</span>
+																)}
 															</div>
-															<div className="text-sm text-neutral-500">
-																{response.user_email || '익명 사용자'}
-															</div>
+															<div className="text-sm text-neutral-500">익명 사용자</div>
 														</div>
 														<div className="text-right text-sm shrink-0">
 															<div className="text-neutral-500">
@@ -389,7 +419,7 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 						)}
 					</>
 				)}
-			</BaseModalContent>
+			</DefaultModalContent>
 
 			<ResponseDetailModal
 				responseId={selectedResponseId}
@@ -397,15 +427,10 @@ export function TestDetailModal({ testId, isOpen, onClose }: TestDetailModalProp
 				onOpenChange={(open) => !open && setSelectedResponseId(null)}
 			/>
 
-			<BaseModalFooter>
-				<Button variant="outline" text="닫기" onClick={onClose} />
-				<IconButton
-					icon={<Edit className="w-4 h-4" />}
-					onClick={handleEdit}
-					variant="ghost"
-					className="hover:bg-gray-100"
-				/>
-			</BaseModalFooter>
-		</BaseModal>
+			<DefaultModalFooter className="py-3">
+				<Button variant="outline" onClick={onClose} text="닫기" />
+				<Button variant="ghost" onClick={handleEdit} text="수정" />
+			</DefaultModalFooter>
+		</DefaultModal>
 	);
 }

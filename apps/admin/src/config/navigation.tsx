@@ -1,4 +1,4 @@
-import { Home, FileText, FolderOpen, Users, MessageSquare, BarChart3, TrendingUp } from 'lucide-react';
+import { Home, FileText, FolderOpen, Users, MessageSquare, BarChart3, TrendingUp, ListOrdered, Palette } from 'lucide-react';
 import { PATH } from '@/constants/routes';
 
 export const navigation = [
@@ -11,6 +11,8 @@ export const navigation = [
 		items: [
 			{ name: '테스트 관리', href: PATH.TESTS, icon: <FileText className="w-4 h-4" /> },
 			{ name: '카테고리 관리', href: PATH.CATEGORIES, icon: <FolderOpen className="w-4 h-4" /> },
+			{ name: '시리즈 관리', href: PATH.SERIES, icon: <ListOrdered className="w-4 h-4" /> },
+			{ name: '테마 관리', href: PATH.THEMES, icon: <Palette className="w-4 h-4" /> },
 		],
 	},
 	{

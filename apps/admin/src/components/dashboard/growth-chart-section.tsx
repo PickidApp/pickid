@@ -1,7 +1,7 @@
 import type { ChannelShare } from '@pickid/supabase';
 import type { DailyGrowthPoint } from '@/types/dashboard';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
-import { BaseLineChart, EmptyState } from '@/components/common';
+import { DefaultLineChart, EmptyState } from '@/components/common';
 import { DASHBOARD_COLORS } from '@/constants';
 import { formatNumber, getActiveFilterDays } from '@/utils';
 import { Button } from '@pickid/ui';
@@ -51,7 +51,7 @@ export function GrowthChartSection(props: GrowthChartSectionProps) {
 						/>
 					</div>
 				</div>
-				<BaseLineChart
+				<DefaultLineChart
 					data={growthData}
 					lines={[
 						{ dataKey: 'new_users', name: '신규 사용자', color: '#171717' },

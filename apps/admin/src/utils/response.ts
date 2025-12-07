@@ -1,9 +1,9 @@
 import type { BadgeProps } from '@pickid/ui';
-import type { TestSessionStatus, DeviceType } from '@pickid/supabase';
 
 type BadgeVariant = BadgeProps['variant'];
 
-export function getResponseStatusLabel(status: TestSessionStatus): string {
+// AdminTestSession의 status, device_type은 string 타입으로 반환됨
+export function getResponseStatusLabel(status: string): string {
 	switch (status) {
 		case 'completed':
 			return '완료';
@@ -16,7 +16,7 @@ export function getResponseStatusLabel(status: TestSessionStatus): string {
 	}
 }
 
-export function getResponseStatusVariant(status: TestSessionStatus): BadgeVariant {
+export function getResponseStatusVariant(status: string): BadgeVariant {
 	switch (status) {
 		case 'completed':
 			return 'green';
@@ -29,7 +29,7 @@ export function getResponseStatusVariant(status: TestSessionStatus): BadgeVarian
 	}
 }
 
-export function getDeviceTypeLabel(deviceType: DeviceType): string {
+export function getDeviceTypeLabel(deviceType: string): string {
 	switch (deviceType) {
 		case 'mobile':
 			return '모바일';
@@ -42,7 +42,7 @@ export function getDeviceTypeLabel(deviceType: DeviceType): string {
 	}
 }
 
-export function getDeviceTypeVariant(deviceType: DeviceType): BadgeVariant {
+export function getDeviceTypeVariant(deviceType: string): BadgeVariant {
 	switch (deviceType) {
 		case 'mobile':
 			return 'purple';
@@ -65,4 +65,34 @@ export function formatCompletionTime(seconds: number | null): string {
 		return `${minutes}분 ${remainingSeconds}초`;
 	}
 	return `${remainingSeconds}초`;
+}
+
+export function getShareChannelLabel(channel: string | null): string {
+	if (!channel) return '-';
+
+	const labels: Record<string, string> = {
+		instagram: '인스타그램',
+		kakao: '카카오톡',
+		link_copy: '링크 복사',
+		twitter: '트위터/X',
+		facebook: '페이스북',
+		other: '기타',
+	};
+
+	return labels[channel] || channel;
+}
+
+export function getShareChannelVariant(channel: string | null): BadgeVariant {
+	if (!channel) return 'gray';
+
+	const variants: Record<string, BadgeVariant> = {
+		instagram: 'pink',
+		kakao: 'amber',
+		link_copy: 'blue',
+		twitter: 'blue',
+		facebook: 'blue',
+		other: 'gray',
+	};
+
+	return variants[channel] || 'gray';
 }
