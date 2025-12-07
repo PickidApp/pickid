@@ -27,26 +27,36 @@
 
 This document outlines the product requirements for the Home Page of the Pickid service.
 
-- **Page Path**: The page will be accessible at the root path: `/`.
-- **Page Type**: It serves as the primary Landing Page for all users.
-- **Access Permission**: All users, whether logged in or not, can access this page.
+- **Page Path**: `/` (root path)
+- **Page Type**: Primary Landing Page
+- **Access Permission**: All users (both logged-in and non-logged-in) can access this page.
 
 ### 1.2. Page Purpose
 
 The Home Page is the main entry point for the Pickid service. Its primary goal is to introduce users to the wide array of psychological tests, personality analyses, and balance games available on the platform, and to provide clear pathways for exploration.
 
+**Service Positioning (Core Mission)**
+
+> “Pickid is a playful test playground that automatically gives you fun, shareable conversation starters with your friends.”
+
 The key objectives are:
 
 - To effectively showcase the service's core content, which is its collection of tests.
-- To help users quickly find tests that align with their personal interests.
+- To help users quickly find tests that align with their personal interests (e.g., romance, school life, friends, memes, self-development).
 - To present the different types of tests in a well-organized manner, allowing users to understand the variety at a glance.
-- To incorporate interactive elements that drive user engagement and participation.
+- To incorporate interactive elements that drive user engagement and participation (e.g., balance games, daily picks, carousels).
+- To highlight series/themes (e.g., “Romance Drama Series”, “Exam Season Special”) so users naturally look for “the next episode”.
 
 ### 1.3. User Scenarios
 
-- **New User**: A first-time visitor lands on the home page, explores the content through the main banner or category navigation, and selects a test that catches their interest.
-- **Existing User**: A returning user visits the home page to check for popular or recommended tests, looking to discover new content they haven't tried before.
-- **Repeat User**: A frequent user comes to the page, participates in the latest balance game, and checks the Hall of Fame section to see top-rated tests.
+- **New User**
+  - Lands on the home page → Reads the hero copy (“what this service is”) → Scrolls through categories / “Today’s Test” → Selects one test and starts playing.
+- **Existing User**
+  - Visits the home page → Checks “Today’s Test” and “This Week HOT” → Plays a new test they haven’t tried before.
+- **Repeat User**
+  - Comes back frequently → Plays the Balance Game on the home page → Scrolls down to “Recommended For You” or “Hall of Fame” to find another test.
+- **Social / Friend-driven User**
+  - Comes from a shared link or friend recommendation → Lands on the home page → Finds similar tests in the same category/series (e.g., other romance tests) and plays additional ones.
 
 ---
 
@@ -54,354 +64,526 @@ The key objectives are:
 
 ### 2.1. Overall Layout
 
-The home page will be composed of several distinct sections, arranged vertically in the following order to guide the user's journey through the content:
+The home page is composed of vertically stacked sections that guide the user's flow from understanding the service → discovering a test → engaging and sharing:
 
-1.  **Banner Carousel**: A full-width carousel to highlight featured tests.
-2.  **Category Filter Navigation**: A horizontal navigation bar for filtering tests by category.
-3.  **Popular Tests Section**: A carousel showcasing the most engaged-with tests.
-4.  **Balance Game Section**: An interactive module featuring a random balance game.
-5.  **New Tests Section**: A carousel displaying recently added tests.
-6.  **Advertisement Banner**: A full-width banner for promotional content.
-7.  **Recommended Tests Section**: A carousel for curated or personalized test recommendations.
-8.  **Hall of Fame Section**: A carousel highlighting the all-time best tests.
+1. **Hero Section**: Service positioning & main CTA.
+2. **Banner Carousel**: Full-width featured tests.
+3. **Category Filter Navigation**: Horizontal navigation bar for category-based browsing.
+4. **Today’s Test Section**: Daily highlighted test slot.
+5. **This Week HOT / Popular Tests Section**: Tests with high engagement in recent days.
+6. **Balance Game Section**: Interactive balance game module.
+7. **New Tests Section**: Recently added tests.
+8. **Advertisement Banner**: Promotional banner.
+9. **Recommended Tests Section (For You)**: Curated/personalized recommendations.
+10. **Hall of Fame Section**: All-time best tests.
 
 ### 2.2. Section Spacing
 
-Consistent vertical spacing (padding and margins) must be applied between each section to ensure a clean and organized layout. The visual separation between sections should be clear and distinct, helping users to process each content block independently.
+- Consistent vertical spacing (padding and margins) must be applied between sections to ensure a clean and organized layout.
+- Visual separation between sections (background color, dividers, typography) should be clear, helping users to process each content block independently.
+- The hero + above-the-fold area (Hero + Banner + Category Navigation) should feel cohesive and not too dense.
 
 ---
 
-## 3. Banner Carousel
+## 3. Hero Section
 
 ### 3.1. Functional Requirements
 
-- **Auto-Sliding**: The carousel will automatically transition between banners at a predefined time interval to expose users to multiple featured items.
-- **Manual Navigation**: Users can take control of the carousel using left and right arrow buttons to browse the banners at their own pace.
-- **Position Indicator**: A series of dots will be displayed, typically at the bottom of the carousel, to indicate the total number of banners and the position of the currently active one.
-- **Click Action**: Each banner will be clickable. A click will navigate the user to the corresponding test's detail page.
-- **Infinite Loop**: The carousel should loop infinitely. When the user navigates past the last banner, it should seamlessly transition back to the first one, and vice-versa.
+- **Service Positioning Copy**
+  - Display a one-line mission statement.
+  - Example: “A test playground that automatically gives you fun, shareable conversation starters for your friends and group chats.”
+- **Sub-copy**
+  - Provide a short contextual description.
+  - Example: “Perfect for group chats, school breaks, and Insta stories.”
+- **Primary CTA**
+  - “Take Today’s Test”
+  - Scrolls to or navigates to the Today’s Test Section (or directly opens the selected test).
+- **Secondary CTA**
+  - “Browse Categories”
+  - Scrolls down to the Category Filter Navigation.
 
 ### 3.2. UI Requirements
 
-- **Banner Size**: Banners will span the full width of the viewport.
-- **Image Aspect Ratio**: All banner images must maintain a consistent aspect ratio to prevent layout shifts during transitions.
-- **Loading State**: The image for the first banner must be prioritized for loading (e.g., no lazy loading) to ensure the initial view is rendered quickly.
-- **Mobile Gestures**: On touch-enabled devices, users must be able to navigate the carousel by swiping left and right.
+- **Desktop Layout**
+  - Left: Main copy (positioning + sub-copy + CTAs).
+  - Right: Visual illustration or mockup (e.g., multiple test cards, chat bubbles, playful elements).
+- **Mobile Layout**
+  - Stacked layout: copy first, illustration below.
+- **Visual Tone**
+  - Playful but clean.
+  - Use colors and icons that match the brand concept (fun, casual, social).
 
 ### 3.3. Interaction Requirements
 
-- **Hover Behavior**: The auto-sliding functionality will pause when the user's mouse cursor is hovering over a banner.
-- **Click Navigation**: Clicking on a banner will redirect the user to the detailed page of that specific test.
-- **Indicator Navigation**: Clicking on a dot indicator will immediately transition the carousel to the corresponding banner.
+- Clicking **“Take Today’s Test”**:
+  - Scrolls to the Today’s Test Section or directly routes to the test detail page (configurable).
+- Clicking **“Browse Categories”**:
+  - Scrolls to the Category Filter Navigation.
 
 ---
 
-## 4. Category Filter Navigation
+## 4. Banner Carousel
 
 ### 4.1. Functional Requirements
 
-- **Category Display**: All available test categories will be displayed in a horizontal list.
-- **Category Selection**: Clicking on a category will navigate the user to that category's specific page, displaying a filtered list of tests.
-- **"All" Option**: An "All" or "Overall" option may be included to allow users to view all tests without a filter. (Optional)
-- **Active State**: The currently selected or active category will be visually distinguished from the others.
+- **Auto-Sliding**
+  - Automatically transition between banners at a predefined time interval.
+- **Manual Navigation**
+  - Left/right arrow buttons allow manual navigation.
+- **Position Indicator**
+  - Dot indicators show total banner count and current index.
+- **Click Action**
+  - Each banner is clickable and navigates to the associated test detail page or campaign landing.
+- **Infinite Loop**
+  - Carousel loops continuously, wrapping from last to first and vice versa.
+- **Mobile Gestures**
+  - Touch devices support horizontal swiping.
 
 ### 4.2. UI Requirements
 
-- **Layout**: The navigation will be a horizontally scrollable bar.
-- **Category Buttons**: Each category will be presented as a distinct button or clickable element.
-- **Scrolling**: If the number of categories exceeds the available viewport width, the bar will be scrollable horizontally.
-- **Sticky Position**: The navigation bar may be fixed to the top of the screen as the user scrolls down the page, providing persistent access. (Optional)
+- **Full-width Banners**
+  - Banner spans the full viewport width.
+- **Consistent Aspect Ratio**
+  - Prevent layout shifts during transitions.
+- **Prioritized Loading**
+  - First banner image loads eagerly (not lazy-loaded).
+- **Banner Content**
+  - May include:
+    - Test thumbnail / visual
+    - Category or series label (e.g., “Romance / Drama Series”)
+    - Short teaser line (“Post this in your group chat, chaos guaranteed ✨”)
 
 ### 4.3. Interaction Requirements
 
-- **Click Navigation**: A click on a category button will take the user to the respective category page.
-- **Hover Feedback**: A visual feedback effect (e.g., change in background color or text style) will occur on mouse hover.
+- Hovering pauses auto-sliding (desktop).
+- Clicking a banner navigates to its target page.
+- Clicking a dot indicator navigates to the corresponding banner.
 
 ---
 
-## 5. Popular Tests Section
+## 5. Category Filter Navigation
 
 ### 5.1. Functional Requirements
 
-- **Test List Display**: This section will display a list of popular tests in a horizontal carousel.
-- **Test Card Interaction**: Each test card within the carousel will be clickable, navigating the user to the test's detail page.
-- **Carousel Navigation**: Left and right arrow buttons will allow users to scroll through the list of tests.
-- **Section Title**: The section will be clearly labeled with the title "Popular Tests" and a "HOT" badge to draw attention.
+- **Display All Top-level Categories**
+  - Example categories:
+    - Romance / Crush / Dating
+    - School / Campus Life
+    - Friends / Social
+    - Self-development / Future
+    - Memes / Trends
+- **Category Selection**
+  - Clicking a category navigates to the category page (filtered test list).
+- **“All” Option**
+  - Optional “All” item to view all tests without filtering.
+- **Active State**
+  - Current category is visually highlighted.
 
 ### 5.2. UI Requirements
 
-- **Section Header**: The header will contain the title and a "HOT" badge.
-- **Test Card**: Each test will be represented by a card with the following elements:
-  - A thumbnail image for the test.
-  - The title of the test.
-  - Up to two tags associated with the test.
-- **Carousel Layout**: The cards will be arranged in a horizontally scrollable carousel.
-- **Navigation Buttons**: The left and right navigation arrows will only be displayed if there are more tests than can fit in the visible area at once (e.g., more than 2).
+- **Horizontal Scroll Bar**
+  - Scrollable pill-style buttons when there are many categories.
+- **Sticky Option**
+  - Category bar may stick to top on scroll (optional, configurable).
+- **Buttons**
+  - Pill-shaped buttons with clear labels and hover/focus styles.
 
 ### 5.3. Interaction Requirements
 
-- **Hover Effect**: Hovering over a test card will trigger a visual feedback effect.
-- **Click Action**: Clicking a test card will navigate to the test's detail page.
-- **Carousel Control**: Clicking the arrow buttons will scroll the list of tests.
+- Clicking a category:
+  - Immediately routes to `/category?category={slug}`.
+- Hover state:
+  - Background or border color changes to indicate interactivity.
 
 ---
 
-## 6. Balance Game Section
+## 6. Today’s Test Section
 
 ### 6.1. Functional Requirements
 
-- **Game Display**: A single, randomly selected balance game will be displayed on the homepage.
-- **Voting**: Users can vote by choosing one of the two presented options.
-- **Result Display**: After a user votes, the section will update to show the choice they made and the overall voting statistics from all users.
-- **Revoting**: An option to "Vote Again" will be available, allowing the user to change their vote or simply re-engage with the content.
-- **"More Games" Link**: A link will be provided to direct users to a page listing more balance games.
+- **Single Daily Highlight**
+  - Display one “Today’s Test” card.
+- **Selection Logic**
+  - System-based default:
+    - Determined based on metrics such as:
+      - Completions in the last 7 days.
+      - Share count.
+      - Engagement rate (start → complete).
+  - Manual override:
+    - Admin can pin a specific test as “Today’s Test.”
+- **Click Action**
+  - Clicking the card navigates to the test detail page.
 
 ### 6.2. UI Requirements
 
-- **Section Header**: The title of the current balance game will be displayed.
-- **Pre-Vote State**:
-  - The two options will be shown side-by-side.
-  - Each option will include an emoji and a text label.
-  - A "VS" element will be placed between the two options.
-  - The total number of participants will be displayed at the bottom.
-- **Post-Vote State**:
-  - A progress bar will show the percentage breakdown of votes for each option.
-  - The option selected by the user will be highlighted with a "My Choice" badge.
-  - The specific vote count and percentage for each option will be displayed.
-  - "Explore Other Tests" and "Vote Again" buttons will be available.
-- **Loading State**: A skeleton UI will be shown while the balance game data is being fetched.
+- **Section Header**
+  - Title: “Today’s Test”
+  - Optional subtitle:
+    - “A perfect test to drop into your group chat today.”
+- **Card Content**
+  - Thumbnail image.
+  - Main category tag (e.g., Romance / School).
+  - Optional series tag (e.g., “[Romance Drama Series] Part 1”).
+  - Test title.
+  - One-line, meme-like description.
 
 ### 6.3. Interaction Requirements
 
-- **Voting Action**: A vote is cast immediately upon clicking an option button.
-- **Voting State**: The buttons will be disabled temporarily while the vote is being processed.
-- **Result Animation**: The results will be displayed with a smooth animation.
-- **"Vote Again" Action**: Clicking this button will revert the section to its initial, pre-vote state.
-- **"Explore Other Tests" Action**: Clicking this button will navigate to the main test list page.
-- **"More Balance Games" Action**: Clicking this link will navigate to the balance game list page.
+- Hovering over the card:
+  - Shadow/scale effects to emphasize clickability.
+- Clicking the card:
+  - Navigates to test detail page.
 
 ---
 
-## 7. New Tests Section
+## 7. This Week HOT / Popular Tests Section
 
 ### 7.1. Functional Requirements
 
-- **Conditional Display**: This entire section will only be rendered if there are any tests that have been recently added.
-- **Test List Display**: It will show the latest tests in a horizontal carousel format.
-- **Test Card Interaction**: Clicking a test card navigates to the test's detail page.
-- **Carousel Navigation**: Left and right arrow buttons will be provided for scrolling.
-- **Section Title**: The section will be titled "New Tests" and include a "NEW" badge.
+- **Test List**
+  - Show a list of high-performing tests as a horizontal carousel.
+- **Ranking Logic**
+  - Primary KPI base:
+    - “This Week HOT” = tests with high engagement in the last 7 days:
+      - Number of completions.
+      - Number of shares (if tracking is available).
+  - Fallback:
+    - Use total views or total completions.
+- **Card Interaction**
+  - Each card navigates to the test detail page.
+- **Carousel Navigation**
+  - Left/right arrow buttons for scrolling.
+- **Section Title**
+  - “This Week HOT” or “Popular Tests” with a HOT badge.
 
 ### 7.2. UI Requirements
 
-- **Section Header**: The header will display the title and a "NEW" badge.
-- **Test Card**: The card design will be identical to that used in the Popular Tests section.
-- **Carousel Layout**: The tests will be displayed in a horizontally scrollable carousel.
-- **Navigation Buttons**: Navigation arrows will appear only if there are more tests than can be displayed at once.
+- **Section Header**
+  - Title + HOT badge.
+- **Test Cards**
+  - Thumbnail.
+  - Up to two tags:
+    - Category tag (e.g., “Romance”, “School Life”).
+    - Optional series/feature tag (e.g., “[Drama Series]”, “Most Shared”).
+  - Test title.
+- **Carousel**
+  - Horizontally scrollable.
+  - Navigation arrows visible when more than visible cards.
 
 ### 7.3. Interaction Requirements
 
-- **Hover Effect**: Hovering over a card will produce a visual effect.
-- **Click Action**: Clicking a card will navigate to the corresponding test detail page.
-- **Carousel Control**: The arrow buttons will scroll through the test list.
+- Hovering over a card:
+  - Scale/shadow effect.
+- Clicking a card:
+  - Navigates to the test detail page.
+- Clicking arrows:
+  - Scrolls the list by one or multiple card widths.
 
 ---
 
-## 8. Advertisement Banner
+## 8. Balance Game Section
 
 ### 8.1. Functional Requirements
 
-- **Banner Display**: An inline banner for advertisements will be displayed.
-- **Click Action**: Clicking the banner can optionally navigate the user to a specified external link.
+- **Game Display**
+  - Show one balance game on the home page (random or curated).
+- **Voting**
+  - Users vote by selecting one of the two options.
+- **Result Display**
+  - After voting, show:
+    - Percentage of votes per option.
+    - Total vote count.
+    - Which option the user chose.
+- **Revoting**
+  - Provide “Vote Again” to reset state and let the user re-vote.
+- **More Games Link**
+  - “More Balance Games” link navigates to a dedicated balance game list.
 
 ### 8.2. UI Requirements
 
-- **Full Width**: The banner will span the entire width of the browser.
-- **No Padding**: There will be no horizontal padding, allowing the banner to be flush with the edges of the screen.
-- **Image Ratio**: The banner image will maintain a consistent aspect ratio.
+**Pre-vote State**
+
+- Section header with the game title.
+- Two option cards with:
+  - Emoji + label text.
+- “VS” element between them.
+- Participant count at the bottom.
+
+**Post-vote State**
+
+- Progress bars for each option (vote percentage).
+- “My Choice” badge on the chosen option.
+- Vote count and percentage text for each option.
+- Buttons:
+  - “Explore Other Tests”
+  - “Vote Again”
+
+**Loading State**
+
+- Skeleton UI while fetching balance game data.
 
 ### 8.3. Interaction Requirements
 
-- **Click Navigation**: If a link is provided, clicking the banner will open it.
+- Option click:
+  - Immediately casts vote and transitions to result state.
+- Button states:
+  - Disable option buttons while vote is being processed.
+- “Vote Again”:
+  - Reset to pre-vote state.
+- “Explore Other Tests”:
+  - Navigate to test list or category page.
+- “More Balance Games”:
+  - Navigate to balance game list page.
 
 ---
 
-## 9. Recommended Tests Section
+## 9. New Tests Section
 
 ### 9.1. Functional Requirements
 
-- **Test List Display**: A curated list of recommended tests will be shown in a horizontal carousel.
-- **Test Card Interaction**: Clicking a card navigates to the test's detail page.
-- **Carousel Navigation**: Left and right arrow buttons will be used for scrolling.
-- **Section Title**: The section will be titled "Recommended Tests" and feature a "PICK" badge.
+- Display only if there are newly added tests.
+- Show recently created tests in a horizontal carousel.
+- Each card navigates to the test detail page.
+- Left/right arrows for scrolling.
+- Section title: “New Tests” with a NEW badge.
 
 ### 9.2. UI Requirements
 
-- **Section Header**: The header will display the title and a "PICK" badge.
-- **Test Card**: The card design will be the same as in the Popular Tests section.
-- **Carousel Layout**: The tests will be in a horizontally scrollable carousel.
-- **Navigation Buttons**: Arrows will appear if needed for navigation.
+- Section header: title + NEW badge.
+- Card layout identical to Popular/Recommended sections.
+- Carousel behavior identical to other carousels.
 
 ### 9.3. Interaction Requirements
 
-- **Hover Effect**: A visual effect will occur on mouse hover.
-- **Click Action**: Clicking a card opens the test detail page.
-- **Carousel Control**: Arrow buttons scroll the test list.
+- Hover effect on cards.
+- Click → navigate to test detail.
+- Arrow click → scroll tests.
 
 ---
 
-## 10. Hall of Fame Section
+## 10. Advertisement Banner
 
 ### 10.1. Functional Requirements
 
-- **Test List Display**: The top-rated or most popular tests of all time will be displayed in a horizontal carousel.
-- **Test Card Interaction**: Clicking a card navigates to the test's detail page.
-- **Carousel Navigation**: Left and right arrow buttons will be used for scrolling.
-- **Section Title**: The section will be titled "Hall of Fame" and have a "TOP" badge.
+- Display an inline ad banner.
+- Clicking the banner may navigate to an external or internal link.
 
 ### 10.2. UI Requirements
 
-- **Section Header**: The header will show the title and a "TOP" badge.
-- **Test Card**: The card design will match the other test sections.
-- **Carousel Layout**: The tests will be in a horizontally scrollable carousel.
-- **Navigation Buttons**: Arrows will appear if needed.
-- **Bottom Margin**: Additional spacing will be added at the bottom of this section to provide a clear end to the page content.
+- Full-width banner.
+- No horizontal padding (edge-to-edge).
+- Consistent aspect ratio.
 
 ### 10.3. Interaction Requirements
 
-- **Hover Effect**: A visual effect will occur on mouse hover.
-- **Click Action**: Clicking a card opens the test detail page.
-- **Carousel Control**: Arrow buttons scroll the test list.
+- Clickable area:
+  - Entire banner is clickable.
+- If no ad is configured:
+  - Section may be hidden.
 
 ---
 
-## 11. Common Test Card Specifications
+## 11. Recommended Tests Section (For You)
 
-### 11.1. Card Components
+### 11.1. Functional Requirements
 
-Each test card across all sections will be composed of:
+- Show a list of recommended tests in a horizontal carousel.
+- Section title: “Recommended Tests” or “For You” with a PICK badge.
+- Card click → navigate to test detail.
+- Arrow buttons for carousel navigation.
 
-- **Thumbnail Image**: A representative image for the test.
-- **Tags**: Up to two category tags associated with the test.
-- **Title**: The title of the test.
+**Recommendation Logic (Initial Version)**
 
-### 11.2. Card Interaction
+- **Anonymous users (not logged in)**:
+  - Use global signals:
+    - Overall popularity.
+    - Recency.
+    - Balance of categories (not only romance, etc.).
+- **Logged-in users with profile/onboarding data**:
+  - Use:
+    - Selected interests (e.g., romance, school life, memes, self-development).
+    - Recent completion history.
+    - Recently played category/series.
+  - Prioritize:
+    - Tests in the same category as the user’s interests.
+    - “Next episode” in a series the user has already started.
 
-- **Hover Effect**: A visual feedback mechanism will be triggered on mouse hover.
-- **Click Action**: The entire card area will be clickable and navigate to the test's detail page.
-- **Image Loading**: A placeholder will be displayed while the thumbnail image is loading.
+### 11.2. UI Requirements
 
----
+- Section header:
+  - Title + PICK badge.
+  - Optional subtitle: “Picked for you based on your interests.”
+- Card design:
+  - Same as Popular/New sections.
+  - May show a small “For You” label if personalized.
 
-## 12. Error Handling
+### 11.3. Interaction Requirements
 
-### 12.1. Data Loading Failure
-
-- If data for a section fails to load, an appropriate error message will be displayed in its place.
-- An option for the user to retry loading the data may be provided. (Optional)
-
-### 12.2. Empty State
-
-- If there are no tests to display in any of the sections, a user-friendly message indicating the empty state will be shown.
-- If a specific section has no data, that section should either be hidden or display its own empty state message.
-
----
-
-## 13. Accessibility
-
-### 13.1. Keyboard Navigation
-
-- All interactive elements (buttons, links, cards) must be accessible and operable via the keyboard.
-- A clear and visible focus indicator must be present for all focusable elements.
-
-### 13.2. Screen Readers
-
-- Appropriate ARIA labels must be provided for each section to give context to screen reader users.
-- All images must have descriptive alternative text.
-- Buttons and links must have clear and descriptive text labels.
-
-### 13.3. Visual Feedback
-
-- Visual feedback should be provided for all interactions to confirm that an action has been registered.
-- Loading states must be clearly communicated to the user.
+- Hover effect on cards.
+- Click → test detail.
+- Arrow buttons → scroll.
 
 ---
 
-## 14. Performance
+## 12. Hall of Fame Section
 
-### 14.1. Initial Loading
+### 12.1. Functional Requirements
 
-- Content that is visible in the initial viewport (above the fold) must be prioritized for loading.
-- The main banner image, in particular, should be loaded eagerly (not lazy-loaded).
+- Display all-time best or most iconic tests.
+- Carousel of “Hall of Fame” tests.
+- Section title: “Hall of Fame” with a TOP badge.
+- Each card navigates to test detail.
+- Arrow buttons for navigation.
 
-### 14.2. Image Optimization
+### 12.2. UI Requirements
 
-- All images must be optimized for the web, using appropriate file formats and compression.
-- Lazy loading should be applied to all images that are not in the initial viewport.
+- Section header: title + TOP badge.
+- Card layout consistent with other sections.
+- Additional bottom margin to clearly end the page content.
 
----
+### 12.3. Interaction Requirements
 
-## 15. User Experience
-
-### 15.1. Loading State
-
-- Skeleton UIs or loading indicators should be used to provide feedback when data is being fetched.
-- Users should always be aware that content is loading.
-
-### 15.2. Interaction Feedback
-
-- All clickable elements must provide immediate visual feedback.
-- Animations should be smooth and quick, enhancing the user experience without causing delays.
-
-### 15.3. Content Flow
-
-- The layout should guide the user naturally from one section to the next.
-- The structure should make it easy for users to explore content as they scroll down the page.
+- Hover effect.
+- Click → detail page.
+- Arrow buttons → scroll.
 
 ---
 
-# Category Page PRD
+## 13. Common Test Card Specifications
 
-## 1. Overview
+### 13.1. Card Components
 
-### 1.1. Page Information
+Each test card across all sections should share a consistent structure:
 
-- **Page Path**: `/category/{categoryId}` (e.g., `/category/love`, `/category/personality`)
-- **Page Type**: Content Listing Page
-- **Access Permission**: Accessible to both non-members and members.
+- **Thumbnail Image**
+  - Representative image for the test (fixed aspect ratio, e.g., 4:3).
+- **Tags**
+  - Up to 2–3 tags, prioritized:
+    - Main category tag (e.g., Romance / School / Friends / Memes / Self).
+    - Optional series tag:
+      - e.g., `[Romance Drama Series]`, `[School Life Series]`.
+    - Optional theme tag:
+      - e.g., `Exam Season`, `New Semester`, `Year-end`.
+- **Title**
+  - Test title (with max lines and ellipsis).
+- (Optional) Short description
+  - A single line explaining the vibe of the test.
+- (Optional) Metric label
+  - e.g., “Most shared this week” (later, when share data is available).
 
-### 1.2. Page Purpose
+### 13.2. Card Interaction
 
-The Category Page displays all tests belonging to a specific category. Its main purpose is to allow users who have selected a category of interest to explore all relevant content in one place.
-
-- To provide a comprehensive view of all tests within a chosen category.
-- To enable users to sort and filter tests based on criteria like popularity or creation date.
-- To facilitate easy navigation through a potentially large number of tests via pagination.
-
-### 1.3. User Scenarios
-
-- **Focused User**: A user clicks on the "Love" category from the home page to see all available romance-related tests. They then sort by "Most Popular" to find the most-played one.
-- **Explorer User**: A user lands on a category page and browses through the entire list, using pagination to move between pages to discover a test that looks interesting.
-- **Indecisive User**: A user arrives on a category page, feels overwhelmed by the number of tests, and uses the "Sort by Newest" filter to try the latest content.
+- **Hover Effect**
+  - Shadow / slight scale-up.
+  - Thumbnail may slightly zoom for a “card is active” feeling.
+- **Click Action**
+  - Card is fully clickable and navigates to the test detail page.
+- **Image Loading**
+  - Show a placeholder or skeleton while the image is loading.
+- **Responsiveness**
+  - Card layout adapts to different screen sizes while maintaining hierarchy.
 
 ---
 
-## 2. Page Structure
+## 14. Error Handling
 
-### 2.1. Overall Layout
+### 14.1. Data Loading Failure
 
-The category page will be structured as follows:
+- If data for a specific section fails to load:
+  - Display a simple error message:
+    - e.g., “We couldn’t load this section. Please try again.”
+  - Optionally provide a “Retry” button.
+- If critical data (e.g., initial featured tests) fails:
+  - Show a fallback message and minimal safe content.
+  - Optionally use a generic error component.
 
-```
-[Category Header]
-[Sort Options]
-[Test Grid]
-[Pagination]
-```
+### 14.2. Empty State
+
+- If a section has zero tests:
+  - Hide the section entirely, or
+  - Display a friendly empty state (e.g., “No tests here yet, stay tuned!”).
+- The home page should always show at least some core sections (e.g., Hero, Category Navigation, Hall of Fame or some default).
+
+---
+
+## 15. Accessibility
+
+### 15.1. Keyboard Navigation
+
+- All interactive elements (buttons, links, cards, arrows) must be keyboard-accessible.
+- Focus styles must be clearly visible on all focusable elements.
+
+### 15.2. Screen Readers
+
+- Provide ARIA labels for each major section:
+  - e.g., “Banner Carousel”, “Today’s Test”, “Popular Tests”.
+- All images must have descriptive `alt` text.
+- Buttons and links must have descriptive labels:
+  - e.g., “Go to next banner”, “View test details”.
+
+### 15.3. Visual Feedback
+
+- Visual feedback for:
+  - Hover states.
+  - Active/click states.
+  - Loading states (skeletons or spinners).
+- Ensure sufficient color contrast for accessibility.
+
+---
+
+## 16. Performance
+
+### 16.1. Initial Loading
+
+- Prioritize loading for:
+  - Hero section.
+  - First banner in the carousel.
+  - Category navigation.
+  - Today’s Test.
+- Use SSR/SSG where possible for above-the-fold content.
+
+### 16.2. Image Optimization
+
+- Use appropriate formats (e.g., WebP) and responsive image sizes.
+- Apply lazy loading to:
+  - Images below the fold.
+  - Carousel items not initially visible.
+
+---
+
+## 17. User Experience
+
+### 17.1. Loading State
+
+- Use skeleton UIs for:
+  - Test cards.
+  - Main lists and carousels.
+- Show clear “loading” feedback so the page does not feel frozen.
+
+### 17.2. Interaction Feedback
+
+- All clickable elements should respond immediately (visual feedback).
+- Animations:
+  - Short, smooth, and non-blocking.
+
+### 17.3. Content Flow
+
+- Guide users from:
+  - Understanding the service (Hero) →
+  - Immediate action (Today’s Test, This Week HOT) →
+  - Fun interaction (Balance Game) →
+  - Continuous discovery (New, Recommended, Hall of Fame).
+- Ensure that each section’s purpose is clear via titles and subtext.
 
 ### 2.2. Section Spacing
 
-- Consistent spacing will be maintained between the header, sort options, test grid, and pagination to ensure a clean and readable layout.
+- Consistent spacing between:
+  - Category Header
+  - Filter bar
+  - Sort options
+  - Test grid
+  - Pagination
+- Layout must remain clean and easy to scan, even when filters and sort options are visible together.
 
 ---
 
@@ -409,101 +591,319 @@ The category page will be structured as follows:
 
 ### 3.1. Functional Requirements
 
-- **Display Category Information**: The header must display the name of the current category.
-- **Display Category Description**: A brief description of the category should be shown to give users context.
+- **Display Category Information**
+  - Show the main category name (e.g., “Love / Romance”, “School Life”, “Friends”, “Memes”, “Self / Future”).
+- **Display Category Description**
+  - Provide a short description explaining what kind of tests are in this category.
+  - Example for Love:
+    - “Crush, exes, ideal types, and your messy romance drama in test form.”
+- **Display Example Topics (Optional)**
+  - Show a one-line list of typical topics or example tests in this category.
 
 ### 3.2. UI Requirements
 
-- **Category Title**: The category name should be a prominent heading (e.g., `H1` or `H2`).
-- **Category Description**: The descriptive text should be placed below the title in a smaller font size.
-- **Background Image/Color**: The header might feature a unique background image or color theme related to the category to enhance visual appeal. (Optional)
+- **Category Title**
+  - Prominent heading (`H1` or `H2`).
+- **Category Description**
+  - Smaller body text under the title.
+- **Background Styling (Optional)**
+  - Unique background color or subtle illustration based on the category theme (e.g., pink/purple tones for Love).
+- **Optional Badge**
+  - A small badge like “Romance”, “School Life”, etc., to emphasize the category identity.
+
+### 3.3. Interaction Requirements
+
+- The header itself is static (no click required) but may include:
+  - A “Back to Home” or “All Categories” link above the title for easier navigation.
 
 ---
 
-## 4. Sort Options
+## 4. Sub-category & Series Filter Bar
 
 ### 4.1. Functional Requirements
 
-- **Default Sort Order**: By default, the tests will be sorted by popularity (most played).
-- **Sorting Options**: Users must be able to re-sort the test list. The available options are:
-  - **Popularity**: Sorts by the highest number of participants.
-  - **Newest**: Sorts by the most recently created date.
-- **Active Sort Indicator**: The currently active sort option must be visually indicated.
+This bar allows users to further narrow down tests **within the selected category**.
+
+- **Sub-category Filters**
+  - Provide sub-topic chips specific to each category.
+  - Example:
+    - **Love/Romance**
+      - Exes / Past relationships
+      - Crush & situationships
+      - Ideal type / Dream partner
+      - Relationship diagnostics
+    - **School/Campus**
+      - Class / major memes
+      - Exam season / stress
+      - Club / MT / group projects
+    - **Friends / Social**
+      - Group chat roles
+      - Social energy / introvert-extrovert memes
+      - “Who is the real clown?” type tests
+    - **Self / Future**
+      - Career / future self
+      - Money & spending style
+      - Self-growth / habits
+    - **Memes / Trends**
+      - Current internet memes
+      - Trendy phrases / viral formats
+- **Series Filters**
+  - Optional filter to show tests belonging to a specific **series**.
+  - Example:
+    - “Romance Drama Series”
+    - “School Life Trilogy”
+    - “Exam Season Special”
+- **Clear Filter**
+  - Provide a way to clear all sub-category/series filters and return to “All”.
 
 ### 4.2. UI Requirements
 
-- **Layout**: The sort options should be displayed horizontally, typically aligned to the right, above the test grid.
-- **Appearance**: The options can be presented as simple text links or buttons. The active option should be bold or have a different color to stand out.
+- **Layout**
+  - Horizontal scrollable bar under the Category Header.
+  - Two groups inside:
+    - Sub-category chips
+    - Series chips (if defined for this category)
+- **Chip Design**
+  - Pill-shaped buttons.
+  - Active chip should be clearly highlighted (background & text color).
+- **Overflow Handling**
+  - When there are many filters, enable horizontal scrolling with scroll hints (e.g., fade on edges).
 
 ### 4.3. Interaction Requirements
 
-- **Click Action**: Clicking a sort option will immediately re-fetch and re-render the test grid with the new sort order applied. The page should not fully reload.
-- **State Persistence**: The selected sort order should be maintained as the user navigates through pages using pagination.
+- **Filter Selection**
+  - Clicking a chip toggles it:
+    - Single-select or multi-select per group (implementation decision; default: single-select).
+  - Applied filters immediately update the Test Grid (client-side or server-side).
+- **URL State**
+  - Optionally reflect filters in query params:
+    - e.g., `/category/love?sub=ex&series=romance-drama`
+- **Clear Filters**
+  - A “Reset Filters” or “All” chip will clear sub-category/series filters.
 
 ---
 
-## 5. Test Grid
+## 5. Sort Options
 
 ### 5.1. Functional Requirements
 
-- **Display Test List**: All tests for the selected category will be displayed in a grid format.
-- **Test Card Click**: Each test card is a clickable element that navigates the user to the corresponding test detail page.
+- **Default Sort Order**
+  - By default, tests are sorted by **Popularity** (most played in recent period, e.g., last 7 or 30 days).
+- **Sorting Options**
+  - Users can re-sort the test list with the following options:
+    - **This Week HOT (or Popular)**:
+      - Based on completions / engagement in the last 7 days.
+    - **Most Popular (All-time)**:
+      - Highest total participant count.
+    - **Newest**:
+      - Most recently created tests.
+- **Active Sort Indicator**
+  - Clearly indicate the currently active sort option.
 
 ### 5.2. UI Requirements
 
-- **Layout**: A responsive grid layout (e.g., 2 columns on mobile, 3-4 columns on desktop).
-- **Test Card**: The design of the test cards will be consistent with those used on the home page (see Home Page PRD, section 11). Each card includes:
-  - Test thumbnail image
-  - Test title
-  - Test tags (optional, as they are already in a category)
-- **Loading State**: When data is being fetched or when sorting is in progress, a skeleton UI representing the grid and cards should be displayed.
+- **Layout**
+  - Sort controls aligned to the right or top-right above the Test Grid.
+  - Can be a segmented control or a dropdown.
+- **Appearance**
+  - Active option visually emphasized (bold text, different background).
+- **Responsive Behavior**
+  - On mobile, sort options may collapse into a compact dropdown.
 
 ### 5.3. Interaction Requirements
 
-- **Hover Effect**: Test cards will have a visual feedback effect on mouse hover.
-- **Click Navigation**: Clicking anywhere on the test card navigates the user to that test's detail page.
+- **Click Action**
+  - Clicking a sort option immediately re-fetches or re-sorts the Test Grid (without full page reload).
+- **State Persistence**
+  - The selected sort order must persist:
+    - across pagination within the same category.
+    - on navigation back within a short period (if feasible via state/URL).
 
 ---
 
-## 6. Pagination
+## 6. Test Grid
 
 ### 6.1. Functional Requirements
 
-- **Conditional Display**: Pagination controls will only be displayed if the total number of tests in the category exceeds the number of items per page.
-- **Page Navigation**: Users can navigate to the next page, previous page, or a specific page number.
-- **Items per Page**: A fixed number of tests (e.g., 12 or 16) will be displayed per page.
+- **Display Test List**
+  - Show all tests for the selected category, filtered and sorted as configured.
+- **Test Card Navigation**
+  - Each card is clickable and navigates to the corresponding test detail page.
+- **Filtering & Sorting Integration**
+  - The grid should respond to:
+    - Sub-category filter
+    - Series filter
+    - Sort options
+- **Empty Filter Result**
+  - If current filter + sort combination yields no tests, show an empty state inside the grid area.
 
 ### 6.2. UI Requirements
 
-- **Layout**: The pagination component will be centered horizontally below the test grid.
-- **Components**: It should include:
-  - "Previous" and "Next" arrow buttons.
-  - Page number buttons.
-  - An indicator for the current page (e.g., highlighted number).
-  - Ellipsis (...) if there are many pages.
+- **Layout**
+  - Responsive grid:
+    - Mobile: 2 columns
+    - Tablet: 2–3 columns
+    - Desktop: 3–4 columns
+- **Test Card Contents**
+  - Thumbnail image (4:3 ratio or consistent dimension).
+  - Test title (max 2 lines with ellipsis).
+  - Tags (up to 2–3):
+    - Category tag (optional, since we’re already in a category).
+    - Sub-category tag (e.g., “Ex / Breakup”, “Exam Season”, “Group Chat”).
+    - Series tag (e.g., `[Romance Drama Series]`).
+  - Optional indicator:
+    - e.g., “HOT this week”, “New”, “Most shared”.
+- **Loading State**
+  - When fetching data or changing sort/filter:
+    - Show skeleton cards in the grid positions to maintain layout.
 
 ### 6.3. Interaction Requirements
 
-- **Click Action**: Clicking a page number or the "Next"/"Previous" buttons will load the tests for the corresponding page. The view should scroll to the top of the test grid upon loading a new page.
-- **Disabled State**: The "Previous" button will be disabled on the first page, and the "Next" button will be disabled on the last page.
+- **Hover Effect**
+  - Card-level hover:
+    - subtle shadow
+    - slight scale-up or image zoom
+- **Click Navigation**
+  - Clicking anywhere on the card navigates to the test detail page.
+- **Image Loading**
+  - Use placeholders or blurred previews until images are loaded.
 
 ---
 
-## 7. Error Handling & Empty States
+## 7. Pagination
 
-### 7.1. Invalid Category
+### 7.1. Functional Requirements
 
-- If a user navigates to a URL with a non-existent `categoryId`, a "404 Not Found" page or a page with a "Category not found" message should be displayed.
+- **Conditional Display**
+  - Show pagination only when the number of tests exceeds the page size limit.
+- **Page Navigation**
+  - User can navigate:
+    - to next/previous page
+    - to specific page numbers.
+- **Items per Page**
+  - Fixed number per page (e.g., 12 or 16 tests).
 
-### 7.2. Data Loading Failure
+### 7.2. UI Requirements
 
-- If the list of tests fails to load, an error message should be displayed in place of the test grid, with an option to "Retry".
+- **Layout**
+  - Pagination centered horizontally under the Test Grid.
+- **Components**
+  - “Previous” and “Next” arrow buttons.
+  - Page number buttons.
+  - Current page highlighted.
+  - Ellipsis `...` for large page counts.
 
-### 7.3. Empty State
+### 7.3. Interaction Requirements
 
-- If a valid category contains no tests, a message like "There are no tests in this category yet." should be displayed instead of the test grid and sort options.
+- **Click Action**
+  - Clicking a page number or Next/Previous:
+    - loads tests for the selected page.
+    - scrolls back to the top of the Test Grid area.
+- **Disabled State**
+  - “Previous” disabled on first page.
+  - “Next” disabled on last page.
 
 ---
+
+## 8. Error Handling & Empty States
+
+### 8.1. Invalid Category
+
+- If `categoryId` does not exist:
+  - Show a “Category not found” message or redirect to a 404 page.
+  - Optionally show a link to go back to the home page or all categories.
+
+### 8.2. Data Loading Failure
+
+- If test list loading fails:
+  - Show an inline error state in place of the Test Grid:
+    - e.g., “We couldn’t load tests for this category. Please try again.”
+  - Provide a “Retry” button that re-triggers the fetch.
+
+### 8.3. Empty Category
+
+- If the category exists but has no tests:
+  - Show a friendly empty state:
+    - e.g., “There are no tests in this category yet.”
+  - Keep Category Header + Filter bar visible so users can switch to other filters/categories.
+
+---
+
+## 9. Accessibility
+
+### 9.1. Keyboard Navigation
+
+- All interactive elements (filter chips, sort controls, pagination, cards) must be accessible via keyboard (Tab, Enter, Space).
+- Focus states must be clearly visible.
+
+### 9.2. Screen Readers
+
+- Use ARIA labels for:
+  - Category header section.
+  - Filter bar (e.g., “Sub-category filters”, “Series filters”).
+  - Test grid.
+  - Pagination.
+- Ensure:
+  - Each test card has a clear accessible name (test title).
+  - Images have alt text describing the test theme.
+
+### 9.3. Visual Feedback
+
+- Provide distinct states for:
+  - Default / hover / active / disabled.
+- Make sure:
+  - Filter chips show active selection clearly.
+  - Current page in pagination stands out.
+
+---
+
+## 10. Performance
+
+### 10.1. Initial Loading
+
+- Use SSR/SSG where possible for:
+  - Category info
+  - Initial test list for the default sort state.
+- Show skeletons instead of blank space while data is loading.
+
+### 10.2. Filtering & Sorting
+
+- Perform filtering/sorting efficiently:
+  - Client-side when data is pre-fetched.
+  - Or server-side with proper query params.
+- Avoid unnecessary full-page reloads.
+
+### 10.3. Image Optimization
+
+- Use optimized formats (e.g., WebP) and proper sizes.
+- Apply lazy loading for images that are not initially visible.
+
+---
+
+## 11. User Experience
+
+### 11.1. Loading State
+
+- Use consistent skeleton UI for:
+  - Test cards
+  - While changing filters, sort, or page.
+- Avoid jarring layout shifts when data updates.
+
+### 11.2. Interaction Feedback
+
+- Immediate visual feedback on:
+  - Filter selection
+  - Sort change
+  - Pagination click
+- Provide short, smooth animations for grid updates (optional).
+
+### 11.3. Content Flow
+
+- Category Header gives context.
+- Filter Bar lets users refine by **topic/series**.
+- Sort Options let users control **ordering** (HOT / Popular / Newest).
+- Test Grid presents rich options with good scanning.
+- Pagination supports deeper exploration without overwhelming a single screen.
 
 # Test Detail/Progress Page PRD
 
@@ -523,13 +923,38 @@ The Test Detail/Progress Page is where users start, answer, and complete a test.
 - To provide a customized question-and-answer experience tailored to the test type.
 - To offer an intuitive and smooth interface for progressing through questions.
 - To save user answers and collect data for calculating results.
+- To act as an “entry point” for **viral/compare flows** when users come from shared or compare links.
 
 ### 1.3. User Scenarios
 
-1.  **Starting a Test**: Enters the test detail page → Reads the test introduction → Clicks the "Start" button → Begins answering questions.
-2.  **Psychology Test**: Selects gender → Answers a question → Can navigate back to the previous question → Completes all questions → Navigates to the result page.
-3.  **Balance Game**: Chooses between two options → Views statistics → Proceeds to the next question → Completes all questions → Navigates to the result page.
-4.  **Quiz**: Answers multiple-choice or short-answer questions → Immediately moves to the next question upon selection (except for the last question) → Completes all questions → Navigates to the result page.
+1. **Starting a Test**: Enters the test detail page → Reads the test introduction → Clicks the "Start" button → Begins answering questions.
+2. **Psychology Test**: Selects gender → Answers a question → Can navigate back to the previous question → Completes all questions → Navigates to the result page.
+3. **Balance Game**: Chooses between two options → Views statistics → Proceeds to the next question → Completes all questions → Navigates to the result page.
+4. **Quiz**: Answers multiple-choice or short-answer questions → Immediately moves to the next question upon selection (except for the last question) → Completes all questions → Navigates to the result page.
+5. **Compare Link Entry**: Enters via a compare link (e.g., `/tests/[id]?ref=compare&group={groupId}`) → Sees “compare with friend/group” context → Starts and completes the test → Moves to result page in compare mode.
+
+---
+
+### 1.4. Positioning & Core Value (Product Mission)
+
+- **One-line mission**
+
+> “Pickid is a psychology & balance test playground that automatically generates conversation topics to share with friends.”
+
+- **Typical usage contexts**
+
+  - Lunch break, between classes
+  - KakaoTalk group chats, school club/MT
+  - Early-stage dating / “getting to know each other”
+
+- **Implication for this page**
+  - The intro section should clearly signal that this test is:
+    - Easy to share in chat/DM,
+    - Fun to compare with friends,
+    - Part of a recognizable category/series/theme (e.g., love, school life, memes).
+  - When entering via share/compare links, the page should visually indicate:
+    - “You’re about to take the same test as your friend.”
+    - “Your results will be compared at the end.”
 
 ---
 
@@ -539,13 +964,21 @@ The Test Detail/Progress Page is where users start, answer, and complete a test.
 
 The Test Detail/Progress Page consists of the following states:
 
-```
+```text
 [Test Intro Screen]
   ↓ (On "Start" click)
 [Question Progress Screen] (Varies by type)
   ↓ (After all questions are answered)
-[Navigate to Result Page]
+[Navigate to Result Page (/tests/[id]/result[?mode=...&group=...])]
 ```
+
+**Additional context:**
+
+The page may receive query parameters such as:
+- `ref=share` (entered from a shared result)
+- `ref=compare&group={groupId}` (entered from a "compare with friends" link)
+
+These parameters affect UI messaging and what mode the result page will show later.
 
 ### 2.2. Test Types
 
@@ -559,41 +992,119 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 3.1. Functional Requirements
 
-- **Display Test Information**: Show the test's thumbnail, title, and description.
-- **Display Participant Count**: Show the number of users who have participated so far (with an animation effect).
-- **"Start" Button**: Provide a button to begin the test.
-- **Gender Selection Modal**: For Psychology tests, display a modal to select gender.
-- **Increment Participant Count**: When the start button is clicked, asynchronously increment the participant count.
+#### Display Test Information
+
+- Show the test's thumbnail, title, and description.
+
+#### Display Content Metadata
+
+- **Main Category Badge**
+  - e.g., Relationship / School & College / Friends & Social / Self-development & Future / Meme & Trend.
+- **Series Info (optional)**
+  - When the test belongs to a series, display series name and episode/order.
+  - Example: [Love Drama Series] EP.2.
+- **Theme/Campaign Info (optional)**
+  - When the test is part of a campaign (e.g., "Exam Season", "Year-End"), show a theme tag.
+  - Example: 🎓 Exam Season Special.
+
+#### Positioning/Context Copy
+
+- Show a short line that reinforces the product mission, e.g.:
+  - "Perfect test to compare with friends in your group chat."
+  - "Share this in your chat and see who gets which type."
+
+#### Display Participant Count
+
+- Show the number of users who have participated so far (with an animation effect).
+
+#### "Start" Button
+
+- Provide a button to begin the test.
+
+#### Gender Selection Modal
+
+- For Psychology tests, display a modal to select gender when starting.
+
+#### Increment Participant Count
+
+- When the start button is clicked, asynchronously increment the participant count.
+
+#### Compare Mode Indicator (Optional)
+
+- If the page is opened with `ref=compare` or `group={groupId}`:
+  - Display a compare mode banner at the top of the intro card, e.g.:
+    - "You're taking this test to compare results with a friend."
+    - "Results will be compared with your group."
+  - Store `groupId` (if present) in client-side state so it can be used on the result page.
 
 ### 3.2. UI Requirements
 
-- **Layout**: A centrally-aligned card-based layout.
-- **Thumbnail Image**:
-  - Display the main image for the test.
-  - Square aspect ratio.
-  - Rounded corners.
-- **Title**: Display the test title in a large font size.
-- **Description**: Display the test description (supports line breaks).
-- **Participant Count Section**:
-  - Gradient background.
-  - Text format: "So far, {count} people have participated!"
-  - Animate the number count-up.
-- **"Start" Button**:
-  - Full-width.
-  - Gradient background.
-  - Shadow effect on hover.
-- **Gender Selection Modal**:
-  - Modal overlay.
-  - Male/Female selection buttons.
-  - Each button should have an icon and text.
+#### Layout
+
+- Centrally-aligned card-based layout.
+
+#### Metadata & Tag Area
+
+- Above or near the title:
+  - Category badge (pill style).
+  - Series tag (if any), e.g. Series.
+  - Theme tag (if any), e.g. Exam Season.
+
+#### Thumbnail Image
+
+- Display the main image for the test.
+- Square aspect ratio.
+- Rounded corners.
+
+#### Title
+
+- Display the test title in a large font size.
+
+#### Description
+
+- Display the test description (supports line breaks).
+
+#### Positioning Caption
+
+- Short, subtle text under the description, e.g.:
+  - "Great for sharing in your group chat or comparing with friends."
+
+#### Participant Count Section
+
+- Gradient background.
+- Text format: "So far, {count} people have participated!"
+- Animate the number count-up.
+
+#### Compare Mode Banner (Optional)
+
+- When in compare mode, show a small banner at the top or within the card:
+  - e.g., "Compare mode – your result will be shown next to your friend's result."
+
+#### "Start" Button
+
+- Full-width.
+- Gradient background.
+- Shadow effect on hover.
+
+#### Gender Selection Modal
+
+- Modal overlay.
+- Male/Female selection buttons.
+- Each button should have an icon and text.
 
 ### 3.3. Interaction Requirements
 
-- On "Start" button click:
-  - **Psychology Test**: Show the gender selection modal.
-  - **Other Tests**: Immediately transition to the question progress screen.
-- On gender selection in the modal, close the modal and start the questions.
-- The participant count should be incremented asynchronously on start click, without blocking the UI.
+- **On "Start" button click:**
+  - Psychology Test: Show the gender selection modal.
+  - Other Tests: Immediately transition to the question progress screen.
+- **On gender selection in the modal:**
+  - Close the modal and start the questions.
+- **Compare Mode Handling:**
+  - If `groupId` exists in the URL (compare mode):
+    - Persist `groupId` in client-side state (e.g., in context or store).
+    - Pass this information along when navigating to the result page.
+- **Participant count:**
+  - Should be incremented asynchronously on start click, without blocking the UI.
 
 ---
 
@@ -601,18 +1112,40 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 4.1. Functional Requirements
 
-- **Display Progress**: Show the current question number and the total number of questions.
-- **Progress Bar**: Display a visual progress bar.
-- **Navigate to Previous Question**: For Psychology tests, provide a button to go back to the previous question.
+#### Display Progress
+
+- Show the current question number and the total number of questions.
+
+#### Progress Bar
+
+- Display a visual progress bar.
+
+#### Navigate to Previous Question
+
+- For Psychology tests, provide a button to go back to the previous question.
+
+#### Analytics Event Hooks (Reference)
+
+- (For later Analytics/Growth implementation)
+  - `view_question` when a question is shown.
+  - `answer_question` when a user selects/enters an answer.
+  - `exit_during_question` if the user leaves before completion (optional).
 
 ### 4.2. UI Requirements
 
-- **Header Area**:
-  - Display question number at the top (e.g., "1 / 10").
-  - Back button (only for Psychology tests, hidden on the first question).
-  - Progress bar with a gradient background.
-- **Question Area**: Display the question text.
-- **Answer Area**: UI varies by test type.
+#### Header Area
+
+- Display question number at the top (e.g., "1 / 10").
+- Back button (only for Psychology tests, hidden on the first question).
+- Progress bar with a gradient background.
+
+#### Question Area
+
+- Display the question text.
+
+#### Answer Area
+
+- UI varies by test type.
 
 ### 4.3. Interaction Requirements
 
@@ -625,25 +1158,48 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 5.1. Functional Requirements
 
-- **Gender Selection**: Gender must be selected before starting the test.
-- **Display Question**: Display the question text in the center.
-- **Display Choices**: Show multiple choices as buttons.
-- **Answer Selection**: Clicking a choice immediately moves to the next question.
-- **Navigate to Previous Question**: Ability to return to the previous question.
-- **Save Answers**: Store the answer for each question.
+#### Gender Selection
+
+- Gender must be selected before starting the test.
+
+#### Display Question
+
+- Display the question text in the center.
+
+#### Display Choices
+
+- Show multiple choices as buttons.
+
+#### Answer Selection
+
+- Clicking a choice immediately moves to the next question.
+
+#### Navigate to Previous Question
+
+- Ability to return to the previous question.
+
+#### Save Answers
+
+- Store the answer for each question.
 
 ### 5.2. UI Requirements
 
-- **Question Section**:
-  - Gradient background.
-  - Centrally aligned question text.
-  - Large font size.
-- **Choice Buttons**:
-  - Each choice is a button.
-  - Show a check icon on hover.
-  - Change background and border color on hover.
-  - Slight scale effect on click.
-- **Back Button**: Display a back button in the header.
+#### Question Section
+
+- Gradient background.
+- Centrally aligned question text.
+- Large font size.
+
+#### Choice Buttons
+
+- Each choice is a button.
+- Show a check icon on hover.
+- Change background and border color on hover.
+- Slight scale effect on click.
+
+#### Back Button
+
+- Display a back button in the header.
 
 ### 5.3. Interaction Requirements
 
@@ -657,25 +1213,42 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 6.1. Functional Requirements
 
-- **Display Question**: Show question text and an optional image.
-- **Two-Option Selection**: Choose between two options, A or B.
-- **Display Statistics**: After selection, show the overall user statistics for that choice.
-- **Move to Next Question**: Proceed to the next question after viewing stats.
-- **Save Answers**: Store the answer for each question.
+#### Display Question
+
+- Show question text and an optional image.
+
+#### Two-Option Selection
+
+- Choose between two options, A or B.
+
+#### Display Statistics
+
+- After selection, show the overall user statistics for that choice.
+
+#### Move to Next Question
+
+- Proceed to the next question after viewing stats.
+
+#### Save Answers
+
+- Store the answer for each question.
 
 ### 6.2. UI Requirements
 
-- **Pre-selection State**:
-  - Display question text and image (if available).
-  - Display options as two large A/B buttons.
-  - Each button has an A/B label and the option text.
-  - Border color change and shadow effect on hover.
-- **Post-selection State**:
-  - Keep the question text visible.
-  - Display the selection ratio for each option as a progress bar.
-  - The user's choice is marked with a "Selected" badge.
-  - Show the percentage and participant count for each option.
-  - Display a "Next Question" or "View Results" button.
+#### Pre-selection State
+
+- Display question text and image (if available).
+- Display options as two large A/B buttons.
+- Each button has an A/B label and the option text.
+- Border color change and shadow effect on hover.
+
+#### Post-selection State
+
+- Keep the question text visible.
+- Display the selection ratio for each option as a progress bar.
+- The user's choice is marked with a "Selected" badge.
+- Show the percentage and participant count for each option.
+- Display a "Next Question" or "View Results" button.
 
 ### 6.3. Interaction Requirements
 
@@ -691,39 +1264,62 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 7.1. Functional Requirements
 
-- **Display Question**: Show question text and an optional image.
-- **Support Multiple Choice/Short Answer**: Support both question formats.
-- **Select/Enter Answer**:
-  - **Multiple Choice**: Select one of the options.
-  - **Short Answer**: Input text.
-- **Immediate Next**: For multiple choice, move to the next question immediately upon selection (except for the last question).
-- **Submit Button**: Display a submit button for the last question or for short-answer questions.
-- **Save Answers**: Store the answer for each question.
+#### Display Question
+
+- Show question text and an optional image.
+
+#### Support Multiple Choice/Short Answer
+
+- Support both question formats.
+
+#### Select/Enter Answer
+
+- Multiple Choice: Select one of the options.
+- Short Answer: Input text.
+
+#### Immediate Next
+
+- For multiple choice, move to the next question immediately upon selection (except for the last question).
+
+#### Submit Button
+
+- Display a submit button for the last question or for short-answer questions.
+
+#### Save Answers
+
+- Store the answer for each question.
 
 ### 7.2. UI Requirements
 
-- **Question Section**:
-  - Display question text.
-  - Display image if available.
-- **Multiple-Choice UI**:
-  - Display choices as buttons.
-  - Visually distinguish the selected option.
-  - Change background and border color on hover.
-- **Short-Answer UI**:
-  - Text input field.
-  - Display placeholder text.
-  - Guide users that they can submit with the Enter key.
-- **Submit Button**:
-  - Only visible on the last question or for short-answer questions.
-  - Disabled if no answer is provided.
-  - Gradient background.
+#### Question Section
+
+- Display question text.
+- Display image if available.
+
+#### Multiple-Choice UI
+
+- Display choices as buttons.
+- Visually distinguish the selected option.
+- Change background and border color on hover.
+
+#### Short-Answer UI
+
+- Text input field.
+- Display placeholder text.
+- Guide users that they can submit with the Enter key.
+
+#### Submit Button
+
+- Only visible on the last question or for short-answer questions.
+- Disabled if no answer is provided.
+- Gradient background.
 
 ### 7.3. Interaction Requirements
 
-- On multiple-choice selection:
+- **On multiple-choice selection:**
   - If not the last question: Immediately move to the next question.
   - If the last question: Enable the submit button.
-- On short-answer input:
+- **On short-answer input:**
   - Can be submitted with the Enter key.
   - Can be submitted with the submit button.
   - Submission is disabled if the answer is empty.
@@ -735,15 +1331,49 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 8.1. Answer Storage
 
-- **Storage Method**: Managed in client-side state.
-- **Storage Format**: Map question IDs to selected choice IDs.
-- **Session Storage**: Utilize Session Storage if needed to persist state across refreshes.
+#### Storage Method
+
+- Managed in client-side state.
+
+#### Storage Format
+
+- Basic mapping from question IDs to selected choice IDs/values, e.g.:
+
+```typescript
+{
+  answers: Array<{
+    questionId: string;
+    choiceId?: string;
+    value?: string;
+  }>;
+  // Metadata for viral/compare flows:
+  sessionId?: string;        // Unique ID for this play session
+  compareGroupId?: string;   // Group ID when in compare mode
+  entryRef?: 'direct' | 'share' | 'compare'; // How the user entered this test
+}
+```
+
+#### Session Storage
+
+- Utilize Session Storage if needed to persist state across refreshes.
 
 ### 8.2. State Management
 
-- **Current Question Index**: Manage the index of the current question.
-- **Answer List**: Store answers for all questions.
-- **Test Completion Status**: Manage whether all questions have been answered.
+#### Current Question Index
+
+- Manage the index of the current question.
+
+#### Answer List
+
+- Store answers for all questions.
+
+#### Test Completion Status
+
+- Manage whether all questions have been answered.
+
+#### Compare Mode State (Optional)
+
+- Persist `compareGroupId` and `entryRef` if the user entered via share or compare links.
 
 ---
 
@@ -755,14 +1385,39 @@ The Test Detail/Progress Page consists of the following states:
 
 ### 9.2. Action on Completion
 
-- **Calculate Results**: Calculate the result based on the collected answers.
-- **Store Results**: Save the calculated results to Session Storage.
-- **Page Navigation**: Automatically navigate to the result page.
+#### Calculate Results
+
+- Calculate the result based on the collected answers.
+
+#### Store Results
+
+- Save the calculated results to Session Storage (if needed by the result page).
+
+#### Determine Result Mode
+
+- If `compareGroupId` is present:
+  - Mark the completion context as compare mode.
+- Else:
+  - Use normal result mode.
+
+#### Page Navigation
+
+- Automatically navigate to the result page.
 
 ### 9.3. Navigation to Result Page
 
-- **URL**: `/tests/[id]/result`
-- **Navigation Method**: Programmatic navigation.
+#### Base URL
+
+- `/tests/[id]/result`
+
+#### Query Parameters
+
+- In normal mode (no compare): `/tests/[id]/result`
+- In compare mode: `/tests/[id]/result?mode=compare&group={compareGroupId}`
+
+#### Navigation Method
+
+- Programmatic navigation via router.
 
 ---
 
@@ -849,8 +1504,11 @@ The Test Detail/Progress Page consists of the following states:
 
 - Ensure a natural transition to the result page upon completion.
 - Minimize unnecessary waiting time during the completion process.
+- Optionally show playful copy during navigation (e.g., "Preparing your result… ready to share with friends?").
 
 ---
+
+
 
 # Test Result Page PRD
 
@@ -859,30 +1517,59 @@ The Test Detail/Progress Page consists of the following states:
 ### 1.1. Page Information
 
 - **Page Path**: `/tests/[id]/result`
-- **Query Parameter**: `?ref=share` (for shared links)
+- **Query Parameters**:
+  - `?ref=share` – accessed via a shared link
+  - `?mode=result` – user’s own result (default)
+  - `?mode=shared` – viewing someone else’s shared result
+  - `?mode=compare` – viewing result in compare/group mode
+  - `?group={groupId}` – compare group identifier (optional)
 - **Page Type**: Result Display Page
 - **Access Permission**: Accessible to both non-members and members.
 
 ### 1.2. Page Purpose
 
-The Test Result Page displays the results of a completed test, allows for sharing, and recommends related tests. The main objectives are:
+The Test Result Page displays the results of a completed test, allows for sharing, and recommends related tests.
+
+The main objectives are:
 
 - To display customized results based on the test type.
-- To provide detailed information about the result.
+- To provide detailed information about the result and its meaning.
 - To encourage social sharing and viral spread.
 - To drive re-engagement by recommending related tests.
+- To enable **“compare with friends”** experiences that generate conversation topics.
 
 ### 1.3. User Scenarios
 
-1.  **Checking Results**: Enters the result page after completing a test → Views the result → Shares or retakes the test.
-2.  **Accessing via Shared Link**: Clicks a shared link → Views the shared result → Clicks "Take This Test Too".
-3.  **Exploring Results**: Views the result → Checks recommended tests → Selects another test.
+1. **Checking Results (Normal Flow)**
+   Enters the result page after completing a test → Views their result → Shares or retries the test → Optionally explores recommended tests.
 
-### 1.4. Distinction by Test Type
+2. **Accessing via Shared Link**
+   Clicks a shared link (e.g., `?ref=share&mode=shared`) → Views the shared result → Clicks "Take This Test Too" → Completes the test → Lands on their own result page.
 
-- **Psychology**: Psychology test results (personality analysis, compatibility, gifts, careers).
-- **Balance**: Balance game results (fun statistics).
-- **Quiz**: Quiz results (score, accuracy, detailed feedback).
+3. **Friend Compare Flow (2–N people)**
+   - User A completes a test → Clicks "Compare with Friends" → A compare link with `mode=compare&group={groupId}` is generated and shared.
+   - User B (and others) open the compare link → Take the same test → Land on result page with compare mode.
+   - Result page shows **“Me vs Friend/Group”** comparison cards.
+
+4. **Exploring Results & Re-engagement**
+   Views their result → Scrolls down to see recommended tests → Selects another test (same category/series/theme) and starts again.
+
+### 1.4. Positioning & Core Value (Result Page Perspective)
+
+- **Product Mission (One-Liner)**
+  > “Pickid is a psychology & balance test playground that automatically generates conversation topics to share with friends.”
+
+- The result page is the **core moment** where:
+  - The test transforms into **“shareable content”** (screenshots, links, stories).
+  - Users decide whether to:
+    - Share with friends,
+    - Compare results,
+    - Or continue exploring more tests.
+
+- Therefore, the result page must:
+  - Present results in **meme-friendly and screenshot-friendly** format.
+  - Provide **clear CTAs** for sharing and comparing.
+  - Surface **relevant next tests** (same category/series/theme) to maintain engagement.
 
 ---
 
@@ -890,41 +1577,186 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 2.1. CTA Button Area
 
-#### 2.1.1. User's Own Result Page (mode="result")
+#### 2.1.1. User's Own Result Page (`mode="result"`)
 
-- **"Retry" Button**: Navigates to the test page to retake the test.
-- **"Share" Button**: Shares the result (using native Share API or copying to clipboard).
-- **"Explore Other Tests" Button**: Navigates to the home page.
+- **"Retry" Button**
+  - Navigates to the test page to retake the test (`/tests/[id]`).
 
-#### 2.1.2. Shared Result Page (mode="shared")
+- **"Share" Button**
+  - Triggers share behavior (native Share API or clipboard copy).
 
-- **"Take This Test Too" Button**: Navigates to the test page to start the test.
-- **"Explore Other Tests" Button**: Navigates to the home page.
+- **"Compare with Friends" Button (Optional Feature)**
+  - Creates or uses a `groupId` for this test.
+  - Generates a compare link:
+    - `/tests/[id]/result?mode=compare&group={groupId}`
+    - or `/tests/[id]?ref=compare&group={groupId}` (implementation-dependent).
+  - Copies the link or opens native Share dialog.
+  - Used for “friend/group compare” flows.
+
+- **"Explore Other Tests" Button**
+  - Navigates to the home page or test discovery page.
+
+#### 2.1.2. Shared Result Page (`mode="shared"` or `ref=share`)
+
+- **"Take This Test Too" Button**
+  - Navigates to the test detail page (`/tests/[id]`).
+
+- **"Explore Other Tests" Button**
+  - Navigates to the home page.
+
+- Optionally show:
+  - A subtle message: “You are viewing a friend’s result.”
+
+#### 2.1.3. Compare Mode Page (`mode="compare"` with `group={groupId}`)
+
+- **"Invite More Friends" Button**
+  - Uses the same `groupId` link to invite additional participants.
+
+- **"Explore Other Tests" Button**
+  - Navigates to the home page.
+
+- Page may set a **default active tab** to “Compare” sections (if type supports compare).
+
+---
 
 ### 2.2. Share Functionality
 
 #### 2.2.1. Sharing Method
 
-- **Native Share API**: Use the system's share dialog on mobile environments.
-- **Clipboard Copy**: If the native Share API is unavailable or fails, copy the URL to the clipboard.
-- **Success Toast**: Display a toast message upon successful sharing.
+- **Native Share API**
+  - Use the system’s share dialog on mobile environments.
+  - Includes title, message, and URL.
 
-#### 2.2.2. Shared URL
+- **Clipboard Copy**
+  - If the native Share API is unavailable or fails, copy the URL to the clipboard.
 
-- **Psychology/Quiz**: The result page URL (`/tests/[id]/result?ref=share`).
-- **Balance Game**: The test page URL (`/tests/[id]?ref=share`).
+- **Success Toast**
+  - Display a toast message on successful sharing or copying.
+  - Example: “Link copied! Share it in your group chat.”
 
-#### 2.2.3. Shared Text
+#### 2.2.2. Shared URL Rules
 
-- User's name (if available) or "A friend".
-- The name of the result.
-- The share URL.
+- **Psychology / Quiz**
+  - Share result page URL:
+    - `/tests/[id]/result?ref=share&mode=shared`
+  - Optionally include encoded result info in state or backend (not in URL) for privacy.
 
-### 2.3. Popular Test Recommendations
+- **Balance Game**
+  - Share test page URL:
+    - `/tests/[id]?ref=share`
+  - Users will play the test again rather than see the exact result.
 
-- Display a "Popular Tests" section at the bottom of the result page.
-- Provide a list of popular tests, excluding the current one.
-- Clicking a test card navigates to that test's detail page.
+- **Compare Link (Optional)**
+  - Group-based compare links:
+    - `/tests/[id]/result?mode=compare&group={groupId}`
+  - Backend or client associates `groupId` with multiple result entries.
+
+#### 2.2.3. Share Text & Result Card Template
+
+**Share Text Template**
+
+- Components:
+  - User name or alias (if available).
+  - Result name/type.
+  - A short meme-style line.
+  - A call-to-action to tag/mention friends.
+  - The share URL.
+
+- Example:
+  - `"[A Friend] got [Chatroom Planner Type] 🤯 This is so me. Tag the friend who would get this too 👉 [URL]"`
+
+**Result Card Structure (for OG/Story)**
+
+- **Fields (in Result Data Model)**
+  - `shareTitle`: Meme-style one-liner for the result.
+  - `shareSubtitle`: Short CTA-like subtitle encouraging sharing.
+  - `shareTags` (optional): Hash tags or keywords.
+
+- **Visual Structure**
+  - Main title (shareTitle) in large bold text.
+  - Subtitle (shareSubtitle) as smaller line.
+  - Test name + brand/logo in a footer area.
+  - Optional: category/series/theme labels (e.g. “Love / Love Drama Series”).
+
+- This structure is used consistently across:
+  - OG tags (link previews),
+  - Screenshot-friendly cards,
+  - Story templates (9:16).
+
+---
+
+### 2.3. Popular / Recommended Test Section
+
+- Display a **“Popular Tests” or “Recommended for You”** section at the bottom of the result page.
+
+#### 2.3.1. Functional Requirements
+
+- **Base Behavior**
+  - Show a list of tests excluding the current one.
+  - At least 3–6 tests, depending on screen size.
+
+- **Recommendation Logic (initial)**
+  - Priority order:
+    1. Tests from the same **main category** (e.g., Love/Relationships).
+    2. Tests from the same **series** (if any).
+    3. Tests from the same **theme/campaign** (if any).
+    4. Overall popular tests (most responses in recent period).
+
+- **Personalization (future)**
+  - If user has profile/onboarding info:
+    - Show a “For You” block based on age/interest tags.
+
+- **Navigation**
+  - Clicking a test card navigates to that test’s detail page (`/tests/[id]`).
+
+#### 2.3.2. UI Requirements
+
+- **Section Title**
+  - Examples:
+    - “Popular Tests”
+    - “More Tests You Might Like”
+    - “More from This Series”
+
+- **Card Layout**
+  - Thumbnail, title, short category label/tag.
+  - Optional tag for series, e.g. `[Love Drama Series]`.
+
+---
+
+### 2.4. Friend Compare Functionality (Cross-Type Concept)
+
+> Specific UI may differ by test type, but the concept is shared.
+
+#### 2.4.1. Concept
+
+- Enable users to compare their results with friends using:
+  - 1:1 comparison (Me vs Friend).
+  - Group comparison (Me vs Group distribution).
+
+#### 2.4.2. Flow Overview
+
+1. User A finishes test → On result page (mode=`result`).
+2. A clicks “Compare with Friends”.
+   - System:
+     - Creates/uses a `groupId`.
+     - Generates compare link: `/tests/[id]/result?mode=compare&group={groupId}`.
+3. User B opens compare link → Takes the test (if not finished).
+4. After completion:
+   - B lands on result page with compare mode (mode=`compare`).
+   - Sees:
+     - Their own result.
+     - A vs group distribution or A vs B result comparison.
+
+#### 2.4.3. UI Requirements (Generic)
+
+- Compare section title examples:
+  - “Compare with Friends”
+  - “Among Us, Who Is the Most ___?”
+- Show:
+  - My result vs friend/group results.
+  - Simple summary line, e.g.:
+    - “You’re the most extroverted in this group.”
+    - “Most of your friends are in [Type A], you’re in [Type B].”
 
 ---
 
@@ -932,13 +1764,14 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 3.1. Page Structure
 
-```
+```text
 [Result Header]
 [Description Section]
 [Careers Section]
 [Compatibility Section]
 [Gifts Section]
-[Popular Tests Section]
+[Friend Compare Section (optional)]
+[Popular / Recommended Tests Section]
 [CTA Button Area]
 ```
 
@@ -948,11 +1781,15 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 - **Display Result Image**: Show the main image for the result (if available).
 - **Display Result Name**: Show the name of the result type.
-- **Display Result Description**: Show a brief, one-line description of the result.
+- **Display Result One-Line Summary**: Show a brief, meme-style one-line description (shareTitle or similar).
+- **Display Category/Series/Theme (Optional)**: Show labels/pills of:
+  - Main category (e.g., Love/Relationships).
+  - Series (if any).
+  - Theme/campaign (if any).
 
 #### 3.2.2. UI Requirements
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with white background or light gradient.
 - **Image Area**:
   - If a result image exists, display it at the top.
   - Square aspect ratio.
@@ -960,39 +1797,46 @@ The Test Result Page displays the results of a completed test, allows for sharin
 - **Title Area**:
   - Display the result name in a large font.
   - Apply a theme color.
-- **Description Area**:
-  - Display only the first line of the description.
+- **One-Line Description**:
   - Center-aligned.
+  - Short and catchy (meme-friendly).
+- **Metadata Tags**: Small pills for category/series/theme under or above title.
+
+---
 
 ### 3.3. Description Section
 
 #### 3.3.1. Functional Requirements
 
-- **Display Detailed Description**: Show a multi-line, detailed description of the result.
+- **Display Detailed Description**: Show a multi-line, detailed description of the result. Explain core traits and tendencies.
 - **Support Line Breaks**: Properly render line breaks in the description text.
 
 #### 3.3.2. UI Requirements
 
-- **Card Format**: A card with a gradient background.
-- **Background Decoration**: A circular decorative element in the top-right corner.
+- **Card Format**: Card with a gradient background.
+- **Background Decoration**: Circular decorative element in the top-right corner.
 - **Text Style**: Readable font size and line height.
+
+---
 
 ### 3.4. Careers Section
 
 #### 3.4.1. Functional Requirements
 
 - **Display Career List**: Show a list of suitable careers as tags.
-- **Max Display Count**: Display a maximum of 8 careers.
+- **Max Display Count**: Display up to 8 careers.
 
 #### 3.4.2. UI Requirements
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with a white background.
 - **Section Title**: "Recommended Careers" with a dot prefix.
 - **Career Tags**:
-  - Each career is a rounded tag.
+  - Rounded tags.
   - Background color based on the theme color.
   - Slight scale effect on hover.
-- **Background Decoration**: A circular decorative element in the top-right corner.
+- **Background Decoration**: Circular decorative element in the top-right corner.
+
+---
 
 ### 3.5. Compatibility Section
 
@@ -1003,14 +1847,16 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 #### 3.5.2. UI Requirements
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with a white background.
 - **Section Titles**: "Best Match" / "Worst Match" with a dot prefix.
 - **Type List**:
   - Each type is a card.
-  - Best Match: Positive color scheme (e.g., shades of green).
-  - Worst Match: Negative color scheme (e.g., shades of red).
+  - Best Match: positive color scheme (e.g., greens).
+  - Worst Match: contrasting color scheme (e.g., reds).
   - Each card displays the type name and a brief description.
-- **Background Decoration**: A circular decorative element in the top-left corner.
+- **Background Decoration**: Circular decorative element in the top-left corner.
+
+---
 
 ### 3.6. Gifts Section
 
@@ -1020,25 +1866,51 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 #### 3.6.2. UI Requirements
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with a white background.
 - **Section Title**: "Recommended Gifts" with a dot prefix.
 - **Gift List**:
   - Each gift is a card.
   - Background color based on the theme color.
   - Background color change on hover.
-- **Background Decoration**: A circular decorative element in the top-left corner.
+- **Background Decoration**: Circular decorative element in the top-left corner.
 
-### 3.7. Shared Link Landing Page
+---
+
+### 3.7. Shared Link Landing Page (mode="shared" / ref=share)
 
 #### 3.7.1. Functional Requirements
 
-- **Display Shared Result**: When accessed via a shared link, display the shared result.
+- **Display Shared Result**: When accessed via a shared link, display the shared result as read-only.
 - **"Take This Test Too"**: Provide a button that navigates to the test page.
 
 #### 3.7.2. UI Requirements
 
 - **Result Display**: Same layout as the user's own result page.
+- **Notice**: Small notice such as "You are viewing a friend's result."
 - **CTA Buttons**: "Take This Test Too" and "Explore Other Tests" buttons.
+
+---
+
+### 3.8. Friend Compare Section (mode="compare")
+
+#### 3.8.1. Functional Requirements
+
+- **Compare My Result vs Friends/Group**: Show the user's result next to:
+  - Friend's result (for 2-person compare).
+  - Group distribution (for group compare).
+- **Metrics to Show (examples)**:
+  - Percentage of group by each result type.
+  - Highlight which result types are most/least common in the group.
+  - Simple derived insights (e.g., "You're one of the few planners in this group.").
+
+#### 3.8.2. UI Requirements
+
+- **Layout**:
+  - Section below core psychology sections.
+  - Separate cards for: "You vs Friend", "You vs Group"
+- **Copy Examples**:
+  - "You're the only one in this group with this type."
+  - "Most of your friends are [Type A], you're [Type B]."
 
 ---
 
@@ -1046,10 +1918,11 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 4.1. Page Structure
 
-```
+```text
 [Result Header]
 [Fun Statistics Section]
-[Popular Tests Section]
+[Friend Compare Section (optional / future)]
+[Popular / Recommended Tests Section]
 [CTA Button Area]
 ```
 
@@ -1062,10 +1935,12 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 #### 4.2.2. UI Requirements
 
-- **Check Icon**: Display a check icon to indicate completion.
+- **Completion Icon**: Display a check icon to indicate completion.
 - **Title**: Display the test title in a large font.
-- **User Name**: Display in the format: "{Name}'s Balance Game Results".
-- **Center Alignment**: All elements should be centered.
+- **User Name**: Display as: "{Name}'s Balance Game Results" if applicable.
+- **Center Alignment**: All elements centered.
+
+---
 
 ### 4.3. Fun Statistics Section
 
@@ -1076,33 +1951,36 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 #### 4.3.2. Closest Matchup UI
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with a white background.
 - **Section Title**: "Closest Matchup" with a scale icon.
 - **Description**: "Opinions were extremely divided on this one."
-- **Question Display**: Show the question text on a purple/pink gradient background.
+- **Question Display**: Question text on a purple/pink gradient background.
 - **Choice Display**:
-  - Option A: Purple-themed background.
-  - Option B: Pink-themed background.
+  - Option A: purple-themed background.
+  - Option B: pink-themed background.
   - Show percentage and participant count for each choice.
-  - Visualize the ratio with a progress bar.
+  - Visualize ratio with a progress bar.
 
 #### 4.3.3. Landslide Victory UI
 
-- **Card Format**: A card with a white background.
+- **Card Format**: Card with a white background.
 - **Section Title**: "Landslide Victory" with a flame icon.
 - **Description**: "Almost everyone chose one side for this question."
-- **Question Display**: Show the question text on an orange/amber gradient background.
+- **Question Display**: Question text on an orange/amber gradient background.
 - **Choice Display**:
-  - Winning Choice: Orange/amber gradient background, highlighted.
-  - Losing Choice: Gray background, de-emphasized.
+  - Winning choice: orange/amber gradient background, highlighted.
+  - Losing choice: gray background, de-emphasized.
   - Show percentage and participant count for each choice.
-  - Visualize the ratio with a progress bar.
+  - Visualize ratio with a progress bar.
+
+---
 
 ### 4.4. Shared Link Handling
 
-- Balance Games do not support result page sharing.
-- If accessed via a shared link, display a message guiding the user to the test page.
-- Provide a "Go to Test" button.
+- Balance Games do not support standalone result page sharing.
+- If accessed via a "result" share link by mistake:
+  - Display a message guiding the user to the test page.
+  - Provide a "Go to Test" button (`/tests/[id]`).
 
 ---
 
@@ -1110,10 +1988,10 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 5.1. Page Structure
 
-```
+```text
 [Result Header]
 [Detailed Results Section]
-[Popular Tests Section]
+[Popular / Recommended Tests Section]
 [CTA Button Area]
 ```
 
@@ -1124,54 +2002,57 @@ The Test Result Page displays the results of a completed test, allows for sharin
 - **Display Quiz Title**: Show the quiz title.
 - **Display Score**: Show the earned score as a large number.
 - **Display Grade**: Show a grade based on the score (e.g., A, B, C).
-- **Display Correct Answers Count**: Show the number of correct answers vs. total questions.
-- **Display Accuracy Rate**: Show the accuracy as a percentage.
+- **Display Correct Answers Count**: Show number of correct answers vs total questions.
+- **Display Accuracy Rate**: Show accuracy as a percentage.
 
 #### 5.2.2. UI Requirements
 
 - **Header Background**: Theme-based gradient background.
 - **Score Card**:
   - Card with a white, semi-transparent background.
-  - Display the score as a very large number.
-  - Display the grade as a badge.
-- **Answer Info**: Display the correct answer count and accuracy rate as text.
-- **Center Alignment**: All elements should be centered.
+  - Large score number.
+  - Grade as badge.
+- **Answer Info**: Correct count and accuracy rate as text.
+- **Center Alignment**: All elements centered.
+
+---
 
 ### 5.3. Detailed Results Section
 
 #### 5.3.1. Functional Requirements
 
-- **Show Incorrect Answers**: Display only the questions the user answered incorrectly.
-- **Randomize Question Order**: Shuffle the incorrect questions.
+- **Show Incorrect Answers**: Display only the questions answered incorrectly.
+- **Randomize Question Order**: Shuffle incorrect questions.
 - **Default Display Count**: Initially show only 3 incorrect answers.
-- **"Show More" Functionality**: A "Show More" button reveals the rest of the incorrect answers.
+- **"Show More" Functionality**: "Show More" button reveals the rest of the incorrect answers. Optionally provide "Collapse" control.
 
 #### 5.3.2. UI Requirements
 
-- **Card Format**: A card with a white background.
-- **Section Title**: "Incorrect Answers" with a count of incorrect questions.
+- **Card Format**: Card with a white background.
+- **Section Title**: "Incorrect Answers" with count of incorrect questions.
 - **Question Card**:
-  - Each incorrect answer is a separate card.
-  - Display an incorrect answer icon.
-  - Display the question number.
-  - Display an "Incorrect" badge.
-  - Clearly distinguish "Your Answer" from "Correct Answer".
-    - Your Answer: Regular text.
-    - Correct Answer: Highlighted green text.
-- **"Show More" Button**:
-  - Displayed if there are more than 3 incorrect answers.
-  - Clicking it reveals the remaining questions.
-  - Provide a "Collapse" function.
+  - Incorrect icon.
+  - Question number.
+  - "Incorrect" badge.
+  - Clear distinction:
+    - "Your Answer" (regular text).
+    - "Correct Answer" (highlighted green text).
+- **"Show More" Button**: Displayed if more than 3 incorrect answers.
 
 #### 5.3.3. Empty State Handling
 
-- If there are no incorrect answers, hide this entire section.
+- If there are no incorrect answers:
+  - Hide this section.
+  - Optionally show a simple message like "Perfect! No incorrect answers 🎉".
+
+---
 
 ### 5.4. Shared Link Handling
 
-- Quizzes do not support result page sharing.
-- If accessed via a shared link, display a message guiding the user to the test page.
-- Provide a "Go to Test" button.
+- Quiz result page sharing is not supported by default (to simplify UX).
+- If accessed via a quiz result share link:
+  - Display a message guiding the user to take the quiz.
+  - Provide a "Go to Test" button (`/tests/[id]`).
 
 ---
 
@@ -1179,17 +2060,20 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 6.1. Data Loading Failure
 
-- If result data fails to load, display an error message.
-- Provide an option for the user to retry (optional).
+- If result data fails to load:
+  - Display an error message.
+  - Provide an option for the user to retry (optional).
 
 ### 6.2. No Result Data
 
-- If there is no result data, display an appropriate message.
-- Provide a button to navigate to the test page.
+- If there is no result data:
+  - Display an appropriate message.
+  - Provide a button to navigate to the test page.
 
 ### 6.3. Invalid Test ID
 
-- If the test ID is invalid, redirect to a 404 page.
+- If the test ID is invalid:
+  - Redirect to a 404 page.
 
 ---
 
@@ -1199,7 +2083,7 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 - All interactive elements must be keyboard-accessible.
 - Buttons can be navigated sequentially using the Tab key.
-- Buttons can be clicked using the Enter key.
+- Buttons can be activated using the Enter key.
 - Focus indicators must be clearly visible.
 
 ### 7.2. Screen Readers
@@ -1221,7 +2105,7 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 8.1. Initial Loading
 
-- Result data is loaded on the client-side.
+- Result data is loaded on the client-side (or hydration-aware if SSR).
 - Display a skeleton UI or loading indicator during load.
 
 ### 8.2. Image Optimization
@@ -1231,8 +2115,8 @@ The Test Result Page displays the results of a completed test, allows for sharin
 
 ### 8.3. Data Optimization
 
-- Load only necessary data.
-- Use memoization to prevent unnecessary recalculations.
+- Load only necessary data for the current result and recommendations.
+- Use memoization/caching to prevent unnecessary recomputations.
 
 ---
 
@@ -1246,22 +2130,27 @@ The Test Result Page displays the results of a completed test, allows for sharin
 ### 9.2. Interaction Feedback
 
 - Provide immediate visual feedback for all clickable elements.
-- Display a toast message on successful share.
-- Provide visual effects on button hover.
+- Display a toast message on successful share or compare-link generation.
+- Provide hover/press effects on buttons.
 
 ### 9.3. Content Flow
 
-- Result information is displayed in a logical order.
-- Maintain a natural flow between sections.
-- Place recommended tests in an appropriate location.
+- Display result information in a logical, readable order.
+- Keep scannable structure: Header → Key sections (description, careers, etc.) → Compare (if any) → Recommendations → CTAs.
 
-### 9.4. Sharing Experience
+### 9.4. Sharing & Compare Experience
 
-- The share function should be intuitive and easily accessible.
-- Provide clear feedback on successful sharing.
-- Display a friendly guide message when accessing a shared link.
+- Ensure share and compare actions are:
+  - Intuitive,
+  - Close to the main result card,
+  - Clearly labeled.
+- Provide friendly, conversational copy for:
+  - Successful share,
+  - Compare link creation,
+  - Inviting friends.
+- Example: "Link copied! Drop this in your chat and see what your friends get 🙌"
 
----
+
 
 # Authentication Page PRD
 
@@ -1316,17 +2205,18 @@ The Authentication Page allows users to log in or register for the service. The 
 
 ### 3.1. Page Structure
 
-```
+```text
 [Header Area]
-  - Title: "Login"
-  - Subtitle: "Discover yourself on Pickid"
+- Title: "Login"
+- Subtitle: "Discover yourself on Pickid"
+
 [Authentication Form]
-  - Kakao login button
-  - Divider
-  - Email input field
-  - Password input field
-  - Login button
-  - Registration page link
+- Kakao login button
+- Divider
+- Email input field
+- Password input field
+- Login button
+- Registration page link
 ```
 
 ### 3.2. Functional Requirements
@@ -1412,20 +2302,21 @@ The Authentication Page allows users to log in or register for the service. The 
 
 ### 4.1. Page Structure
 
-```
+```text
 [Header Area]
-  - Logo (optional)
-  - Title: "Register"
-  - Subtitle: "Start with Pickid"
+- Logo (optional)
+- Title: "Register"
+- Subtitle: "Start with Pickid"
+
 [Authentication Form]
-  - Kakao registration button
-  - Divider
-  - Nickname or name input field
-  - Email input field
-  - Password input field
-  - Password confirmation input field
-  - Registration button
-  - Login page link
+- Kakao registration button
+- Divider
+- Nickname or name input field
+- Email input field
+- Password input field
+- Password confirmation input field
+- Registration button
+- Login page link
 ```
 
 ### 4.2. Functional Requirements
@@ -1680,16 +2571,17 @@ The Feedback Page allows users to submit feedback and view submitted feedback. T
 
 ### 2.1. Page Structure
 
-```
+```text
 [Header Area]
-  - Title: "Feedback"
-  - Subtitle: "Share your thoughts"
-  - Feedback create button
+- Title: "Feedback"
+- Subtitle: "Share your thoughts"
+- Feedback create button
+
 [Feedback List Area]
-  - Feedback card list
-  - Empty state handling
-  - Loading state handling
-  - Error state handling
+- Feedback card list
+- Empty state handling
+- Loading state handling
+- Error state handling
 ```
 
 ### 2.2. Functional Requirements
@@ -1761,16 +2653,17 @@ The Feedback Page allows users to submit feedback and view submitted feedback. T
 
 ### 3.1. Page Structure
 
-```
+```text
 [Header Area]
-  - Title: "Send Feedback"
-  - Subtitle: "Share your thoughts"
+- Title: "Send Feedback"
+- Subtitle: "Share your thoughts"
+
 [Feedback Form]
-  - Category selection
-  - Title input field
-  - Content input field
-  - Submit error message
-  - Cancel/Submit buttons
+- Category selection
+- Title input field
+- Content input field
+- Submit error message
+- Cancel/Submit buttons
 ```
 
 ### 3.2. Functional Requirements
@@ -1865,12 +2758,12 @@ The Feedback Page allows users to submit feedback and view submitted feedback. T
 
 ### 4.1. Page Structure
 
-```
+```text
 [Back Button]
 [Feedback Detail Card]
-  - Header area (category, status, title, author, creation date)
-  - Content area
-  - Admin response area (if available)
+- Header area (category, status, title, author, creation date)
+- Content area
+- Admin response area (if available)
 ```
 
 ### 4.2. Functional Requirements
