@@ -17,7 +17,7 @@ import { FeedbackSection } from '@/components/dashboard/feedback-section';
 import { FeaturedSection } from '@/components/dashboard/featured-section';
 import { getDateRangeParams } from '@/utils';
 import { type DateRangeOption } from '@/constants/analytics';
-import { IconButton } from '@pickid/ui';
+import { Button, IconButton } from '@pickid/ui';
 import { Plus, ExternalLink } from 'lucide-react';
 import { PATH } from '@/constants';
 
@@ -56,16 +56,16 @@ export function DashboardPage() {
 						<p className="text-sm text-neutral-500 mt-1">오늘의 핵심 지표</p>
 					</div>
 					<div className="flex items-center gap-3">
-						<IconButton
+						<Button
 							variant="outline"
 							size="sm"
+							className="text-blue-600 border-blue-200 hover:bg-blue-50"
 							onClick={() => window.open('https://analytics.google.com', '_blank')}
-							icon={<ExternalLink className="w-4 h-4" />}
 							text="GA 대시보드"
-							aria-label="GA 대시보드"
 						/>
 						<IconButton
 							size="sm"
+							variant="outline"
 							onClick={handleCreateTest}
 							icon={<Plus className="w-4 h-4" />}
 							text="새 테스트 만들기"
