@@ -16,6 +16,7 @@
 5. [Authentication Page](#authentication-page-prd)
 6. [Feedback Page](#feedback-page-prd)
 7. [Common Components & Layout](#common-components--layout-prd)
+8. [Collection Page (모아보기)](#collection-page-prd-모아보기)
 
 ---
 
@@ -69,7 +70,7 @@ The home page is composed of vertically stacked sections that guide the user's f
 1. **Hero Section**: Service positioning & main CTA.
 2. **Banner Carousel**: Full-width featured tests.
 3. **Category Filter Navigation**: Horizontal navigation bar for category-based browsing.
-4. **Today’s Test Section**: Daily highlighted test slot.
+4. **Today's Test Section**: Daily highlighted test slot.
 5. **This Week HOT / Popular Tests Section**: Tests with high engagement in recent days.
 6. **Balance Game Section**: Interactive balance game module.
 7. **New Tests Section**: Recently added tests.
@@ -197,7 +198,7 @@ The home page is composed of vertically stacked sections that guide the user's f
 
 ---
 
-## 6. Today’s Test Section
+## 6. Today's Test Section
 
 ### 6.1. Functional Requirements
 
@@ -217,13 +218,13 @@ The home page is composed of vertically stacked sections that guide the user's f
 ### 6.2. UI Requirements
 
 - **Section Header**
-  - Title: “Today’s Test”
+  - Title: "Today's Test"
   - Optional subtitle:
-    - “A perfect test to drop into your group chat today.”
+    - "A perfect test to drop into your group chat today."
 - **Card Content**
   - Thumbnail image.
   - Main category tag (e.g., Romance / School).
-  - Optional series tag (e.g., “[Romance Drama Series] Part 1”).
+  - Optional series tag (e.g., "[Romance Drama Series] Part 1").
   - Test title.
   - One-line, meme-like description.
 
@@ -263,8 +264,8 @@ The home page is composed of vertically stacked sections that guide the user's f
 - **Test Cards**
   - Thumbnail.
   - Up to two tags:
-    - Category tag (e.g., “Romance”, “School Life”).
-    - Optional series/feature tag (e.g., “[Drama Series]”, “Most Shared”).
+    - Category tag (e.g., "Romance", "School Life").
+    - Optional series/feature tag (e.g., "[Drama Series]", "Most Shared").
   - Test title.
 - **Carousel**
   - Horizontally scrollable.
@@ -295,9 +296,9 @@ The home page is composed of vertically stacked sections that guide the user's f
     - Total vote count.
     - Which option the user chose.
 - **Revoting**
-  - Provide “Vote Again” to reset state and let the user re-vote.
+  - Provide "Vote Again" to reset state and let the user re-vote.
 - **More Games Link**
-  - “More Balance Games” link navigates to a dedicated balance game list.
+  - "More Balance Games" link navigates to a dedicated balance game list.
 
 ### 8.2. UI Requirements
 
@@ -306,17 +307,17 @@ The home page is composed of vertically stacked sections that guide the user's f
 - Section header with the game title.
 - Two option cards with:
   - Emoji + label text.
-- “VS” element between them.
+- "VS" element between them.
 - Participant count at the bottom.
 
 **Post-vote State**
 
 - Progress bars for each option (vote percentage).
-- “My Choice” badge on the chosen option.
+- "My Choice" badge on the chosen option.
 - Vote count and percentage text for each option.
 - Buttons:
-  - “Explore Other Tests”
-  - “Vote Again”
+  - "Explore Other Tests"
+  - "Vote Again"
 
 **Loading State**
 
@@ -328,11 +329,11 @@ The home page is composed of vertically stacked sections that guide the user's f
   - Immediately casts vote and transitions to result state.
 - Button states:
   - Disable option buttons while vote is being processed.
-- “Vote Again”:
+- "Vote Again":
   - Reset to pre-vote state.
-- “Explore Other Tests”:
+- "Explore Other Tests":
   - Navigate to test list or category page.
-- “More Balance Games”:
+- "More Balance Games":
   - Navigate to balance game list page.
 
 ---
@@ -345,7 +346,7 @@ The home page is composed of vertically stacked sections that guide the user's f
 - Show recently created tests in a horizontal carousel.
 - Each card navigates to the test detail page.
 - Left/right arrows for scrolling.
-- Section title: “New Tests” with a NEW badge.
+- Section title: "New Tests" with a NEW badge.
 
 ### 9.2. UI Requirements
 
@@ -368,13 +369,13 @@ The home page is composed of vertically stacked sections that guide the user's f
 - Display an inline ad banner.
 - Clicking the banner may navigate to an external or internal link.
 
-### 10.2. UI Requirements
+### 11.2. UI Requirements
 
 - Full-width banner.
 - No horizontal padding (edge-to-edge).
 - Consistent aspect ratio.
 
-### 10.3. Interaction Requirements
+### 11.3. Interaction Requirements
 
 - Clickable area:
   - Entire banner is clickable.
@@ -383,12 +384,12 @@ The home page is composed of vertically stacked sections that guide the user's f
 
 ---
 
-## 11. Recommended Tests Section (For You)
+## 12. Recommended Tests Section (For You)
 
-### 11.1. Functional Requirements
+### 12.1. Functional Requirements
 
 - Show a list of recommended tests in a horizontal carousel.
-- Section title: “Recommended Tests” or “For You” with a PICK badge.
+- Section title: "Recommended Tests" or "For You" with a PICK badge.
 - Card click → navigate to test detail.
 - Arrow buttons for carousel navigation.
 
@@ -405,19 +406,19 @@ The home page is composed of vertically stacked sections that guide the user's f
     - Recent completion history.
     - Recently played category/series.
   - Prioritize:
-    - Tests in the same category as the user’s interests.
-    - “Next episode” in a series the user has already started.
+    - Tests in the same category as the user's interests.
+    - "Next episode" in a series the user has already started.
 
-### 11.2. UI Requirements
+### 12.2. UI Requirements
 
 - Section header:
   - Title + PICK badge.
-  - Optional subtitle: “Picked for you based on your interests.”
+  - Optional subtitle: "Picked for you based on your interests."
 - Card design:
   - Same as Popular/New sections.
-  - May show a small “For You” label if personalized.
+  - May show a small "For You" label if personalized.
 
-### 11.3. Interaction Requirements
+### 12.3. Interaction Requirements
 
 - Hover effect on cards.
 - Click → test detail.
@@ -425,23 +426,23 @@ The home page is composed of vertically stacked sections that guide the user's f
 
 ---
 
-## 12. Hall of Fame Section
+## 13. Hall of Fame Section
 
-### 12.1. Functional Requirements
+### 13.1. Functional Requirements
 
 - Display all-time best or most iconic tests.
-- Carousel of “Hall of Fame” tests.
-- Section title: “Hall of Fame” with a TOP badge.
+- Carousel of "Hall of Fame" tests.
+- Section title: "Hall of Fame" with a TOP badge.
 - Each card navigates to test detail.
 - Arrow buttons for navigation.
 
-### 12.2. UI Requirements
+### 13.2. UI Requirements
 
 - Section header: title + TOP badge.
 - Card layout consistent with other sections.
 - Additional bottom margin to clearly end the page content.
 
-### 12.3. Interaction Requirements
+### 13.3. Interaction Requirements
 
 - Hover effect.
 - Click → detail page.
@@ -449,9 +450,9 @@ The home page is composed of vertically stacked sections that guide the user's f
 
 ---
 
-## 13. Common Test Card Specifications
+## 14. Common Test Card Specifications
 
-### 13.1. Card Components
+### 14.1. Card Components
 
 Each test card across all sections should share a consistent structure:
 
@@ -471,11 +472,11 @@ Each test card across all sections should share a consistent structure:
 - (Optional) Metric label
   - e.g., “Most shared this week” (later, when share data is available).
 
-### 13.2. Card Interaction
+### 14.2. Card Interaction
 
 - **Hover Effect**
   - Shadow / slight scale-up.
-  - Thumbnail may slightly zoom for a “card is active” feeling.
+  - Thumbnail may slightly zoom for a "card is active" feeling.
 - **Click Action**
   - Card is fully clickable and navigates to the test detail page.
 - **Image Loading**
@@ -485,9 +486,9 @@ Each test card across all sections should share a consistent structure:
 
 ---
 
-## 14. Error Handling
+## 15. Error Handling
 
-### 14.1. Data Loading Failure
+### 15.1. Data Loading Failure
 
 - If data for a specific section fails to load:
   - Display a simple error message:
@@ -497,31 +498,31 @@ Each test card across all sections should share a consistent structure:
   - Show a fallback message and minimal safe content.
   - Optionally use a generic error component.
 
-### 14.2. Empty State
+### 15.2. Empty State
 
 - If a section has zero tests:
   - Hide the section entirely, or
-  - Display a friendly empty state (e.g., “No tests here yet, stay tuned!”).
+  - Display a friendly empty state (e.g., "No tests here yet, stay tuned!").
 - The home page should always show at least some core sections (e.g., Hero, Category Navigation, Hall of Fame or some default).
 
 ---
 
-## 15. Accessibility
+## 16. Accessibility
 
-### 15.1. Keyboard Navigation
+### 16.1. Keyboard Navigation
 
 - All interactive elements (buttons, links, cards, arrows) must be keyboard-accessible.
 - Focus styles must be clearly visible on all focusable elements.
 
-### 15.2. Screen Readers
+### 16.2. Screen Readers
 
 - Provide ARIA labels for each major section:
-  - e.g., “Banner Carousel”, “Today’s Test”, “Popular Tests”.
+  - e.g., "Banner Carousel", "Today's Test", "Popular Tests".
 - All images must have descriptive `alt` text.
 - Buttons and links must have descriptive labels:
-  - e.g., “Go to next banner”, “View test details”.
+  - e.g., "Go to next banner", "View test details".
 
-### 15.3. Visual Feedback
+### 16.3. Visual Feedback
 
 - Visual feedback for:
   - Hover states.
@@ -531,9 +532,9 @@ Each test card across all sections should share a consistent structure:
 
 ---
 
-## 16. Performance
+## 17. Performance
 
-### 16.1. Initial Loading
+### 17.1. Initial Loading
 
 - Prioritize loading for:
   - Hero section.
@@ -542,7 +543,7 @@ Each test card across all sections should share a consistent structure:
   - Today’s Test.
 - Use SSR/SSG where possible for above-the-fold content.
 
-### 16.2. Image Optimization
+### 17.2. Image Optimization
 
 - Use appropriate formats (e.g., WebP) and responsive image sizes.
 - Apply lazy loading to:
@@ -551,29 +552,29 @@ Each test card across all sections should share a consistent structure:
 
 ---
 
-## 17. User Experience
+## 18. User Experience
 
-### 17.1. Loading State
+### 18.1. Loading State
 
 - Use skeleton UIs for:
   - Test cards.
   - Main lists and carousels.
 - Show clear “loading” feedback so the page does not feel frozen.
 
-### 17.2. Interaction Feedback
+### 18.2. Interaction Feedback
 
 - All clickable elements should respond immediately (visual feedback).
 - Animations:
   - Short, smooth, and non-blocking.
 
-### 17.3. Content Flow
+### 18.3. Content Flow
 
 - Guide users from:
   - Understanding the service (Hero) →
-  - Immediate action (Today’s Test, This Week HOT) →
+  - Immediate action (Today's Test, This Week HOT) →
   - Fun interaction (Balance Game) →
   - Continuous discovery (New, Recommended, Hall of Fame).
-- Ensure that each section’s purpose is clear via titles and subtext.
+- Ensure that each section's purpose is clear via titles and subtext.
 
 ### 2.2. Section Spacing
 
@@ -3012,82 +3013,105 @@ The Feedback Page allows users to submit feedback and view submitted feedback. T
 
 ---
 
-# Common Components & Layout PRD
+# Common Components & Layout PRD (공통 레이아웃 & 공통 컴포넌트)
+
+## 0. Meta Information
+
+| 항목 | 내용 |
+| --- | --- |
+| 문서명 | 공통 레이아웃 & 공통 컴포넌트 PRD |
+| 범위 | Root Layout, App Layout, Header, Bottom Navigation(Tab Bar), Sidebar Drawer, 에러 페이지 |
+| 적용 대상 | 전체 웹 서비스 전역 |
+
+---
 
 ## 1. Overview
 
 ### 1.1. Purpose
 
-Common Components and Layout define components and layout structures used across all pages. The main objectives are:
+공통 레이아웃 및 공통 컴포넌트는 Pickid 웹 서비스 전역에 적용되는 **UI 뼈대와 전역 컴포넌트**를 정의한다.
 
-- To provide a consistent user experience
-- To ensure reusability of common functionality
-- To provide global settings and state management
-- To provide error handling and navigation
+**목적**
+
+- 일관된 사용자 경험(UX) 제공
+- 공통 기능 재사용성 확보
+- 전역 Providers, 전역 스타일, 전역 상태 관리
+- 에러 처리 및 네비게이션 공통 정책 정의
 
 ---
 
 ## 2. Global Layout (Root Layout)
 
+> Next.js layout.tsx 레벨에 해당하는 전역 셸 정의
+
 ### 2.1. Functional Requirements
 
 #### 2.1.1. Metadata Configuration
 
-- **Basic Metadata**: Set site title, description, keywords
-- **Open Graph**: Configure OG tags for social media sharing
-- **Twitter Card**: Configure card for Twitter sharing
-- **Robots**: Configure search engine crawling
-- **Verification**: Configure site verification tags
+- **기본 메타데이터**
+  - 사이트 제목
+  - 사이트 설명
+  - 키워드
+- **Open Graph (OG)**
+  - `og:title`, `og:description`, `og:image`, `og:url`
+- **Twitter Card**
+  - `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- **Robots**
+  - 인덱싱/크롤링 정책 설정
+- **Verification**
+  - 검색엔진/툴용 검증 태그 (예: Google, Naver 등)
 
 #### 2.1.2. Providers Configuration
 
-- **QueryClientProvider**: Provide TanStack Query client
-- **SessionProvider**: Provide authentication session management
-- **Toaster**: Provide global toast messages
+- **QueryClientProvider**: TanStack Query 클라이언트 전역 주입
+- **SessionProvider**: 인증 세션 전역 관리
+- **Toaster**: 전역 토스트 메시지 컴포넌트
 
 #### 2.1.3. Global Styles
 
-- **Font Loading**: Configure global fonts
-- **CSS Files**: Load global stylesheets
+- **폰트 로딩**: 웹폰트(프라이머리 폰트) 전역 설정
+- **CSS**: 전역 스타일시트 import (reset, base, theme 등)
 
 ### 2.2. UI Requirements
 
-- **HTML Structure**: Standard HTML structure
-- **Language Setting**: Set to Korean (ko)
-- **Viewport Setting**: Configure responsive viewport
+- **HTML 구조**: `<html lang="ko">`, `<body>` 내에 앱 루트 컨테이너
+- **뷰포트/Responsive**: 모바일 퍼스트, 반응형 메타 태그 설정
+- **기본 배경/컬러**: 서비스 특성에 맞는 전역 배경 컬러/그라데이션(필요 시)
 
 ---
 
-## 3. App Layout (App Component)
+## 3. App Layout (App Component / Shell)
+
+> Root Layout 안에서 실제 화면을 감싸는 앱 프레임
 
 ### 3.1. Functional Requirements
 
 #### 3.1.1. Container Structure
 
-- **Max Width**: Set mobile max width
-- **Background**: Semi-transparent white background with blur effect
-- **Shadow**: Card-style shadow effect
+- 모바일 기준 단일 컬럼 중심 레이아웃
+- 가독성 있는 최대 너비를 사용하고, 양 옆에는 적절한 여백을 둔다.
+- 전체적인 인상은 깔끔하고 모던한 카드형 레이아웃을 기본으로 하되, 구체적인 배경 처리(블러, 그림자 등)는 디자인 단계에서 결정한다.
 
-#### 3.1.2. Top Gradient Line
+#### 3.1.2. Common Header
 
-- **Position**: Top of the page
-- **Style**: Rose-pink gradient line
-- **Height**: 1px
+- 모든 페이지 상단에 고정 표시
+- 스크롤과 함께 숨김/표시 애니메이션 (4.3 참고)
 
-#### 3.1.3. Header Display
+#### 3.1.3. Bottom Navigation (Tab Bar)
 
-- **Position**: Top of all pages
-- **Fixed**: Fixed to top on scroll
+- 모든 주요 화면에서 공통으로 노출되는 하단 탭바
+- 기본 탭 구성:
+  - 홈
+  - 카테고리
+  - 모아보기
+  - 마이페이지
+- 역할:
+  - 서비스의 1차 네비게이션으로 사용
+  - 현재 탭은 시각적으로 구분되며, 탭 전환 시 해당 섹션의 루트 화면으로 이동
 
-#### 3.1.4. Footer Display
+#### 3.1.4. Sidebar Drawer Access
 
-- **Conditional Display**: Display only on main page
-- **Position**: Bottom of the page
-
-#### 3.1.5. Side Drawer
-
-- **Position**: Accessible from all pages
-- **Trigger**: Click header menu button
+- 모든 페이지에서 헤더의 메뉴 버튼을 통해 사이드 드로워 접근 가능
 
 ---
 
@@ -3095,251 +3119,254 @@ Common Components and Layout define components and layout structures used across
 
 ### 4.1. Functional Requirements
 
-#### 4.1.1. Logo/Back Button
+#### 4.1.1. Logo / Back Button
 
-- **Conditional Display**:
-  - Main page or result share page: Display logo
-  - Other pages: Display back button
-- **Logo Click**: Navigate to main page
-- **Back Click**: Navigate to previous page
+- **조건부 표시**
+  - 메인 페이지 & 결과 공유 페이지: **로고** 표시
+  - 기타 페이지: **뒤로가기 버튼** 표시
+- **로고 클릭**: 메인 페이지(`/`)로 이동
+- **뒤로가기 클릭**: 브라우저 history 기준 이전 페이지로 이동
 
 #### 4.1.2. Menu Button
 
-- **Position**: Top-right of header
-- **Function**: Open side drawer
+- **위치**: 우측 상단
+- **클릭 시**: 사이드 드로워 오픈
 
 #### 4.1.3. Scroll Behavior
 
-- **Scroll Up**: Show header when scrolling up
-- **Scroll Down**: Hide header when scrolling down
-- **Animation**: Smooth transition effect
+- **스크롤 업(위로 올릴 때)**: 헤더 다시 표시
+- **스크롤 다운(아래로 내릴 때)**: 헤더 숨김
+- **애니메이션**: 자연스러운 슬라이드/페이드 효과
 
 ### 4.2. UI Requirements
 
 #### 4.2.1. Layout
 
-- **Fixed Position**: Fixed to top (sticky)
-- **Background**: White background
-- **Border**: Gray border at bottom
+- 상단 고정(sticky)
+- 배경: 흰색
+- 하단 Border: 연한 회색 1px
 
 #### 4.2.2. Logo
 
-- **Image**: Logo SVG image
-- **Size**: Display at appropriate size
-- **Priority Loading**: Priority loading
+- 형식: SVG 이미지
+- 크기: 높이 기준 일정 px로 고정
+- LCP를 고려해 우선 로딩 처리 가능
 
 #### 4.2.3. Back Button
 
-- **Icon**: Left arrow icon
-- **Hover Effect**: Background color change on hover
+- 아이콘: 좌측 화살표
+- 클릭 영역: 터치 고려하여 충분한 hit area
+- 호버: 배경색 살짝 변경
 
 #### 4.2.4. Menu Button
 
-- **Icon**: Hamburger menu icon
-- **Hover Effect**: Background color change on hover
+- 아이콘: 햄버거 아이콘
+- 호버: 배경색 변경
+- 클릭 시 active 상태 피드백
 
 ---
 
-## 5. Footer
+## 5. Bottom Navigation (Tab Bar)
 
 ### 5.1. Functional Requirements
 
-#### 5.1.1. Conditional Display
+#### 5.1.1. Tab Configuration
 
-- **Display Condition**: Display only on main page
-- **Hide Condition**: Hidden on other pages
+- **홈**: `/` - 홈 페이지로 이동
+- **카테고리**: `/category` - 카테고리 페이지로 이동
+- **모아보기**: `/collection` - 모아보기 페이지로 이동
+- **마이페이지**: `/mypage` - 마이페이지로 이동
 
-#### 5.1.2. Information Display
+#### 5.1.2. Active State
 
-- **Copyright**: Display copyright information
-- **Contact**: Display email contact
-- **Email Link**: Open mail app on email click
+- 현재 활성화된 탭은 시각적으로 구분 (아이콘 색상, 라벨 강조)
+- URL 경로 기준으로 active 상태 판단
+
+#### 5.1.3. Navigation Behavior
+
+- 탭 클릭 시 해당 섹션의 루트 화면으로 이동
+- 이미 해당 탭에 있을 경우 스크롤 최상단으로 이동 (선택적)
 
 ### 5.2. UI Requirements
 
 #### 5.2.1. Layout
 
-- **Background**: Gradient background
-- **Center Alignment**: Center-align all content
-- **Text Size**: Display in small font
+- 화면 하단 고정(fixed)
+- 배경: 흰색
+- 상단 Border: 연한 회색 1px
+- Safe area 고려 (iOS notch 등)
 
-#### 5.2.2. Information Display
+#### 5.2.2. Tab Item
 
-- **Copyright**: "© 2025 픽키드. All rights reserved."
-- **Contact**: "Contact: email address"
-- **Email Link**: Clickable email link
+- 아이콘 + 라벨 구성
+- 아이콘 크기: 24px
+- 라벨 크기: 10-12px
+- 터치 영역: 최소 44x44px
+
+#### 5.2.3. Active/Inactive State
+
+- **Active**: 강조 색상 (프라이머리 컬러)
+- **Inactive**: 연한 회색
 
 ---
 
-## 6. Side Drawer
+## 6. Sidebar Drawer
+
+> 사이드 드로워는 하단 탭바(1차 네비게이션)를 보완하는 **보조 메뉴** 역할을 한다.
+> - 자주 가는 주요 섹션은 하단 탭바
+> - 상대적으로 진입 빈도가 낮은 메뉴/설정/건의사항 등은 드로워에 배치
 
 ### 6.1. Functional Requirements
 
-#### 6.1.1. Drawer Open/Close
+#### 6.1.1. Open/Close
 
-- **Open**: Open on header menu button click
-- **Close**:
-  - Close on background click
-  - Close on ESC key press
-  - Close on menu item click
-  - Close on back button click
+- **열기**: 헤더 메뉴 버튼 클릭
+- **닫기**:
+  - 백드롭(오버레이) 클릭
+  - ESC 키 입력
+  - 메뉴 항목 클릭 후 페이지 이동 시
+  - 닫기/뒤로가기 UI 클릭
 
 #### 6.1.2. Authentication State-Based UI
 
-- **Non-logged-in State**: Display logo, site information, login/register button
-- **Logged-in State**: Display user profile, email, logout button
+- **비로그인 상태**:
+  - 로고 + 서비스 설명
+  - "로그인 / 회원가입하러가기" CTA 버튼
+- **로그인 상태**:
+  - 프로필(이미지 or 이니셜)
+  - 사용자 이메일
+  - 로그아웃 버튼
 
 #### 6.1.3. Menu Navigation
 
-- **Main Menu**: List of main feature menus
-- **Other Features**: List of other feature menus
-- **Menu Click**: Navigate to page and close drawer
+- **주요 메뉴**: 서비스 주요 기능으로 이동
+- **기타 기능**: 부가 기능/페이지로 이동
+- **메뉴 클릭**: 해당 페이지로 라우팅, 드로워 자동 닫기
 
 ### 6.2. UI Requirements
 
 #### 6.2.1. Drawer Container
 
-- **Position**: Slide from left side of screen
-- **Width**: Mobile max width
-- **Height**: Full screen height
-- **Background**: White background
-- **Overlay**: Display background overlay when drawer opens
+- **위치**: 화면 좌측에서 슬라이드 인
+- **너비**: 모바일 기준 전체 너비 또는 일정 비율
+- **높이**: 전체 화면
+- **배경**: 흰색
+- **오버레이**: 어두운 반투명 배경
 
 #### 6.2.2. Non-logged-in State UI
 
-- **Top Area**:
-  - Background: Gray background
-  - Logo/Site Information: Center-aligned
-  - Site Name: Display in large font
-  - Site Description: Display in smaller font
-  - Login/Register Button: Rounded button style
-- **Middle Area**:
-  - Menu List: Scrollable area
-  - Main Menu Section: "Main Menu" title and menu list
-  - Other Features Section: "Other Features" title and menu list
+- **상단**:
+  - 회색 톤 배경
+  - 로고/서비스명/설명 텍스트
+  - "로그인 / 회원가입하러가기" 버튼 (둥근 버튼)
+- **중간**:
+  - "주요 메뉴" 섹션 + 메뉴 리스트
+  - "기타 기능" 섹션 + 메뉴 리스트
+- 리스트 영역은 스크롤 가능
 
 #### 6.2.3. Logged-in State UI
 
-- **Top Area**:
-  - Background: Gray background
-  - Profile Image: Circular profile image or default icon
-  - Email: Display user email address
-- **Middle Area**:
-  - Menu List: Scrollable area
-  - Main Menu Section: "Main Menu" title and menu list
-  - Other Features Section: "Other Features" title and menu list
-- **Bottom Area**:
-  - Logout Button: Button with red border
-  - Border: Gray border at top
+- **상단**:
+  - 회색 배경
+  - 원형 프로필 이미지 또는 기본 아이콘
+  - 이메일 텍스트
+- **중간**:
+  - 주요 메뉴/기타 기능 동일 구조
+- **하단**:
+  - 로그아웃 버튼(주의/경고 계열 컬러 사용)
+  - 상단에 연한 구분선
 
 ### 6.3. Menu Configuration
 
-#### 6.3.1. Main Menu
+#### 6.3.1. Main Menu (예시)
 
-- **Psychology Test**: Navigate to psychology test category page
-- **Balance Game**: Navigate to balance game category page
-- **Personality Type Test**: Navigate to personality type test category page
-- **Love Type Test**: Navigate to love type test category page
-- **Popular Tests**: Navigate to popular tests page
+- 심리 테스트
+- 밸런스 게임
+- 성격 유형 테스트
+- 연애 유형 테스트
+- 요즘 인기 테스트
+
+각 메뉴 → 해당 카테고리/리스트 페이지로 이동.
 
 #### 6.3.2. Other Features
 
-- **Submit Feedback**: Navigate to feedback page
+- 건의사항 작성하기 → `/feedback` 또는 `/feedback/create`
 
 #### 6.3.3. Menu Item UI
 
-- **Icon**: Display unique icon for each menu
-- **Label**: Display menu name
-- **Hover Effect**: Background color change on hover
-- **Click Action**: Navigate to page and close drawer on click
+- 아이콘 + 라벨 조합
+- 전체 행 클릭 가능
+- 호버 시 배경 색상 변경
 
 ### 6.4. Interaction Requirements
 
-#### 6.4.1. Drawer Open/Close
-
-- **Open Animation**: Slide-in animation from left
-- **Close Animation**: Slide-out animation to left
-- **Overlay**: Display background overlay when drawer opens
-
-#### 6.4.2. Menu Click
-
-- **Page Navigation**: Navigate to clicked menu's page
-- **Drawer Close**: Automatically close drawer after page navigation
-
-#### 6.4.3. Login/Register Button
-
-- **Non-logged-in State**: Display "Login / Register" button
-- **Click Action**: Navigate to login page and close drawer
-
-#### 6.4.4. Logout Button
-
-- **Position**: Bottom of drawer
-- **Click Action**: Process logout, navigate to homepage, and close drawer
+- **드로워 애니메이션**: 슬라이드 인/아웃
+- **오버레이 클릭 시**: 드로워 닫기
+- **"로그인 / 회원가입하러가기"**: `/auth/login`으로 이동 후 드로워 닫기
+- **로그아웃 버튼**: 로그아웃 처리 → 홈(`/`) 이동 → 드로워 닫기
 
 ---
 
 ## 7. Error Pages
 
-### 7.1. 404 Error Page (Not Found)
+### 7.1. 404 Page (Not Found)
 
 #### 7.1.1. Functional Requirements
 
-- **Display Condition**: Display when accessing non-existent page
-- **Error Message**: Display "Page not found" message
-- **Description**: Display "The requested page does not exist or may have been moved." description
-- **Action Buttons**:
-  - "Home" button: Navigate to homepage
-  - "Previous Page" button: Navigate to previous page
+- **트리거**: 존재하지 않는 라우트 접근 시
+- **메시지**:
+  - 제목: "페이지를 찾을 수 없어요"
+  - 설명: "요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다."
+- **액션**:
+  - "홈으로" 버튼 → `/`
+  - "이전 페이지" 버튼 → history.back()
 
 #### 7.1.2. UI Requirements
 
-- **Layout**: Center-aligned error message
-- **Icon**: Display error icon (optional)
-- **Buttons**: Provide action buttons
+- 중앙 정렬 레이아웃
+- 에러/404 관련 아이콘(선택)
+- 두 개의 CTA 버튼 (홈, 이전)
 
-### 7.2. General Error Page (Error)
+### 7.2. General Error Page (Error Boundary)
 
 #### 7.2.1. Functional Requirements
 
-- **Display Condition**: Display when application error occurs
-- **Error Message**: Display "An error occurred" message
-- **Description**: Display "Please try again later or go to the homepage." description
-- **Error Code**: Display error code (if available)
-- **Action Buttons**:
-  - "Retry" button: Attempt error recovery
-  - "Home" button: Navigate to homepage
-- **Additional Guidance**: Display "If the problem persists, please contact customer service." guidance message
+- **트리거**: 렌더 중 에러, 예외 상황 등
+- **메시지**:
+  - 제목: "문제가 발생했어요"
+  - 설명: "잠시 후 다시 시도하거나 홈으로 이동해 주세요."
+  - 에러 코드(있는 경우) 표시
+- **액션**:
+  - "다시 시도" 버튼 → 현재 뷰 리로딩/리셋
+  - "홈으로" 버튼 → `/`
+- **추가 안내**: "문제가 계속되면 고객센터로 문의해주세요."
 
 #### 7.2.2. UI Requirements
 
-- **Layout**: Center-aligned error message
-- **Background**: Gradient background
-- **Card Format**: Card with white background
-- **Icon**: Display warning icon
-- **Buttons**: Provide action buttons
+- 서비스 전체 비주얼 스타일과 일관된 배경/카드 스타일 사용
+- 에러라는 맥락이 직관적으로 느껴지도록 아이콘/색 조합 활용
+- 구체적인 색상/그라데이션은 디자인 시스템 기준에 맞춰 적용
 
 ---
 
-## 8. Accessibility
+## 8. Accessibility (A11y)
 
 ### 8.1. Keyboard Navigation
 
-- All interactive elements must be keyboard-accessible
-- Side drawer can be closed with ESC key
-- Sequential navigation possible with Tab key
-- Focus indicators must be clearly visible
+- 모든 버튼/링크/폼 요소: Tab 순서 접근 가능
+- ESC: 사이드 드로워 닫기
+- 포커스 상태: 명확한 outline/스타일 제공
 
 ### 8.2. Screen Readers
 
-- Provide clear descriptions for all buttons and links
-- Drawer title must be readable by screen readers
-- Error messages must be readable by screen readers
+- 버튼/링크에 의미 있는 `aria-label` 또는 텍스트
+- 드로워: 제목 및 role 설정 (예: `role="dialog"` + `aria-modal="true"`)
+- 에러 메시지: 스크린 리더가 읽을 수 있도록 ARIA 속성 연동
 
 ### 8.3. Visual Feedback
 
-- Provide visual feedback for all interactions
-- Focus states must be clearly indicated
-- Hover states must be clearly distinguishable
+- 호버/포커스/액티브 상태 모두 명확한 시각 변화
+- 에러 상태: 색상 + 아이콘 + 텍스트로 명확한 인지 가능
 
 ---
 
@@ -3347,42 +3374,268 @@ Common Components and Layout define components and layout structures used across
 
 ### 9.1. Layout Optimization
 
-- Prevent unnecessary re-renders
-- Optimize conditional rendering
+- 레이아웃 컴포넌트는 가능한 순수하게 유지
+- Providers 및 비즈니스 로직 분리
+- 조건부 렌더링 최소화
 
 ### 9.2. Image Optimization
 
-- Priority loading for logo images
-- Optimize profile images to appropriate size
+- 로고: 적절한 크기 + 우선 로딩
+- 프로필 이미지: 크기 제한 + lazy loading 가능
 
 ### 9.3. Animation Optimization
 
-- Provide smooth animations
-- Use animations that do not impact performance
+- CSS 기반 애니메이션 우선
+- Layout shift 최소화
+- 모바일에서도 부드러운 프레임 유지
 
 ---
 
-## 10. User Experience
+## 10. UX Principles
 
 ### 10.1. Consistency
 
-- Provide consistent layout across all pages
-- Ensure consistent behavior of common components
+- 모든 페이지 동일한 헤더/레이아웃 패턴
+- 사이드 드로워, 에러 페이지, 푸터 등 반복되는 경험 통일
 
 ### 10.2. Interaction Feedback
 
-- Provide immediate visual feedback for all clickable elements
-- Smooth animations for drawer open/close
-- Visual effects on button hover
+- 클릭/탭 시 즉각 피드백
+- 드로워 열고 닫힐 때 부드러운 전환
+- 토스트/에러 메시지로 사용자 인식 보조
 
 ### 10.3. Navigation Experience
 
-- Intuitive navigation structure
-- Clear menu configuration
-- Easy access paths
+- 메인 → 카테고리 → 상세 → 결과 → 다시 메인 흐름이 언제든지 명확히 보이도록 헤더/드로워 설계
+- "길 잃었다"는 느낌이 들지 않도록 홈/뒤로가기 버튼 항상 확보
 
-### 10.4. Error Handling Experience
+### 10.4. Error Experience
 
-- Provide clear error messages
-- Provide recovery options
-- Friendly error page design
+- 사용자를 탓하지 않는 톤
+- 해결 방향 제안 (다시 시도, 홈으로 이동, 문의 등)
+- 너무 과한 기술 정보 대신, 필요한 경우에만 코드/상태 표시
+
+---
+
+# Collection Page PRD (모아보기)
+
+## 0. Meta Information
+
+| Item            | Description                                            |
+| --------------- | ------------------------------------------------------ |
+| **Page Path**   | `/collection`                                          |
+| **Tab Bar**     | `[홈] [카테고리] [모아보기] [마이페이지]` — 3번째 탭   |
+| **Access**      | 모든 사용자 (비로그인/로그인 구분 없음)                |
+| **Core Keyword**| 큐레이션 허브, 테스트 모음, 시리즈/테마 모음           |
+
+---
+
+## 1. Page Purpose
+
+모아보기 페이지는 Pickid 서비스의 **큐레이션 허브**입니다.
+
+- 시리즈(Series), 테마(Theme), 인기(Popular), 친구와 함께(Friends) 4가지 섹션으로 구성
+- 사용자가 "다음 에피소드" 또는 "기획전 테스트"를 자연스럽게 탐색하도록 유도
+- 홈과 카테고리 사이에서 **목적 지향 탐색**(시리즈 연속 플레이, 시즌 테마 등)을 제공
+
+---
+
+## 2. User Scenarios
+
+| 시나리오 | 흐름 |
+|----------|------|
+| **시리즈 탐색** | 탭바 "모아보기" 클릭 → 시리즈 섹션 → 관심 시리즈 카드 클릭 → 시리즈 상세 페이지 → 에피소드 1부터 순서대로 플레이 |
+| **테마 탐색** | 탭바 "모아보기" 클릭 → 테마 섹션 → 관심 테마 카드 클릭 → 테마 상세 페이지 → 테마 내 테스트 자유롭게 선택 |
+| **인기 테스트 탐색** | 탭바 "모아보기" 클릭 → Popular 섹션 → 인기 테스트 카드 클릭 → 테스트 상세 페이지 |
+| **친구와 함께 탐색** | 탭바 "모아보기" 클릭 → Friends 섹션 → "친구와 함께" 테스트 카드 클릭 → 테스트 상세 페이지 |
+
+---
+
+## 3. Layout & Section Structure
+
+### 3.1. Page Structure
+
+```
+[Page Header]
+- 페이지 타이틀: "모아보기"
+- 서브 타이틀: "Pickid가 모아놓은 테스트 콜렉션"
+
+[Series Section]
+- 섹션 타이틀: "시리즈"
+- 가로 스크롤 카드 리스트
+
+[Theme Section]
+- 섹션 타이틀: "테마"
+- 가로 스크롤 카드 리스트
+
+[Popular Section]
+- 섹션 타이틀: "인기 테스트"
+- 가로 스크롤 카드 리스트
+
+[Friends Section]
+- 섹션 타이틀: "친구와 함께"
+- 가로 스크롤 카드 리스트
+```
+
+### 3.2. Section Spacing
+
+- 섹션 간 여백: `32px` (2rem)
+- 섹션 타이틀과 카드 리스트 간 여백: `16px` (1rem)
+- 페이지 좌우 패딩: `16px` (1rem)
+
+---
+
+## 4. Section Definitions
+
+### 4.1. Series Section (시리즈)
+
+#### 4.1.1. Functional Requirements
+
+- **데이터 소스**: `series` 테이블에서 `status = 'active'` 조건으로 조회
+- **정렬**: `order` ASC, `created_at` DESC
+- **카드 클릭**: 시리즈 상세 페이지 (`/collection/series/[slug]`)로 이동
+
+#### 4.1.2. UI Requirements
+
+- **섹션 타이틀**: "시리즈" + 시리즈 아이콘
+- **카드 레이아웃**: 가로 스크롤 카드 리스트
+- **카드 구성**:
+  - 썸네일 이미지 (aspect-ratio: 16/9)
+  - 시리즈 이름
+  - 에피소드 수 (예: "3편 시리즈")
+  - 시리즈 설명 (1줄 말줄임)
+
+#### 4.1.3. Empty State
+
+- 시리즈가 없을 경우 섹션 자체를 숨김
+
+---
+
+### 4.2. Theme Section (테마)
+
+#### 4.2.1. Functional Requirements
+
+- **데이터 소스**: `themes` 테이블에서 `status = 'active'` 조건으로 조회
+- **정렬**: `order` ASC, `start_date` DESC
+- **카드 클릭**: 테마 상세 페이지 (`/collection/theme/[slug]`)로 이동
+- **기간 표시**: `start_date` ~ `end_date` 표시 (예: "12.01 ~ 12.31")
+
+#### 4.2.2. UI Requirements
+
+- **섹션 타이틀**: "테마" + 테마 아이콘
+- **카드 레이아웃**: 가로 스크롤 카드 리스트
+- **카드 구성**:
+  - 썸네일 이미지 (aspect-ratio: 16/9)
+  - 테마 이름
+  - 기간 배지 (예: "12.01 ~ 12.31")
+  - 테마 설명 (1줄 말줄임)
+
+#### 4.2.3. Empty State
+
+- 테마가 없을 경우 섹션 자체를 숨김
+
+---
+
+### 4.3. Popular Section (인기 테스트)
+
+#### 4.3.1. Functional Requirements
+
+- **데이터 소스**: 최근 7일간 `response_count` 기준 상위 10개 테스트
+- **정렬**: `response_count` DESC
+- **카드 클릭**: 테스트 상세 페이지 (`/tests/[id]`)로 이동
+
+#### 4.3.2. UI Requirements
+
+- **섹션 타이틀**: "인기 테스트" + HOT 배지
+- **카드 레이아웃**: 가로 스크롤 카드 리스트
+- **카드 구성**:
+  - 썸네일 이미지 (aspect-ratio: 1/1 또는 16/9)
+  - 테스트 이름
+  - 카테고리 배지
+  - 참여자 수 (예: "1.2K명 참여")
+
+#### 4.3.3. Empty State
+
+- 인기 테스트가 없을 경우 "아직 인기 테스트가 없어요" 메시지 표시
+
+---
+
+### 4.4. Friends Section (친구와 함께)
+
+#### 4.4.1. Functional Requirements
+
+- **데이터 소스**: `metadata.for_friends = true` 조건의 테스트 또는 관리자가 수동 지정한 테스트
+- **정렬**: `order` ASC, `created_at` DESC
+- **카드 클릭**: 테스트 상세 페이지 (`/tests/[id]`)로 이동
+
+#### 4.4.2. UI Requirements
+
+- **섹션 타이틀**: "친구와 함께" + 친구 아이콘
+- **카드 레이아웃**: 가로 스크롤 카드 리스트
+- **카드 구성**:
+  - 썸네일 이미지 (aspect-ratio: 1/1 또는 16/9)
+  - 테스트 이름
+  - 카테고리 배지
+  - 설명 (1줄 말줄임)
+
+#### 4.4.3. Empty State
+
+- "친구와 함께" 테스트가 없을 경우 섹션 자체를 숨김
+
+---
+
+## 5. Routing & Integration
+
+### 5.1. Page Routes
+
+| Route | Description |
+|-------|-------------|
+| `/collection` | 모아보기 메인 페이지 |
+| `/collection/series/[slug]` | 시리즈 상세 페이지 |
+| `/collection/theme/[slug]` | 테마 상세 페이지 |
+
+### 5.2. Tab Bar Integration
+
+- **위치**: 하단 탭바 3번째
+- **아이콘**: 북마크 또는 컬렉션 아이콘
+- **라벨**: "모아보기"
+- **Active State**: 현재 페이지일 때 강조 표시
+
+---
+
+## 6. State & Exception Handling
+
+### 6.1. Loading State
+
+- 각 섹션별 스켈레톤 UI 표시
+- 가로 스크롤 카드 3개 분량의 스켈레톤
+
+### 6.2. Error State
+
+- 데이터 로딩 실패 시 "데이터를 불러올 수 없어요" 메시지 + 새로고침 버튼
+
+### 6.3. Empty State
+
+- 전체 페이지가 비어있을 경우 (모든 섹션이 empty):
+  - "아직 준비된 콜렉션이 없어요" 메시지
+  - "홈으로 가기" 버튼 제공
+
+---
+
+## 7. Analytics & Metrics
+
+### 7.1. Tracking Events
+
+| Event | Description |
+|-------|-------------|
+| `view_collection_page` | 모아보기 페이지 진입 |
+| `click_series_card` | 시리즈 카드 클릭 |
+| `click_theme_card` | 테마 카드 클릭 |
+| `click_popular_card` | 인기 테스트 카드 클릭 |
+| `click_friends_card` | 친구와 함께 카드 클릭 |
+
+### 7.2. KPI Metrics
+
+- **페이지 조회수**: 모아보기 페이지 방문 수
+- **섹션별 클릭률**: 각 섹션 카드 클릭 수 / 페이지 조회수
+- **시리즈 완주율**: 시리즈 내 모든 에피소드 완료한 사용자 비율
