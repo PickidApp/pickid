@@ -188,4 +188,52 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
 );
 CarouselNext.displayName = 'CarouselNext';
 
-export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious };
+interface CarouselDotsProps extends React.HTMLAttributes<HTMLDivElement> {
+	count: number;
+}
+
+function CarouselDots({ count, className, ...props }: CarouselDotsProps) {
+	const { api } = useCarousel();
+	const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+	React.useEffect(() => {
+		if (!api) return;
+
+		const onSelect = () => {
+			setSelectedIndex(api.selectedScrollSnap());
+		};
+
+		onSelect();
+		api.on('select', onSelect);
+
+		return () => {
+			api.off('select', onSelect);
+		};
+	}, [api]);
+
+	const handleDotClick = (index: number) => {
+		api?.scrollTo(index);
+	};
+
+	return (
+		<div className={cn('flex justify-center gap-1.5', className)} {...props}>
+			{Array.from({ length: count }).map((_, index) => (
+				<button
+					key={index}
+					type="button"
+					className={cn(
+						'w-2 h-2 rounded-full transition-all duration-200',
+						selectedIndex === index
+							? 'bg-neutral-900 w-4'
+							: 'bg-neutral-300 hover:bg-neutral-400'
+					)}
+					onClick={() => handleDotClick(index)}
+					aria-label={`Go to slide ${index + 1}`}
+				/>
+			))}
+		</div>
+	);
+}
+CarouselDots.displayName = 'CarouselDots';
+
+export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselDots };

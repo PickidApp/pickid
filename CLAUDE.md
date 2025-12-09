@@ -127,62 +127,75 @@ Manage multiple apps and packages with a monorepo.
 
 ## Directory Structure (apps/web)
 
-Feature-Sliced Design + MVVM Pattern
+Layered Architecture (Next.js App Router)
 
 ```
 apps/web/src/
-├── app/                              # Next.js App Router (pages)
-│   ├── page.tsx                     # Home page
+├── app/                    # Next.js App Router (pages)
+│   ├── page.tsx           # Home page
 │   ├── tests/
-│   │   ├── [id]/page.tsx           # Test detail page
-│   │   └── [id]/result/page.tsx    # Test result page
-│   └── layout.tsx                   # Root layout
+│   │   ├── [id]/page.tsx
+│   │   └── [id]/result/page.tsx
+│   └── layout.tsx         # Root layout
 │
-├── features/[featureName]/          # Feature modules
-│   ├── components/                  # UI components (View)
-│   ├── hooks/                       # Business logic (ViewModel)
-│   │   ├── api/                    # TanStack Query (useTestQuery, useTestMutation)
-│   │   ├── state/                  # Local state (useState-based)
-│   │   ├── ui/                     # UI logic (useModal, useToast)
-│   │   └── index.ts                # Hook exports
-│   ├── constants/                   # Feature constants
-│   ├── types/                       # Feature types
-│   └── store/                       # Zustand stores (global state)
+├── api/                    # TanStack Query hooks
+│   ├── query-keys.ts      # Query key factory
+│   └── auth.ts            # useAuthQuery, useLogoutMutation
 │
-└── shared/                          # Cross-feature code
-    ├── api/
-    │   ├── services/               # Supabase API calls
-    │   └── query-keys.ts           # TanStack Query keys
-    ├── components/                  # Shared components
-    ├── hooks/                       # Shared hooks
-    ├── lib/                         # Utilities
-    ├── types/                       # Shared types
-    └── constants/                   # Global constants
+├── services/               # Supabase API calls
+│   └── auth.service.ts
+│
+├── components/             # UI components
+│   └── layout/
+│       ├── header.tsx
+│       ├── tab-bar.tsx
+│       └── side-drawer.tsx
+│
+├── hooks/                  # Custom hooks
+│   └── use-scroll-visibility.ts
+│
+├── constants/              # Constants
+│   ├── navigation.ts
+│   ├── categories.ts
+│   └── mock.ts
+│
+├── lib/                    # Libraries
+│   └── supabase/
+│
+└── types/                  # Type definitions (필요시)
 ```
 
 ## Architecture Pattern (Web)
 
-**MVVM (Model-View-ViewModel)**
+**Layered Architecture**
 
-- **Model**: `shared/api/services` - Data layer (Supabase)
-- **View**: `features/*/components` - UI components (presentation only)
-- **ViewModel**: `features/*/hooks` - Business logic & state
+- **Service Layer**: `services/` - Supabase API calls
+- **API Layer**: `api/` - TanStack Query hooks
+- **View Layer**: `components/`, `app/` - UI components
 
 ```tsx
-// ViewModel: features/test/hooks/useTest.ts
-export function useTest(testId: string) {
+// Service: services/auth.service.ts
+export const authService = {
+	async getUser() {
+		const supabase = createClient();
+		const { data: { user }, error } = await supabase.auth.getUser();
+		if (error) throw error;
+		return user;
+	},
+};
+
+// API: api/auth.ts
+export function useAuthQuery() {
 	return useQuery({
-		queryKey: queryKeys.test.detail(testId),
-		queryFn: () => testService.getTest(testId),
+		queryKey: queryKeys.auth.user(),
+		queryFn: () => authService.getUser(),
 	});
 }
 
-// View: features/test/components/TestCard.tsx
-export function TestCard({ testId }: Props) {
-	const { data: test, isLoading } = useTest(testId);
-
-	if (isLoading) return <Spinner />;
-	return <div>{test.title}</div>;
+// View: components/layout/side-drawer.tsx
+export function SideDrawer() {
+	const { data: user } = useAuthQuery();
+	return <div>{user?.email}</div>;
 }
 ```
 
@@ -210,43 +223,42 @@ apps/admin/src/
 
 - **Correctness-First CRUD**: No optimistic updates, no optimization
 - **Use Supabase** via `@pickid/supabase` package
-- **Service Layer**: All Supabase calls in `shared/api/services`
-- **Hooks Layer**: TanStack Query in `features/*/hooks/api`
+- **Service Layer**: All Supabase calls in `services/`
+- **API Layer**: TanStack Query hooks in `api/`
 
 ## File Structure
 
 ```
-features/test/
-├── hooks/
-│   └── api/
-│       ├── useTestQuery.ts        # Single test
-│       ├── useTestsQuery.ts       # Multiple tests
-│       └── useCreateTestMutation.ts
+src/
+├── api/
+│   ├── query-keys.ts          # Query key factory
+│   ├── auth.ts                # useAuthQuery, useLogoutMutation
+│   └── test.ts                # useTestQuery, useTestMutation
+│
+├── services/
+│   ├── auth.service.ts        # Supabase auth calls
+│   └── test.service.ts        # Supabase test calls
+│
 └── components/
-    └── TestCard.tsx               # Uses hooks
-
-shared/
-└── api/
-    ├── services/
-    │   └── test.service.ts        # Supabase calls
-    └── query-keys.ts              # Query key factory
+    └── TestCard.tsx           # Uses hooks from api/
 ```
 
 ## Naming Conventions
 
-Location: `features/[featureName]/hooks/api/`
+Location: `api/`
 
-- Query: `use[Resource]Query.ts` or `use[Resources]Query.ts`
-- Mutation: `use[Action][Resource]Mutation.ts`
+- Query: `use[Resource]Query` (ex: `useAuthQuery`, `useTestQuery`)
+- Mutation: `use[Action][Resource]Mutation` (ex: `useLogoutMutation`, `useCreateTestMutation`)
 
 ## Query Template
 
 ```typescript
-// shared/api/services/test.service.ts
-import { supabase } from '@pickid/supabase';
+// services/test.service.ts
+import { createClient } from '@/lib/supabase/client';
 
 export const testService = {
 	async getTest(testId: string) {
+		const supabase = createClient();
 		const { data, error } = await supabase
 			.from('tests')
 			.select('id, title, description, category_id')
@@ -256,23 +268,12 @@ export const testService = {
 		if (error) throw error;
 		return data;
 	},
-
-	async getTests() {
-		const { data, error } = await supabase
-			.from('tests')
-			.select('id, title, description, thumbnail_url')
-			.eq('is_published', true)
-			.order('created_at', { ascending: false });
-
-		if (error) throw error;
-		return data;
-	},
 };
 
-// features/test/hooks/api/useTestQuery.ts
+// api/test.ts
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/shared/api/query-keys';
-import { testService } from '@/shared/api/services/test.service';
+import { queryKeys } from '@/api/query-keys';
+import { testService } from '@/services/test.service';
 
 export function useTestQuery(testId: string) {
 	return useQuery({
@@ -286,27 +287,21 @@ export function useTestQuery(testId: string) {
 ## Mutation Template
 
 ```typescript
-// shared/api/services/test.service.ts
+// services/test.service.ts
 export const testService = {
 	async createTest(data: { title: string; description: string }) {
+		const supabase = createClient();
 		const { data: test, error } = await supabase.from('tests').insert(data).select().single();
-
-		if (error) throw error;
-		return test;
-	},
-
-	async updateTest(testId: string, data: { title?: string; description?: string }) {
-		const { data: test, error } = await supabase.from('tests').update(data).eq('id', testId).select().single();
 
 		if (error) throw error;
 		return test;
 	},
 };
 
-// features/test/hooks/api/useCreateTestMutation.ts
+// api/test.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '@/shared/api/query-keys';
-import { testService } from '@/shared/api/services/test.service';
+import { queryKeys } from '@/api/query-keys';
+import { testService } from '@/services/test.service';
 
 export function useCreateTestMutation() {
 	const queryClient = useQueryClient();
@@ -314,7 +309,6 @@ export function useCreateTestMutation() {
 	return useMutation({
 		mutationFn: (data: { title: string; description: string }) => testService.createTest(data),
 		onSuccess: () => {
-			// Invalidate and refetch
 			queryClient.invalidateQueries({ queryKey: queryKeys.test.all });
 		},
 	});
@@ -326,8 +320,8 @@ export function useCreateTestMutation() {
 - ✅ ALWAYS use Supabase types from `@pickid/supabase`
 - ✅ ALWAYS specify columns in `.select()` (avoid `select('*')`)
 - ✅ ALWAYS handle errors with `if (error) throw error`
-- ✅ Service layer: Pure Supabase calls only
-- ✅ Hook layer: TanStack Query only
+- ✅ Service layer (`services/`): Pure Supabase calls only
+- ✅ API layer (`api/`): TanStack Query hooks only
 - ❌ NEVER mix Supabase calls in components
 - ❌ NO optimistic updates
 - ❌ NO custom caching (use defaults: staleTime: 0, gcTime: 5min)

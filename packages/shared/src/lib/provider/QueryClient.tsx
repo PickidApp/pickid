@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	MutationCache,
 	QueryCache,
@@ -28,7 +30,7 @@ export function QueryClientProvider({ children }: React.PropsWithChildren) {
 					queries: {
 						refetchOnWindowFocus: false,
 						retry: false,
-						staleTime: 5000,
+						staleTime: 5 * 60 * 1000,
 					},
 				},
 			})

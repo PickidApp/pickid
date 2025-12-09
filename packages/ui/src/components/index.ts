@@ -5,6 +5,8 @@ export * from './button';
 export * from './card';
 export * from './carousel';
 export * from './default-carousel';
+export * from './banner-carousel';
+export * from './card-carousel';
 export * from './data-table';
 export * from './default-pagination';
 export * from './dialog';

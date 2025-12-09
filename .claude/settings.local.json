@@ -36,7 +36,11 @@
       "Bash(ls:*)",
       "Bash(curl:*)",
       "Bash(yes:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(pnpm --filter web type-check:*)",
+      "WebFetch(domain:cdn.dribbble.com)",
+      "WebSearch",
+      "WebFetch(domain:dribbble.com)"
     ],
     "deny": [],
     "ask": []
